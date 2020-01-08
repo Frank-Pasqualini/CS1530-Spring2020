@@ -1,4 +1,9 @@
 plugins {
+    id 'base'
+    id 'checkstyle'
+    id 'jacoco'
+    id 'java'
+    id 'pmd'
     id 'war'
     id 'org.gretty' version '3.0.1'
 }
@@ -6,6 +11,18 @@ plugins {
 gretty {
     integrationTestTask = 'test'
 }
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 1.0
+            }
+        }
+    }
+}
+
+test.finalizedBy jacocoTestReport
 
 repositories {
     jcenter()
