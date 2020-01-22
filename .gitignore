@@ -24,6 +24,8 @@ hs_err_pid*
 
 .gradle
 /build/
+!**/src/main/**
+!**/src/test/**
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -40,3 +42,9 @@ gradle-app.setting
 # Jetbrains IDE
 .idea
 *.iml
+
+# NODE
+node_modules/
+
+# Output
+src/main/resources/static/dist/

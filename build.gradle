@@ -4,13 +4,17 @@ plugins {
     id 'jacoco'
     id 'java'
     id 'pmd'
-    id 'war'
-    id 'org.gretty' version '3.0.1'
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id "com.moowork.node" version "1.3.1"
 }
 
-gretty {
-    integrationTestTask = 'test'
-}
+apply plugin: 'io.spring.dependency-management'
+apply plugin: "com.moowork.node"
+
+group = 'media.jambox'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
 
 jacocoTestCoverageVerification {
     violationRules {
@@ -25,13 +29,25 @@ jacocoTestCoverageVerification {
 test.finalizedBy jacocoTestReport
 
 repositories {
+    mavenCentral()
     jcenter()
 }
 
 dependencies {
-    providedCompile 'javax.servlet:javax.servlet-api:4.0.1'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'junit:junit:4.13'
     testImplementation 'org.mockito:mockito-core:3.2.4'
-    testImplementation 'io.github.bonigarcia:webdrivermanager:3.7.1'
-    testImplementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
 }
+
+task buildReactApp(type: NodeTask, dependsOn: 'npmInstall') {
+    script = project.file('./node_modules/webpack/bin/webpack.js')
+    args = [
+            '--mode', 'development',
+            '--entry', './src/main/webapp/javascript/Main.jsx',
+            '-o', './src/main/resources/static/dist/react-app.js'
+    ]
+}
+
+processResources.dependsOn 'buildReactApp'
+clean.delete << file('node_modules')
+clean.delete << file('src/main/resources/static/dist')
