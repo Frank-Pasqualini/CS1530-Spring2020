@@ -1,0 +1,60 @@
+buildscript {
+    ext {
+        springBootVersion = '2.2.4.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id 'base'
+    id 'checkstyle'
+    id 'jacoco'
+    id 'java'
+    id 'pmd'
+    id 'org.springframework.boot' version '2.2.4.RELEASE'
+}
+
+apply plugin: 'io.spring.dependency-management'
+
+group = 'media.jambox'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 11
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 1.0
+            }
+        }
+    }
+}
+
+test.finalizedBy jacocoTestReport
+
+tasks.withType(Checkstyle).each { checkstyleTask ->
+    checkstyleTask.doLast {
+        reports.all { report ->
+            def outputFile = report.destination
+            if (outputFile.exists() && outputFile.text.contains("<error ")) {
+                throw new GradleException("There were checkstyle warnings! For more info check $outputFile")
+            }
+        }
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'junit:junit:4.13'
+    runtimeOnly project(':npm-frontend')
+}
