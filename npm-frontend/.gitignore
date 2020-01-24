@@ -1,19 +1,19 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
+node_modules
+.pnp
 .pnp.js
 
 # testing
-/coverage
+coverage
 
 # our marker for tracking if tests were executed
 .tests.executed
 
 # production
-/build
-/build_packageNpmApp
+build
+build_packageNpmApp
 
 # misc
 .DS_Store
@@ -25,3 +25,5 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+package-lock.json
