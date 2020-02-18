@@ -83,7 +83,3 @@ clean {
     delete packageNpmApp.archivePath
     delete testsExecutedMarkerName
 }
-
-dependencies {
-  implementation 'com.google.firebase:firebase-admin:6.12.1'
-}
