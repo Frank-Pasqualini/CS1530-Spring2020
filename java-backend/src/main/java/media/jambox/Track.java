@@ -13,7 +13,7 @@ public class Track
     private transient String albumName;
     private transient String[] albumImages;
     private transient String[] artistNames;
-    private transient int score;
+    private int score;
 
     /**
      * The initializer for a Track object.
@@ -66,9 +66,14 @@ public class Track
         return this.durationMS;
     }
 
-    int getScore()
+    public int getScore()
     {
         return this.score;
+    }
+
+    private void setScore(int s)
+    {
+        this.score = s;
     }
 
     public String getAlbumName()
@@ -84,5 +89,15 @@ public class Track
     public String[] getArtistNames()
     {
         return this.artistNames;
+    }
+
+    public void incrementScore()
+    {
+        setScore(this.score + 1);
+    }
+
+    public void decrementScore()
+    {
+        setScore(this.score - 1);
     }
 }
