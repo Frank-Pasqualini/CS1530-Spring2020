@@ -53,6 +53,7 @@ repositories {
 }
 
 dependencies {
+    compile 'se.michaelthelin.spotify:spotify-web-api-java:4.2.1'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'junit:junit:4.13'
