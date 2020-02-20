@@ -3,7 +3,6 @@ package media.jambox;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.exceptions.detailed.BadRequestException;
@@ -16,8 +15,8 @@ import org.junit.Test;
 public class TrackTest
 {
     private final transient String accessToken = System.getenv("TEST_ACCESS_CODE");
-    private transient Track testTrack;
     private final transient String id = "7GhIk7Il098yCjg4BQjzvb";
+    private transient Track testTrack;
 
     @Before
     public void setUp()
