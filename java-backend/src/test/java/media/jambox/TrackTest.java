@@ -42,7 +42,7 @@ public class TrackTest
 
     @Test
     public void testCompare()
-        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
+        throws IOException, SpotifyWebApiException
     {
         final String id2 = "6rPO02ozF3bM7NnOV4h6s2";
 
@@ -87,7 +87,7 @@ public class TrackTest
 
     @Test
     public void testBadID()
-        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
+        throws IOException, SpotifyWebApiException
     {
         try
         {
@@ -122,7 +122,7 @@ public class TrackTest
 
     @Test
     public void testBadAccessToken()
-        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
+        throws IOException, SpotifyWebApiException
     {
         try
         {
