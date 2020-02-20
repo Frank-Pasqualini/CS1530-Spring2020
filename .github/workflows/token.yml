@@ -2,7 +2,7 @@ name: RefreshToken
 
 on:
   schedule:
-  - cron: "* * * * *"
+  - cron: "*/5 * * * *"
 
 jobs:
   my-job:
