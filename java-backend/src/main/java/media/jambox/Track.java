@@ -28,9 +28,9 @@ public class Track
      * @param accessToken The Host's Spotify Access Token.
      *
      * @throws IOException An I/O exception occurred while searching for the
-     * Track information on Spotify.
+     *     Track information on Spotify.
      * @throws SpotifyWebApiException An API exception occurred while searching
-     * for the Track information on Spotify.
+     *     for the Track information on Spotify.
      */
     public Track(String id, String accessToken)
         throws IOException, SpotifyWebApiException
