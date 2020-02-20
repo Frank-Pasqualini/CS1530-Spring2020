@@ -1,0 +1,19 @@
+name: RefreshToken
+
+on:
+  schedule:
+  - cron: "* * * * *"
+
+jobs:
+  my-job:
+    name: Update Refreshable Token
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a multi-line script
+        run: |
+          echo ${CLIENT_ID}
+          echo test
+        env:
+          CLIENT_SECRET: ${{ secrets.client_secret }}
+          CLIENT_ID: ${{ secrets.client_id }}
+      
