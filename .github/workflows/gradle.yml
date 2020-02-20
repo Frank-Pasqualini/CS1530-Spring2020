@@ -14,4 +14,6 @@ jobs:
       with:
         java-version: 11
     - name: Build with Gradle
+      env:
+        TEST_ACCESS_CODE: "BQA2ccc64aTJ50OZqRooFIOZX4DI_V-Fldj7NMgGKymcGpSBS2mqU8Qc4SF3VZsg8LD--8mcawrtZkP9_EjTjPXjx5NXYrJHct8iavuUZ9RN1obSYVJ_pooscE6tA4GOxgQDIcysoavsFjmguczlJustGg40Z_U"
       run: ./gradlew build

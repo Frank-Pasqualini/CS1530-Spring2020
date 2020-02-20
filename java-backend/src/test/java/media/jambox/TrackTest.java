@@ -10,7 +10,7 @@ import org.junit.Test;
 
 public class TrackTest
 {
-    private final transient String accessToken = "BQBBsBGFKhsHbBiGYU3sohsh0RtKJbuLgRu9CuTlEOJ4JFeG_CM_MwMY_LAuM7Q4dVfi0262y3E8LYgWmNmJc0mb6XE6bWu9Dzh5d9bhTAW_aA0Uc4csiQH_TEnGjvFs4lcFYkmGjV97xSC5IbkFiVC8R4Q_Brc";
+    private final transient String accessToken = System.getenv("TEST_ACCESS_CODE");
     private transient Track testTrack;
 
     @Before
