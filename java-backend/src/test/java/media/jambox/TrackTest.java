@@ -57,7 +57,7 @@ public class TrackTest
     @Test
     public void testString()
     {
-        assertEquals("Never Gonna Give You Up - [Rick Astley]", testTrack.toString());
+        assertEquals("Never Gonna Give You Up - Rick Astley", testTrack.toString());
     }
 
     @Test

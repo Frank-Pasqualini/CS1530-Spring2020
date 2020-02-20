@@ -114,6 +114,7 @@ public class Track
 
     public String toString()
     {
-        return this.name + " - " + Arrays.toString(this.artistNames);
+        String artists = Arrays.toString(this.artistNames);
+        return this.name + " - " + artists.substring(1, artists.length() - 1);
     }
 }
