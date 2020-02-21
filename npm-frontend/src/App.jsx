@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import SpotifyLogo from './spotifylogo.png';
-import './App.css';
 
 const CreateEventButton = styled.button`
   font-weight: bold;
@@ -12,7 +11,18 @@ const CreateEventButton = styled.button`
   font-size: 25px;
   cursor: pointer;
   margin: 15px;
-  `;
+  background-color: #EBEBEB;
+  border-color: #272727;
+  box-shadow: inset 0px 0px 21px 0px #272727, 13px 12px 20px -5px black;
+  transition: width .5s, height .5s, font-size .5s;
+
+  &:hover {
+    height: 100px;
+    width: 215px;
+    font-size: 28px;
+  }
+
+`;
 
 const JoinEventButton = styled.button`
   background-color: #2A77C9;
@@ -23,8 +33,16 @@ const JoinEventButton = styled.button`
   border-radius: 13px;
   cursor: pointer;
   margin: 15px;
-  border-color: #2A77C9;
+  border-color: #272727;
   font-weight: bold;
+  box-shadow: inset 0px 0px 30px #000000, 13px 12px 20px -5px black;
+  transition: width .5s, height .5s, font-size .5s;
+
+  &:hover {
+    height: 170px;
+    width: 380px;
+    font-size: 55px;
+  }
 `;
 
 const LogoJ = styled.div`
@@ -34,7 +52,7 @@ const LogoJ = styled.div`
 `;
 
 const LogoTitle = styled.div`
-  color: white;
+  color: #EBEBEB;
   font-size: 50px;
   font-weight: bold;
 `;
@@ -43,7 +61,7 @@ const HomePageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 30px;
+  padding: 30px;
 `;
 
 const LogoContainer = styled.div`
@@ -54,11 +72,17 @@ const LogoContainer = styled.div`
 
 const Background = styled.div`
   background-color: #272727;
-  height: 100vh;
+  height: 90vh;
+  width: 100%;
 `;
 
 const Spotify = styled.img`
   height: 35px;
+  transition: width .5s, height .5s, font-size .5s;
+
+  ${CreateEventButton}:hover & {
+    height: 40px;
+  }
 `;
 
 const TopBar = styled.div`
@@ -69,17 +93,19 @@ const TopBar = styled.div`
 class App extends Component {
   render() {
     return (
-      <Background>
+      <div>
         <TopBar />
-        <HomePageContainer>
-          <LogoContainer>
-            <LogoJ>J</LogoJ> 
-            <LogoTitle>JAMBOX</LogoTitle>
-          </LogoContainer>
-            <JoinEventButton>Join Event</JoinEventButton>
-            <CreateEventButton>Create Event <Spotify src={SpotifyLogo} /></CreateEventButton>
-        </HomePageContainer>
-      </Background>
+        <Background>
+          <HomePageContainer>
+            <LogoContainer>
+              <LogoJ>J</LogoJ> 
+              <LogoTitle>JAMBOX</LogoTitle>
+            </LogoContainer>
+              <JoinEventButton>Join Event</JoinEventButton>
+              <CreateEventButton>Create Event <Spotify src={SpotifyLogo} /></CreateEventButton>
+          </HomePageContainer>
+        </Background>
+      </div>
     );
   }
 }
