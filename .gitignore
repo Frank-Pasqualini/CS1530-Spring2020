@@ -40,3 +40,6 @@ gradle-app.setting
 # Jetbrains IDE
 .idea
 *.iml
+
+# Firebase config
+base.js
