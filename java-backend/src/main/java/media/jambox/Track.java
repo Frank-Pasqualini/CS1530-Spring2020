@@ -1,29 +1,39 @@
 package media.jambox;
 
 import com.wrapper.spotify.SpotifyApi;
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.ArtistSimplified;
 import com.wrapper.spotify.model_objects.specification.Image;
 import com.wrapper.spotify.requests.data.tracks.GetTrackRequest;
+import java.io.IOException;
+import java.util.Arrays;
 
 public class Track
+    implements Comparable<Track>
 {
-    private transient String id;
+    private final transient String id;
     private transient String name;
     private transient int durationMS;
     private transient String albumName;
     private transient String[] albumImages;
     private transient String[] artistNames;
-    private int score;
+    private transient int score;
 
     /**
-     * The initializer for a Track object.
+     * The initializer for a Track object. Requests info from the Spotify API
+     * based on the ID supplied and fills in all of the variables with that
+     * info. The score starts at 0.
+     *
      * @param id The Spotify ID for the Track.
      * @param accessToken The Host's Spotify Access Token.
      *
-     * @throws java.io.IOException An I/O exception occurred while searching for the Track information on Spotify.
-     * @throws com.wrapper.spotify.exceptions.SpotifyWebApiException An API exception occurred while searching for the Track information on Spotify.
+     * @throws IOException An I/O exception occurred while searching for the
+     *     Track information on Spotify.
+     * @throws SpotifyWebApiException An API exception occurred while searching
+     *     for the Track information on Spotify.
      */
-    public Track(String id, String accessToken) throws  java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
+    public Track(String id, String accessToken)
+        throws IOException, SpotifyWebApiException
     {
         final SpotifyApi spotifyApi = new SpotifyApi.Builder().setAccessToken(accessToken).build();
         final GetTrackRequest trackRequest = spotifyApi.getTrack(id).build();
@@ -71,11 +81,6 @@ public class Track
         return this.score;
     }
 
-    private void setScore(int s)
-    {
-        this.score = s;
-    }
-
     public String getAlbumName()
     {
         return this.albumName;
@@ -93,11 +98,23 @@ public class Track
 
     public void incrementScore()
     {
-        setScore(this.score + 1);
+        this.score++;
     }
 
     public void decrementScore()
     {
-        setScore(this.score - 1);
+        this.score--;
+    }
+
+    @Override
+    public int compareTo(final Track other)
+    {
+        return Integer.compare(this.score, other.score);
+    }
+
+    public String toString()
+    {
+        String artists = Arrays.toString(this.artistNames);
+        return this.name + " - " + artists.substring(1, artists.length() - 1);
     }
 }
