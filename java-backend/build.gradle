@@ -1,12 +1,3 @@
-buildscript {
-    ext {
-        springBootVersion = '2.2.4.RELEASE'
-    }
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
     id 'base'
     id 'checkstyle'
