@@ -20,6 +20,17 @@ public class Playlist
         return this.id;
     }
 
+    /**
+     * Appends a Track to this playlist.
+     *
+     * @param trackId The id of the Track to append.
+     * @param accessToken The Host's Spotify Access Token.
+     *
+     * @return The result of the attempted addition to the playlist.
+     *
+     * @throws IOException An I/O exception occurred while searching for the rack information on Spotify.
+     * @throws SpotifyWebApiException An API exception occurred while searching for the Track information on Spotify.
+     */
     public String append(String trackId, String accessToken)
         throws IOException, SpotifyWebApiException
     {
