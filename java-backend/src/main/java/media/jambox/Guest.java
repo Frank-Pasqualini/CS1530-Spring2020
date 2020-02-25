@@ -2,9 +2,9 @@ package media.jambox;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-import java.util.UUID;
 
-public class Guest implements User
+public class Guest
+    implements User
 {
     private String id;
 
@@ -22,7 +22,8 @@ public class Guest implements User
         return this.id;
     }
 
-    public ArrayList<String> changeVote(String track, int value) throws InputMismatchException
+    public ArrayList<String> changeVote(String track, int value)
+        throws InputMismatchException
     {
         this.voteList.remove("+" + track);
         this.voteList.remove("-" + track);

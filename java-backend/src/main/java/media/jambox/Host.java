@@ -1,6 +1,7 @@
 package media.jambox;
 
-public class Host implements User
+public class Host
+    implements User
 {
     private String id;
 
