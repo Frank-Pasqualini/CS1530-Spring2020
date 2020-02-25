@@ -22,20 +22,30 @@ public class Guest
         return this.id;
     }
 
-    public ArrayList<String> changeVote(String track, int value)
+    /**
+     * Changes the vote values for a Track for this User.
+     *
+     * @param trackId The ID of the track that is being voted on.
+     * @param value Either 1 to represent an upvote, -1 to represent a downvote, or 0 to represent a vote removal.
+     *
+     * @return The list of votes that the User has made.
+     *
+     * @throws InputMismatchException Throws an exception if value is not 1, -1, or 0.
+     */
+    public ArrayList<String> changeVote(String trackId, int value)
         throws InputMismatchException
     {
-        this.voteList.remove("+" + track);
-        this.voteList.remove("-" + track);
+        this.voteList.remove("+" + trackId);
+        this.voteList.remove("-" + trackId);
         if (value == 1)
         {
-            this.voteList.add("+" + track);
+            this.voteList.add("+" + trackId);
         }
         else if (value == -1)
         {
-            this.voteList.add("-" + track);
+            this.voteList.add("-" + trackId);
         }
-        else
+        else if (value != 0)
         {
             throw new InputMismatchException();
         }
