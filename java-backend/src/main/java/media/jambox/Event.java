@@ -1,26 +1,42 @@
 package media.jambox;
 
+import com.wrapper.spotify.SpotifyApi;
+import com.wrapper.spotify.requests.data.playlists.CreatePlaylistRequest;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 
 public class Event
 {
 
-    private ArrayList<User> users;
-    private Playlist eventPlaylist;
-    private Queue eventQueue;
+    private final ArrayList<User> users;
+    private final Playlist eventPlaylist;
+    private final Queue eventQueue;
     private Track nowPlaying;
-    private int eventCode;
+    private final int eventCode;
 
-    Event(int eventCode, String playlistId)
+    Event(int eventCode, String playlistId, String accessToken, String hostId)
+        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
     {
-        this.users = new ArrayList<User>();
-        this.eventPlaylist = new Playlist(playlistId);
+        this.users = new ArrayList<>();
+        users.add(new Host(hostId));
+
+        final SpotifyApi spotifyApi = new SpotifyApi.Builder().setAccessToken(accessToken).build();
+        final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        final LocalDateTime now = LocalDateTime.now();
+        final CreatePlaylistRequest createPlaylistRequest = spotifyApi.createPlaylist(hostId, "JamBox: " + dtf.format(now)).build();
+        final com.wrapper.spotify.model_objects.specification.Playlist playlist = createPlaylistRequest.execute();
+        this.eventPlaylist = new Playlist(playlist.getId());
+
+        //TODO initialize Queue with playlistId
         this.eventQueue = new Queue();
         this.nowPlaying = eventQueue.pop();
+        this.eventPlaylist.append(nowPlaying.getId(), accessToken);
         this.eventCode = eventCode;
     }
 
-    public ArrayList<User> addUser(String userId)
+    public ArrayList<User> addGuest(String userId)
     {
         users.add(new Guest(userId));
         return users;
@@ -28,20 +44,25 @@ public class Event
 
     /**
      * Removes a User via a userID string input from the user ArrayList.
-     * @param userId a string input of a userId
-     * @return userId
+     *
+     * @param userId A string input of a userId.
+     *
+     * @return The User that was removed.
+     *
+     * @throws InputMismatchException Throws an exception when the User ID is not a current user.
      */
-    public String removeUser(String userId)
+    public User removeUser(String userId)
+        throws InputMismatchException
     {
-        for (int i = 0; i < users.size() - 1; i++)
+        for (int i = 0; i < users.size(); i++)
         {
-            if (users.get(i).getId() == userId)
+            if (users.get(i).getId().equals(userId))
             {
-                users.remove(i);
-                return userId;
+                return users.remove(i);
             }
         }
-        return "[ERROR] could not find user to removed";
+
+        throw new InputMismatchException();
     }
 
     public Playlist getPlaylist()
@@ -61,7 +82,7 @@ public class Event
 
     public Track setNowPlaying(Track track)
     {
-        nowPlaying = track;
+        nowPlaying = track; //TODO add to playlist.
         return nowPlaying;
     }
 

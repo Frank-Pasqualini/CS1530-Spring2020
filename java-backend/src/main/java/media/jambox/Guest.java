@@ -6,9 +6,9 @@ import java.util.InputMismatchException;
 public class Guest
     implements User
 {
-    private String id;
+    private final String id;
 
-    private ArrayList<String> voteList;
+    private final ArrayList<String> voteList;
 
     public Guest(String id)
     {
