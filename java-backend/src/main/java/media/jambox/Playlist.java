@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Playlist
 {
-    private String id;
+    private final String id;
 
     public Playlist(String id)
     {

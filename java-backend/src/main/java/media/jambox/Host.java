@@ -3,7 +3,7 @@ package media.jambox;
 public class Host
     implements User
 {
-    private String id;
+    private final String id;
 
     public Host(String id)
     {
