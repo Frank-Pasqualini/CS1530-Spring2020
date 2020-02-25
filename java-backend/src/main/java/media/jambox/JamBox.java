@@ -1,26 +1,27 @@
 package media.jambox;
-import java.util.*;
+
+import java.util.ArrayList;
 
 public class JamBox
 {
-	private static JamBox single_instance;
-	public ArrayList<Event> event_list;
-	public int num_event;
+    private static JamBox singleInstance;
+    public ArrayList<Event> eventList;
+    public int numEvent;
 
-	// constructor
-	private JamBox()
-	{
-		this.event_list = new ArrayList<Event>();
-		this.num_event = event_list.size();
-	}
+    // constructor
+    private JamBox()
+    {
+        this.eventList = new ArrayList<Event>();
+        this.numEvent = eventList.size();
+    }
 
-	// static method to create instance of JamBox
-	public static JamBox getInstance()
-	{
-		if(single_instance == null)
-		{
-			single_instance = new JamBox();
-		}
-		return single_instance;
-	}
+    // static method to create instance of JamBox
+    public static JamBox getInstance()
+    {
+        if (singleInstance == null)
+        {
+            singleInstance = new JamBox();
+        }
+        return singleInstance;
+    }
 }

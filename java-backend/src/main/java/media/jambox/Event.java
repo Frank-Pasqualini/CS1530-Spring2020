@@ -1,65 +1,67 @@
 package media.jambox;
-import java.util.*;
 
-public class Event {
+import java.util.ArrayList;
 
-	private ArrayList<User> users;
-	private Playlist event_playlist;
-	private Queue event_queue;
-	private Track now_playing;
-	private int event_code;
+public class Event
+{
 
-	Event(int event_code, String playlist_id)
-	{
-		this.users = new ArrayList<User>();
-		this.event_playlist = new Playlist(playlist_id);
-		this.event_queue = new Queue();
-		this.now_playing = event_queue.pop();
-		this.event_code = event_code;
-	}
+    private ArrayList<User> users;
+    private Playlist eventPlaylist;
+    private Queue eventQueue;
+    private Track nowPlaying;
+    private int eventCode;
 
-	public ArrayList<User> add_user(String user_id)
-	{
-		users.add(new Guest(user_id));
-		return users;
-	}
+    Event(int eventCode, String playlistId)
+    {
+        this.users = new ArrayList<User>();
+        this.eventPlaylist = new Playlist(playlistId);
+        this.eventQueue = new Queue();
+        this.nowPlaying = eventQueue.pop();
+        this.eventCode = eventCode;
+    }
 
-	public String remove_user(String user_id)
-	{
-		for(int i = 0; i < users.size() - 1; i++)
-		{
-			if (users.get(i).getId() == user_id)
-			{
-				users.remove(i);
-				return user_id;
-			}
-		}
-		return "[ERROR] could not find user to removed";
-	}
+    public ArrayList<User> addUser(String userId)
+    {
+        users.add(new Guest(userId));
+        return users;
+    }
 
-	public Playlist get_playlist()
-	{
-		return event_playlist;
-	}
+    public String removeUser(String userId)
+    {
+        for (int i = 0; i < users.size() - 1; i++)
+        {
+            if (users.get(i).getId() == userId)
+            {
+                users.remove(i);
+                return userId;
+            }
+        }
+        return "[ERROR] could not find user to removed";
+    }
 
-	public Queue get_queue()
-	{
-		return event_queue;
-	}
+    public Playlist getPlaylist()
+    {
+        return eventPlaylist;
+    }
 
-	public Track get_now_playing()
-	{
-		return now_playing;
-	}
+    public Queue getQueue()
+    {
+        return eventQueue;
+    }
 
-	public Track set_now_playing(Track track)
-	{
-		now_playing = track;
-		return now_playing;
-	}
+    public Track getNowPlaying()
+    {
+        return nowPlaying;
+    }
 
-	public int get_event_code()
-	{
-		return event_code;
-	}
+    public Track setNowPlaying(Track track)
+    {
+        nowPlaying = track;
+        return nowPlaying;
+    }
+
+    public int getEventCode()
+    {
+        return eventCode;
+    }
 }
