@@ -16,6 +16,11 @@ public class JamBox
     }
 
     // static method to create instance of JamBox
+
+    /**
+     * checks to see if an instance of JamBox exists, and if not, creates one.
+     * @return singleInstance
+     */
     public static JamBox getInstance()
     {
         if (singleInstance == null)

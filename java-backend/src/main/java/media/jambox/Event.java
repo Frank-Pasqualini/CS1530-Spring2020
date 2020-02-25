@@ -26,6 +26,11 @@ public class Event
         return users;
     }
 
+    /**
+     * Removes a User via a userID string input from the user ArrayList.
+     * @param userId a string input of a userId
+     * @return userId
+     */
     public String removeUser(String userId)
     {
         for (int i = 0; i < users.size() - 1; i++)
