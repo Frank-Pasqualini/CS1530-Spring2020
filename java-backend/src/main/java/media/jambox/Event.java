@@ -48,6 +48,8 @@ public class Event
      * @param userId A string input of a userId.
      *
      * @return The User that was removed.
+     *
+     * @throws InputMismatchException Throws an exception when the User ID is not a current user.
      */
     public User removeUser(String userId)
         throws InputMismatchException
@@ -80,8 +82,7 @@ public class Event
 
     public Track setNowPlaying(Track track)
     {
-        nowPlaying = track;
-        //TODO add to playlist.
+        nowPlaying = track; //TODO add to playlist.
         return nowPlaying;
     }
 
