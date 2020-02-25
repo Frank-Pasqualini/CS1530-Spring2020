@@ -1,15 +1,16 @@
-import jambox.media
+package media.jambox;
+import java.util.*;
 
 public class JamBox
 {
 	private static JamBox single_instance;
-	public Event[] event_list; // ArrayList
+	public ArrayList<Event> event_list;
 	public int num_event;
 
 	// constructor
 	private JamBox()
 	{
-		this.event_list = new Event[];
+		this.event_list = new ArrayList<Event>();
 		this.num_event = event_list.size();
 	}
 

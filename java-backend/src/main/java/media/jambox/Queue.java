@@ -1,30 +1,28 @@
-import jambox.media
+package media.jambox;
+import java.util.*;
 
-public class Queue
-{
-	private Track[] track_list; // ArrayList
+public class Queue {
+	private ArrayList<Track> track_list; // ArrayList
 
-	Queue()
-	{
-		this.track_list = new Track[];
+	Queue() {
+		this.track_list = new ArrayList<Track>();
 	}
 
-	public Track[] sort_and_display()
-	{
+	public ArrayList<Track> sort_and_display() {
 		return track_list;
 	}
 
-	public Track pop()
-	{
+	public Track pop() {
 		return track_list.remove(0);
 	}
 
-	public Track[] append(Track track)
-	{
-		return track_list.add(track);
+	public ArrayList<Track> append(Track track) {
+		track_list.add(track);
+		return track_list;
 	}
 
-	public Track remove(String track_id)
-	{
-		return track_list.remove(track_id);
+	public String remove(String track_id) {
+		track_list.remove(track_id);
+		return track_id;
 	}
+}
