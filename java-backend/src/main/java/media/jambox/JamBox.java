@@ -5,20 +5,19 @@ import java.util.ArrayList;
 public class JamBox
 {
     private static JamBox singleInstance;
-    public ArrayList<Event> eventList;
-    public int numEvent;
+    public final transient ArrayList<Event> eventList;
+    public final transient int numEvent;
 
     // constructor
     private JamBox()
     {
-        this.eventList = new ArrayList<Event>();
+        this.eventList = new ArrayList<>();
         this.numEvent = eventList.size();
     }
 
-    // static method to create instance of JamBox
-
     /**
-     * checks to see if an instance of JamBox exists, and if not, creates one.
+     * Checks to see if an instance of JamBox exists, and if not, creates one.
+     *
      * @return singleInstance
      */
     public static JamBox getInstance()

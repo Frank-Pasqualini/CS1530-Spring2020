@@ -1,6 +1,18 @@
 package media.jambox;
 
-public interface User
+public abstract class User
 {
-    public String getId();
+    protected transient String id;
+
+    protected Event event;
+
+    public String getId()
+    {
+        return this.id;
+    }
+
+    public boolean equals(final Object obj)
+    {
+        return getClass() == obj.getClass() && this.getId().equals(((User)obj).getId());
+    }
 }

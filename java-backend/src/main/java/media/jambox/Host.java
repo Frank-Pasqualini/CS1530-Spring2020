@@ -1,18 +1,11 @@
 package media.jambox;
 
 public class Host
-    implements User
+    extends  User
 {
-    private final String id;
-
-    public Host(String id)
+    public Host(String id, Event event)
     {
         this.id = id;
-    }
-
-    @Override
-    public String getId()
-    {
-        return this.id;
+        this.event = event;
     }
 }

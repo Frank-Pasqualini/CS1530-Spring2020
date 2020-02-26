@@ -4,22 +4,21 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 
 public class Guest
-    implements User
+    extends User
 {
-    private final String id;
+    private final transient ArrayList<String> voteList;
 
-    private final ArrayList<String> voteList;
-
-    public Guest(String id)
+    /**
+     * Initializes the guest with an ID and the Event it is a part of.
+     *
+     * @param id The Guest's ID.
+     * @param event The Event the Guest is a part of.
+     */
+    public Guest(String id, Event event)
     {
         this.id = id;
         this.voteList = new ArrayList<>();
-    }
-
-    @Override
-    public String getId()
-    {
-        return this.id;
+        this.event = event;
     }
 
     /**
@@ -35,19 +34,32 @@ public class Guest
     public ArrayList<String> changeVote(String trackId, int value)
         throws InputMismatchException
     {
-        this.voteList.remove("+" + trackId);
-        this.voteList.remove("-" + trackId);
-        if (value == 1)
+        if (this.voteList.contains("+" + trackId))
         {
-            this.voteList.add("+" + trackId);
+            this.voteList.remove("+" + trackId);
+            this.event.getQueue().vote(trackId, -1);
         }
-        else if (value == -1)
+        if (this.voteList.contains("+" + trackId))
         {
-            this.voteList.add("-" + trackId);
+            this.voteList.remove("+" + trackId);
+            this.event.getQueue().vote(trackId, 1);
         }
-        else if (value != 0)
+
+        switch (value)
         {
-            throw new InputMismatchException();
+            case -1:
+                this.voteList.add("-" + trackId);
+                this.event.getQueue().vote(trackId, -1);
+                break;
+            case 0:
+                break;
+            case 1:
+                this.voteList.add("+" + trackId);
+                this.event.getQueue().vote(trackId, 1);
+                break;
+            default:
+                throw new InputMismatchException();
+
         }
 
         return this.voteList;

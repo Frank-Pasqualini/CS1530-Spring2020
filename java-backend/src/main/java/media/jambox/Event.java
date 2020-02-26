@@ -10,17 +10,17 @@ import java.util.InputMismatchException;
 public class Event
 {
 
-    private final ArrayList<User> users;
-    private final Playlist eventPlaylist;
-    private final Queue eventQueue;
-    private Track nowPlaying;
+    private final transient ArrayList<User> users;
+    private final transient Playlist eventPlaylist;
+    private final transient Queue eventQueue;
     private final int eventCode;
+    private transient Track nowPlaying;
 
     Event(int eventCode, String playlistId, String accessToken, String hostId)
         throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
     {
         this.users = new ArrayList<>();
-        users.add(new Host(hostId));
+        users.add(new Host(hostId, this));
 
         final SpotifyApi spotifyApi = new SpotifyApi.Builder().setAccessToken(accessToken).build();
         final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -29,8 +29,7 @@ public class Event
         final com.wrapper.spotify.model_objects.specification.Playlist playlist = createPlaylistRequest.execute();
         this.eventPlaylist = new Playlist(playlist.getId());
 
-        //TODO initialize Queue with playlistId
-        this.eventQueue = new Queue();
+        this.eventQueue = new Queue(playlistId);
         this.nowPlaying = eventQueue.pop();
         this.eventPlaylist.append(nowPlaying.getId(), accessToken);
         this.eventCode = eventCode;
@@ -38,7 +37,7 @@ public class Event
 
     public ArrayList<User> addGuest(String userId)
     {
-        users.add(new Guest(userId));
+        users.add(new Guest(userId, this));
         return users;
     }
 
@@ -80,14 +79,13 @@ public class Event
         return nowPlaying;
     }
 
-    public Track setNowPlaying(Track track)
-    {
-        nowPlaying = track; //TODO add to playlist.
-        return nowPlaying;
-    }
-
     public int getEventCode()
     {
         return eventCode;
+    }
+
+    public boolean equals(final Object obj)
+    {
+        return getClass() == obj.getClass() && this.getEventCode() == ((Event)obj).getEventCode();
     }
 }

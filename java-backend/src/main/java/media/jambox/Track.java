@@ -110,9 +110,15 @@ public class Track
         return Integer.compare(this.score, other.score);
     }
 
+    @Override
     public String toString()
     {
         String artists = Arrays.toString(this.artistNames);
         return this.name + " - " + artists.substring(1, artists.length() - 1);
+    }
+
+    public boolean equals(final Object obj)
+    {
+        return getClass() == obj.getClass() && this.getId().equals(((Track)obj).getId());
     }
 }

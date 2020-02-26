@@ -2,15 +2,18 @@ package media.jambox;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.InputMismatchException;
 
 public class Queue
 {
-    private ArrayList<Track> trackList; // ArrayList
+    private final transient ArrayList<Track> trackList;
 
-    Queue()
+    Queue(String playlistId)
     {
-        this.trackList = new ArrayList<Track>();
+        this.trackList = new ArrayList<>();
+        //TODO import playlist
     }
+
 
     public ArrayList<Track> sortAndDisplay()
     {
@@ -24,32 +27,52 @@ public class Queue
     }
 
     /**
-     * add a track to the queue and reorder the queue.
-     * @param track track gained from user interaction
-     * @return updated queue
+     * Add a track to the queue and reorder the queue. Does not add a Track if
+     * one with the same ID is already in the Queue.
+     *
+     * @param track Track gained from user interaction.
+     *
+     * @return The updated queue.
      */
     public ArrayList<Track> append(Track track)
     {
+        for (int i = 0; i < trackList.size() - 1; i++)
+        {
+            if (trackList.get(i).equals(track))
+            {
+                return trackList;
+            }
+        }
+
         trackList.add(track);
-        trackList = sortAndDisplay();
+        this.sortAndDisplay();
         return trackList;
     }
 
     /**
      * Removes a track from the queue via a string trackId.
-     * @param trackId String id to identify a track
-     * @return
+     *
+     * @param trackId String id to identify a track.
+     *
+     * @return The Track that was removed.
+     *
+     * @throws InputMismatchException Throws an exception when the Track to remove is not in the Queue.
      */
-    public String removeTrack(String trackId)
+    public Track removeTrack(String trackId)
+        throws InputMismatchException
     {
         for (int i = 0; i < trackList.size() - 1; i++)
         {
-            if (trackList.get(i).getId() == trackId)
+            if (trackList.get(i).getId().equals(trackId))
             {
-                trackList.remove(i);
-                return trackId;
+                return trackList.remove(i);
             }
         }
-        return "[ERROR] could not find track to remove";
+        throw new InputMismatchException();
+    }
+
+    public void vote(String trackId, int value)
+    {
+        //TODO
     }
 }
