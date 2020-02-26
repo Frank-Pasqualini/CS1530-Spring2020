@@ -59,11 +59,6 @@ public class Track
         }
     }
 
-    public String getId()
-    {
-        return this.id;
-    }
-
     public String getName()
     {
         return this.name;
@@ -111,14 +106,25 @@ public class Track
     }
 
     @Override
-    public String toString()
+    public int hashCode()
     {
-        String artists = Arrays.toString(this.artistNames);
-        return this.name + " - " + artists.substring(1, artists.length() - 1);
+        return super.hashCode();
     }
 
     public boolean equals(final Object obj)
     {
         return getClass() == obj.getClass() && this.getId().equals(((Track)obj).getId());
+    }
+
+    public String getId()
+    {
+        return this.id;
+    }
+
+    @Override
+    public String toString()
+    {
+        String artists = Arrays.toString(this.artistNames);
+        return this.name + " - " + artists.substring(1, artists.length() - 1);
     }
 }

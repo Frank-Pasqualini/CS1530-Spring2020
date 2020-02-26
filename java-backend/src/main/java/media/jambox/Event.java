@@ -79,13 +79,20 @@ public class Event
         return nowPlaying;
     }
 
-    public int getEventCode()
+    @Override
+    public int hashCode()
     {
-        return eventCode;
+        return super.hashCode();
     }
 
+    @Override
     public boolean equals(final Object obj)
     {
         return getClass() == obj.getClass() && this.getEventCode() == ((Event)obj).getEventCode();
+    }
+
+    public int getEventCode()
+    {
+        return eventCode;
     }
 }
