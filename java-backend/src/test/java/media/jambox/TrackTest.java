@@ -1,6 +1,7 @@
 package media.jambox;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -58,6 +59,22 @@ public class TrackTest
     public void testString()
     {
         assertEquals("Never Gonna Give You Up - Rick Astley", testTrack.toString());
+    }
+
+    @Test
+    public void testEquals()
+        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
+    {
+        Track testTrack2 = new Track(id, accessToken);
+        assertEquals(testTrack, testTrack2);
+    }
+
+    @Test
+    public void testHash()
+        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
+    {
+        Track testTrack2 = new Track("0l2kEdf5XjlckyybbNjmYS", accessToken);
+        assertNotEquals(testTrack.hashCode(), testTrack2.hashCode());
     }
 
     @Test
