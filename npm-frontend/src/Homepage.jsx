@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react'
 import styled from 'styled-components';
-import Logo from './Logo'
 import SpotifyLogo from './spotifylogo.png';
+import Logo from './Logo'
 
 const CreateEventButton = styled.button`
   font-weight: bold;
@@ -18,9 +18,9 @@ const CreateEventButton = styled.button`
   transition: width .5s, height .5s, font-size .5s, background-color .5s;
 
   &:hover {
-    height: 100px;
-    width: 215px;
-    font-size: 28px;
+    height: 105px;
+    width: 220px;
+    font-size: 29px;
     background-color: #EBEBF1;
   }
 
@@ -55,12 +55,6 @@ const HomePageContainer = styled.div`
   padding: 30px;
 `;
 
-const Background = styled.div`
-  background-color: #272727;
-  min-height: 100vh;
-  width: 100%;
-`;
-
 const Spotify = styled.img`
   height: 35px;
   transition: width .5s, height .5s, font-size .5s;
@@ -70,44 +64,14 @@ const Spotify = styled.img`
   }
 `;
 
-const TopBar = styled.div`
-  height: 60px;
-  background-color: #EBEBEB;
-  display: flex;
-`;
-
-function PageChanger(props) {
-  const page = props.page;
-  if (page === 'homepage') {
-    return (
+function Homepage(props) {
+  return (
     <HomePageContainer>
       <Logo isLogo={false} />
       <JoinEventButton>Join Event</JoinEventButton>
       <CreateEventButton>Create Event <Spotify src={SpotifyLogo} /></CreateEventButton>
-    </HomePageContainer>);
-  }
-  return <div>Hey</div>;
+    </HomePageContainer>
+  )
 }
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      page: 'join-event'
-    }
-  }
-  render() {
-    return (
-      <div>
-        <TopBar><Logo isLogo={true}/></TopBar>
-        <Background>
-          <PageChanger page={this.state.page}/>
-            
-          
-        </Background>
-      </div>
-    );
-  }
-}
-
-export default App;
+export default Homepage; 
