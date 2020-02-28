@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from "react-router-dom";
 import styled from 'styled-components';
 import Logo from './Logo'
 import Homepage from './Homepage';
@@ -86,50 +91,46 @@ const Arrow = styled(RightArrowCircle)`
   height: 85px;
 `;
 
-function PageChanger(props) {
-  const page = props.page;
-  if (page === 'homepage') {
-    return <Homepage />
-  } else if (page === 'join-event') {
-    return (
-      <JoinEventContainer>
-        <JoinEventText>Please Enter Your Event Code</JoinEventText>
-        <JoinEventForm>
-          <JoinEventInput type="text" />
-          <JoinEventCodeButton>Join Event</JoinEventCodeButton>
-        </JoinEventForm>
-      </JoinEventContainer>
-    )
-  }
-  return (
-    <JoinEventContainer>
-      <JoinEventText>Enter A Username</JoinEventText>
-      <JoinEventForm>
-        <JoinEventInput style={{width: "300px"}}type="text" />
-        <JoinEventUsernameButton>
-          <div>To The Music</div> 
-          <Arrow />
-        </JoinEventUsernameButton>
-      </JoinEventForm>
-    </JoinEventContainer>
-  );
-}
-
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      page: 'join'
+      
     }
   }
   render() {
     return (
-      <div>
-        <TopBar><Logo isLogo={true}/></TopBar>
-        <Background>
-          <PageChanger page={this.state.page}/>
-        </Background>
-      </div>
+      <Router>
+        <div>
+          <TopBar><Logo isLogo={true}/></TopBar>
+          <Background>
+            <Switch>
+              <Route exact path="/"> <Homepage /> </Route>
+              <Route path="/join-code"> 
+                <JoinEventContainer>
+                  <JoinEventText>Please Enter Your Event Code</JoinEventText>
+                  <JoinEventForm>
+                    <JoinEventInput type="text" />
+                    <JoinEventCodeButton>Join Event</JoinEventCodeButton>
+                  </JoinEventForm>
+                </JoinEventContainer>
+              </Route>
+              <Route path="/join-username">
+                <JoinEventContainer>
+                  <JoinEventText>Enter A Username</JoinEventText>
+                  <JoinEventForm>
+                    <JoinEventInput style={{width: "300px"}}type="text" />
+                    <JoinEventUsernameButton>
+                      <div>To The Music</div> 
+                      <Arrow />
+                    </JoinEventUsernameButton>
+                  </JoinEventForm>
+                </JoinEventContainer>
+              </Route>
+            </Switch>
+          </Background>
+        </div>
+      </Router>
     );
   }
 }
