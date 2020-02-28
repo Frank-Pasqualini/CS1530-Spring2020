@@ -1,73 +1,22 @@
 import React, { Component } from 'react';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import styled from 'styled-components';
 import Logo from './Logo'
-import SpotifyLogo from './spotifylogo.png';
-
-const CreateEventButton = styled.button`
-  font-weight: bold;
-  color: #2A77C9;
-  height: 90px;
-  width: 190px;
-  border-radius: 8px;
-  font-size: 25px;
-  cursor: pointer;
-  margin: 15px;
-  background-color: #EBEBEB;
-  border-color: #272727;
-  box-shadow: inset 0px 0px 21px 0px #272727, 13px 12px 20px -5px black;
-  transition: width .5s, height .5s, font-size .5s, background-color .5s;
-
-  &:hover {
-    height: 100px;
-    width: 215px;
-    font-size: 28px;
-    background-color: #EBEBF1;
-  }
-
-`;
-
-const JoinEventButton = styled.button`
-  background-color: #2A77C9;
-  color: white;
-  height: 150px;
-  width: 350px;
-  font-size: 50px;
-  border-radius: 13px;
-  cursor: pointer;
-  margin: 15px;
-  border-color: #272727;
-  font-weight: bold;
-  box-shadow: inset 0px 0px 30px #000000, 13px 12px 20px -5px black;
-  transition: width .5s, height .5s, font-size .5s, background-color .5s;
-
-  &:hover {
-    height: 170px;
-    width: 380px;
-    font-size: 55px;
-    background-color: #2A77D6;
-  }
-`;
-
-const HomePageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-`;
+import Homepage from './Homepage';
+import JoinEventCode from './JoinEventCode';
+import JoinEventUsername from './JoinEventUsername';
 
 const Background = styled.div`
   background-color: #272727;
   min-height: 100vh;
   width: 100%;
-`;
-
-const Spotify = styled.img`
-  height: 35px;
-  transition: width .5s, height .5s, font-size .5s;
-
-  ${CreateEventButton}:hover & {
-    height: 40px;
-  }
+  display: flex;
+  justify-content: center;
 `;
 
 const TopBar = styled.div`
@@ -77,18 +26,37 @@ const TopBar = styled.div`
 `;
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      user: {
+        type: ''
+      }
+    }
+  }
   render() {
     return (
-      <div>
-        <TopBar><Logo isLogo={true}/></TopBar>
-        <Background>
-          <HomePageContainer>
-            <Logo isLogo={false} />
-            <JoinEventButton>Join Event</JoinEventButton>
-            <CreateEventButton>Create Event <Spotify src={SpotifyLogo} /></CreateEventButton>
-          </HomePageContainer>
-        </Background>
-      </div>
+      <Router>
+          <TopBar>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <Logo navBar={true}/>
+            </Link>
+          </TopBar>
+          <Background>
+            <Switch>
+              <Route exact path="/"> <Homepage /> </Route>
+              <Route path="/join-code"> 
+                <JoinEventCode />
+              </Route>
+              <Route path="/join-username">
+                <JoinEventUsername />
+              </Route>
+              <Route path="/premium-error">
+                {/* Add error page for when a user doesn't have premium */}
+              </Route>
+            </Switch>
+          </Background>
+      </Router>
     );
   }
 }
