@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SpotifyLogo from './spotifylogo.png';
 import Logo from './Logo'
@@ -67,8 +68,10 @@ const Spotify = styled.img`
 function Homepage(props) {
   return (
     <HomePageContainer>
-      <Logo isLogo={false} />
-      <JoinEventButton>Join Event</JoinEventButton>
+      <Logo navBar={false} />
+      <Link to="/join-code">
+        <JoinEventButton>Join Event</JoinEventButton>
+      </Link>
       <CreateEventButton>Create Event <Spotify src={SpotifyLogo} /></CreateEventButton>
     </HomePageContainer>
   )

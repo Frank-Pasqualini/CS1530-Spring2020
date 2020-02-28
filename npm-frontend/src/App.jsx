@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+  Link
 } from "react-router-dom";
 import styled from 'styled-components';
 import Logo from './Logo'
@@ -28,13 +29,19 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      
+      user: {
+        type: ''
+      }
     }
   }
   render() {
     return (
       <Router>
-          <TopBar><Logo isLogo={true}/></TopBar>
+          <TopBar>
+            <Link to="/" style={{ textDecoration: 'none' }}>
+              <Logo navBar={true}/>
+            </Link>
+          </TopBar>
           <Background>
             <Switch>
               <Route exact path="/"> <Homepage /> </Route>

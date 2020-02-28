@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const JoinEventText = styled.div`
@@ -51,7 +52,9 @@ function JoinEventCode(props) {
       <JoinEventText>Please Enter Your Event Code</JoinEventText>
       <JoinEventForm>
         <JoinEventInput type="text" />
-        <JoinEventCodeButton>Join Event</JoinEventCodeButton>
+        <Link to="/join-username">
+          <JoinEventCodeButton>Join Event</JoinEventCodeButton>
+        </Link>
       </JoinEventForm>
     </JoinEventContainer>
   )
