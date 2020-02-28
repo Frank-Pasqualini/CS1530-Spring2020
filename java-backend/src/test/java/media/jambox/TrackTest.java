@@ -23,7 +23,6 @@ public class TrackTest
     public void setUp()
         throws IOException, SpotifyWebApiException
     {
-
         testTrack = new Track(id, accessToken);
     }
 
