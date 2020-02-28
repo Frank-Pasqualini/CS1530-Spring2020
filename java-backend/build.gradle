@@ -23,6 +23,8 @@ jacocoTestCoverageVerification {
 }
 
 check.dependsOn jacocoTestCoverageVerification
+test.dependsOn pmdTest
+test.dependsOn pmdMain
 
 tasks.withType(Checkstyle).each { checkstyleTask ->
     checkstyleTask.doLast {
