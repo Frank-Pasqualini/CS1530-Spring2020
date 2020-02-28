@@ -136,7 +136,7 @@ public class PlaylistTest
 
         try
         {
-            assertNull(testPlaylist.append("0l2kEdf5XjlckyybbNjmYS", accessToken));
+            assertEquals("0l2kEdf5XjlckyybbNjmYS", testPlaylist.append("0l2kEdf5XjlckyybbNjmYS", accessToken));
         }
         catch (ForbiddenException e)
         {
