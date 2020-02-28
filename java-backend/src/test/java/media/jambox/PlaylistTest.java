@@ -25,7 +25,6 @@ public class PlaylistTest
     @Before
     public void setUp()
     {
-
         testPlaylist = new Playlist(id);
     }
 
