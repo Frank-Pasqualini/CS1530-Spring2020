@@ -1,73 +1,15 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Logo from './Logo'
-import SpotifyLogo from './spotifylogo.png';
-
-const CreateEventButton = styled.button`
-  font-weight: bold;
-  color: #2A77C9;
-  height: 90px;
-  width: 190px;
-  border-radius: 8px;
-  font-size: 25px;
-  cursor: pointer;
-  margin: 15px;
-  background-color: #EBEBEB;
-  border-color: #272727;
-  box-shadow: inset 0px 0px 21px 0px #272727, 13px 12px 20px -5px black;
-  transition: width .5s, height .5s, font-size .5s, background-color .5s;
-
-  &:hover {
-    height: 100px;
-    width: 215px;
-    font-size: 28px;
-    background-color: #EBEBF1;
-  }
-
-`;
-
-const JoinEventButton = styled.button`
-  background-color: #2A77C9;
-  color: white;
-  height: 150px;
-  width: 350px;
-  font-size: 50px;
-  border-radius: 13px;
-  cursor: pointer;
-  margin: 15px;
-  border-color: #272727;
-  font-weight: bold;
-  box-shadow: inset 0px 0px 30px #000000, 13px 12px 20px -5px black;
-  transition: width .5s, height .5s, font-size .5s, background-color .5s;
-
-  &:hover {
-    height: 170px;
-    width: 380px;
-    font-size: 55px;
-    background-color: #2A77D6;
-  }
-`;
-
-const HomePageContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px;
-`;
+import Homepage from './Homepage';
+import {RightArrowCircle} from 'styled-icons/boxicons-regular/RightArrowCircle';
 
 const Background = styled.div`
   background-color: #272727;
   min-height: 100vh;
   width: 100%;
-`;
-
-const Spotify = styled.img`
-  height: 35px;
-  transition: width .5s, height .5s, font-size .5s;
-
-  ${CreateEventButton}:hover & {
-    height: 40px;
-  }
+  display: flex;
+  justify-content: center;
 `;
 
 const TopBar = styled.div`
@@ -76,24 +18,108 @@ const TopBar = styled.div`
   display: flex;
 `;
 
+const JoinEventText = styled.div`
+  color: white;
+  font-size: 50px;
+  text-align: center;
+`;
+
+const JoinEventContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 150px;
+  width: 450px;
+`;
+
+const JoinEventInput = styled.input`
+  width: 150px;
+  height: 62px;
+  font-size: 50px;
+  padding: 0 9px;
+  text-align: center;
+`;
+
+const JoinEventCodeButton = styled.button`
+  background-color: #2A77C9;
+  color: white;
+  height: 90px;
+  width: 230px;
+  font-size: 40px;
+  border-radius: 13px;
+  cursor: pointer;
+  margin: 35px;
+  border-color: #272727;
+  font-weight: bold;
+  box-shadow: inset 0px 0px 30px #000000, 13px 12px 20px -5px black;
+  transition: width .5s, height .5s, font-size .5s, background-color .5s;
+`;
+const JoinEventUsernameButton = styled.button`
+  background-color: #65D26E;
+  color: white;
+  height: 110px;
+  width: 200px;
+  font-size: 35px;
+  border-radius: 13px;
+  cursor: pointer;
+  margin: 35px;
+  border-color: #272727;
+  font-weight: bold;
+  box-shadow: inset 0px 0px 30px #000000, 13px 12px 20px -5px black;
+  transition: width .5s, height .5s, font-size .5s, background-color .5s;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+
+
+const JoinEventForm = styled.form`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 60px 0;
+`;
+
+const Arrow = styled(RightArrowCircle)`
+  height: 85px;
+`;
+
 function PageChanger(props) {
   const page = props.page;
   if (page === 'homepage') {
+    return <Homepage />
+  } else if (page === 'join-event') {
     return (
-    <HomePageContainer>
-      <Logo isLogo={false} />
-      <JoinEventButton>Join Event</JoinEventButton>
-      <CreateEventButton>Create Event <Spotify src={SpotifyLogo} /></CreateEventButton>
-    </HomePageContainer>);
+      <JoinEventContainer>
+        <JoinEventText>Please Enter Your Event Code</JoinEventText>
+        <JoinEventForm>
+          <JoinEventInput type="text" />
+          <JoinEventCodeButton>Join Event</JoinEventCodeButton>
+        </JoinEventForm>
+      </JoinEventContainer>
+    )
   }
-  return <div>Hey</div>;
+  return (
+    <JoinEventContainer>
+      <JoinEventText>Enter A Username</JoinEventText>
+      <JoinEventForm>
+        <JoinEventInput style={{width: "300px"}}type="text" />
+        <JoinEventUsernameButton>
+          <div>To The Music</div> 
+          <Arrow />
+        </JoinEventUsernameButton>
+      </JoinEventForm>
+    </JoinEventContainer>
+  );
 }
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
-      page: 'join-event'
+      page: 'join'
     }
   }
   render() {
@@ -102,8 +128,6 @@ class App extends Component {
         <TopBar><Logo isLogo={true}/></TopBar>
         <Background>
           <PageChanger page={this.state.page}/>
-            
-          
         </Background>
       </div>
     );
