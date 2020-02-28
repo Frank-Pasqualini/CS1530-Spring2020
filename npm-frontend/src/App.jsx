@@ -44,6 +44,9 @@ class App extends Component {
               <Route path="/join-username">
                 <JoinEventUsername />
               </Route>
+              <Route path="/premium-error">
+                {/* Add error page for when a user doesn't have premium */}
+              </Route>
             </Switch>
           </Background>
       </Router>
