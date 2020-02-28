@@ -19,7 +19,7 @@ const JoinEventContainer = styled.div`
 const JoinEventInput = styled.input`
   width: 150px;
   height: 62px;
-  font-size: 50px;
+  font-size: 45px;
   padding: 0 9px;
   text-align: center;
 `;
@@ -59,7 +59,7 @@ function JoinEventUsername(props) {
     <JoinEventContainer>
       <JoinEventText>Enter A Username</JoinEventText>
       <JoinEventForm>
-        <JoinEventInput style={{width: "300px"}}type="text" />
+        <JoinEventInput style={{width: "300px"}} type="text" placeholder="Username"/>
         <JoinEventUsernameButton>
           <div>To The Music</div> 
           <Arrow />

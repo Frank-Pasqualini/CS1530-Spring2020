@@ -26,7 +26,7 @@ const JoinEventForm = styled.form`
 const JoinEventInput = styled.input`
   width: 150px;
   height: 62px;
-  font-size: 50px;
+  font-size: 45px;
   padding: 0 9px;
   text-align: center;
 `;
@@ -51,7 +51,7 @@ function JoinEventCode(props) {
     <JoinEventContainer>
       <JoinEventText>Please Enter Your Event Code</JoinEventText>
       <JoinEventForm>
-        <JoinEventInput type="text" />
+        <JoinEventInput type="text" placeholder="Code"/>
         <Link to="/join-username">
           <JoinEventCodeButton>Join Event</JoinEventCodeButton>
         </Link>
