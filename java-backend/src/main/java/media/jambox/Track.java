@@ -37,12 +37,12 @@ public class Track
         final GetTrackRequest trackRequest = spotifyApi.getTrack(id).build();
 
         this.id = id;
-        this.score = 0;
+        score = 0;
 
         final com.wrapper.spotify.model_objects.specification.Track trackInfo = trackRequest.execute();
-        this.name = trackInfo.getName();
-        this.durationMS = trackInfo.getDurationMs();
-        this.albumName = trackInfo.getAlbum().getName();
+        name = trackInfo.getName();
+        durationMS = trackInfo.getDurationMs();
+        albumName = trackInfo.getAlbum().getName();
         Image[] albumImages = trackInfo.getAlbum().getImages();
         this.albumImages = new String[albumImages.length];
         ArtistSimplified[] artistNames = trackInfo.getArtists();
@@ -61,48 +61,48 @@ public class Track
 
     public String getName()
     {
-        return this.name;
+        return name;
     }
 
     public int getDurationMS()
     {
-        return this.durationMS;
+        return durationMS;
     }
 
     public int getScore()
     {
-        return this.score;
+        return score;
     }
 
     public String getAlbumName()
     {
-        return this.albumName;
+        return albumName;
     }
 
     public String[] getAlbumImages()
     {
-        return this.albumImages;
+        return albumImages;
     }
 
     public String[] getArtistNames()
     {
-        return this.artistNames;
+        return artistNames;
     }
 
-    public void incrementScore()
+    public int incrementScore()
     {
-        this.score++;
+        return ++score;
     }
 
-    public void decrementScore()
+    public int decrementScore()
     {
-        this.score--;
+        return --score;
     }
 
     @Override
     public int compareTo(final Track other)
     {
-        return Integer.compare(this.score, other.score);
+        return Integer.compare(score, other.score);
     }
 
     @Override
@@ -113,18 +113,18 @@ public class Track
 
     public boolean equals(final Object obj)
     {
-        return getClass() == obj.getClass() && this.getId().equals(((Track)obj).getId());
+        return getClass() == obj.getClass() && getId().equals(((Track)obj).getId());
     }
 
     public String getId()
     {
-        return this.id;
+        return id;
     }
 
     @Override
     public String toString()
     {
-        String artists = Arrays.toString(this.artistNames);
-        return this.name + " - " + artists.substring(1, artists.length() - 1);
+        String artists = Arrays.toString(artistNames);
+        return name + " - " + artists.substring(1, artists.length() - 1);
     }
 }

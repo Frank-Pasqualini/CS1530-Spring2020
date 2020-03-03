@@ -16,8 +16,9 @@ public class Guest
      */
     public Guest(String id, Event event)
     {
+        voteList = new ArrayList<>();
+
         this.id = id;
-        this.voteList = new ArrayList<>();
         this.event = event;
     }
 
@@ -34,15 +35,15 @@ public class Guest
     public ArrayList<String> changeVote(String trackId, int value)
         throws InputMismatchException
     {
-        if (this.voteList.contains("+" + trackId))
+        if (voteList.contains("+" + trackId))
         {
-            this.voteList.remove("+" + trackId);
-            this.event.getQueue().vote(trackId, -1);
+            voteList.remove("+" + trackId);
+            event.getQueue().vote(trackId, -1);
         }
-        if (this.voteList.contains("-" + trackId))
+        if (voteList.contains("-" + trackId))
         {
-            this.voteList.remove("-" + trackId);
-            this.event.getQueue().vote(trackId, 1);
+            voteList.remove("-" + trackId);
+            event.getQueue().vote(trackId, 1);
         }
 
         switch (value)
@@ -50,8 +51,8 @@ public class Guest
             case -1:
                 try
                 {
-                    this.event.getQueue().vote(trackId, -1);
-                    this.voteList.add("-" + trackId);
+                    event.getQueue().vote(trackId, -1);
+                    voteList.add("-" + trackId);
                 }
                 catch (InputMismatchException ignored)
                 {
@@ -63,8 +64,8 @@ public class Guest
             case 1:
                 try
                 {
-                    this.event.getQueue().vote(trackId, 1);
-                    this.voteList.add("+" + trackId);
+                    event.getQueue().vote(trackId, 1);
+                    voteList.add("+" + trackId);
                 }
                 catch (InputMismatchException ignored)
                 {
@@ -76,6 +77,6 @@ public class Guest
 
         }
 
-        return this.voteList;
+        return voteList;
     }
 }
