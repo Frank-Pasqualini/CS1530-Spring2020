@@ -1,7 +1,9 @@
 package media.jambox;
 
 import com.wrapper.spotify.SpotifyApi;
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.requests.data.playlists.CreatePlaylistRequest;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -15,11 +17,12 @@ public class Event
     private final transient Queue eventQueue;
     private final int eventCode;
     private transient Track nowPlaying;
+    private transient Track upNext;
 
     Event(int eventCode, String playlistId, String accessToken, String hostId)
-        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
+        throws IOException, SpotifyWebApiException
     {
-        this.users = new ArrayList<>();
+        users = new ArrayList<>();
         users.add(new Host(hostId, this));
 
         final SpotifyApi spotifyApi = new SpotifyApi.Builder().setAccessToken(accessToken).build();
@@ -27,11 +30,14 @@ public class Event
         final LocalDateTime now = LocalDateTime.now();
         final CreatePlaylistRequest createPlaylistRequest = spotifyApi.createPlaylist(hostId, "JamBox: " + dtf.format(now)).build();
         final com.wrapper.spotify.model_objects.specification.Playlist playlist = createPlaylistRequest.execute();
-        this.eventPlaylist = new Playlist(playlist.getId());
+        eventPlaylist = new Playlist(playlist.getId());
 
-        this.eventQueue = new Queue(playlistId);
-        this.nowPlaying = eventQueue.pop();
-        this.eventPlaylist.append(nowPlaying.getId(), accessToken);
+        eventQueue = new Queue(playlistId, accessToken);
+        nowPlaying = eventQueue.pop();
+        upNext = eventQueue.pop();
+
+        eventPlaylist.append(nowPlaying.getId(), accessToken);
+
         this.eventCode = eventCode;
     }
 
@@ -79,16 +85,9 @@ public class Event
         return nowPlaying;
     }
 
-    @Override
-    public int hashCode()
+    public Track getUpNext()
     {
-        return super.hashCode();
-    }
-
-    @Override
-    public boolean equals(final Object obj)
-    {
-        return getClass() == obj.getClass() && this.getEventCode() == ((Event)obj).getEventCode();
+        return upNext;
     }
 
     public int getEventCode()

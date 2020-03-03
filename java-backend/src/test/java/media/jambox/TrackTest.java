@@ -16,20 +16,21 @@ import org.junit.Test;
 public class TrackTest
 {
     private final transient String accessToken = System.getenv("TEST_ACCESS_CODE");
-    private final transient String id = "7GhIk7Il098yCjg4BQjzvb";
+    private final transient String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
+    private final transient String despacito = "6rPO02ozF3bM7NnOV4h6s2";
     private transient Track testTrack;
 
     @Before
     public void setUp()
         throws IOException, SpotifyWebApiException
     {
-        testTrack = new Track(id, accessToken);
+        testTrack = new Track(neverGonnaGiveYouUp, accessToken);
     }
 
     @Test
     public void testTrackInfo()
     {
-        assertEquals("7GhIk7Il098yCjg4BQjzvb", testTrack.getId());
+        assertEquals(neverGonnaGiveYouUp, testTrack.getId());
         assertEquals("Never Gonna Give You Up", testTrack.getName());
         assertEquals(212826, testTrack.getDurationMS());
         assertEquals(0, testTrack.getScore());
@@ -44,9 +45,7 @@ public class TrackTest
     public void testCompare()
         throws IOException, SpotifyWebApiException
     {
-        final String id2 = "6rPO02ozF3bM7NnOV4h6s2";
-
-        Track testTrack2 = new Track(id2, accessToken);
+        Track testTrack2 = new Track(despacito, accessToken);
 
         testTrack.incrementScore();
         testTrack2.decrementScore();
@@ -62,17 +61,23 @@ public class TrackTest
 
     @Test
     public void testEquals()
-        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
+        throws IOException, SpotifyWebApiException
     {
-        Track testTrack2 = new Track(id, accessToken);
+        Track testTrack2 = new Track(neverGonnaGiveYouUp, accessToken);
         assertEquals(testTrack, testTrack2);
+
+        Track testTrack3 = new Track(despacito, accessToken);
+        assertNotEquals(testTrack, testTrack3);
+
+        assertNotEquals(testTrack, "test");
     }
 
     @Test
     public void testHash()
-        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
+        throws IOException, SpotifyWebApiException
     {
-        Track testTrack2 = new Track("0l2kEdf5XjlckyybbNjmYS", accessToken);
+        final String roundabout = "0l2kEdf5XjlckyybbNjmYS";
+        Track testTrack2 = new Track(roundabout, accessToken);
         assertNotEquals(testTrack.hashCode(), testTrack2.hashCode());
     }
 
@@ -92,7 +97,7 @@ public class TrackTest
 
         try
         {
-            Track testTrack2 = new Track(id, null);
+            Track testTrack2 = new Track(neverGonnaGiveYouUp, null);
             assertNull(testTrack2);
         }
         catch (AssertionError e)
@@ -142,7 +147,8 @@ public class TrackTest
     {
         try
         {
-            Track testTrack1 = new Track("6M14BiCN00nOsba4JaYsHW", "");
+            final String oceanMan = "6M14BiCN00nOsba4JaYsHW";
+            Track testTrack1 = new Track(oceanMan, "");
             assertNull(testTrack1);
         }
         catch (AssertionError e)
@@ -152,7 +158,8 @@ public class TrackTest
 
         try
         {
-            Track testTrack2 = new Track("3cfOd4CMv2snFaKAnMdnvK", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            final String allStar = "3cfOd4CMv2snFaKAnMdnvK";
+            Track testTrack2 = new Track(allStar, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
             assertNull(testTrack2);
         }
         catch (UnauthorizedException e)
@@ -162,7 +169,8 @@ public class TrackTest
 
         try
         {
-            Track testTrack3 = new Track("24CXuh2WNpgeSYUOvz14jk", "BQCjm_vxykeaXCWOTOTFj2q1-fm7c1JtqtiOSrxRSfk19w7FoWI77Wh0W93JD50lYRIkoV8R5F-fY5kUdWuTVgPShQg40x_GMVDQMTDf1CMRBye-wcd3GkZbbAQzPGk3cLx_vbeguZxLT8U");
+            final String sandstorm = "24CXuh2WNpgeSYUOvz14jk";
+            Track testTrack3 = new Track(sandstorm, "BQCjm_vxykeaXCWOTOTFj2q1-fm7c1JtqtiOSrxRSfk19w7FoWI77Wh0W93JD50lYRIkoV8R5F-fY5kUdWuTVgPShQg40x_GMVDQMTDf1CMRBye-wcd3GkZbbAQzPGk3cLx_vbeguZxLT8U");
             assertNull(testTrack3);
         }
         catch (UnauthorizedException e)

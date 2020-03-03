@@ -1,8 +1,10 @@
 package media.jambox;
 
 import com.wrapper.spotify.SpotifyApi;
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.model_objects.specification.PlaylistTrack;
 import com.wrapper.spotify.requests.data.playlists.GetPlaylistsTracksRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.InputMismatchException;
@@ -12,18 +14,17 @@ public class Queue
     private final transient ArrayList<Track> trackList;
 
     Queue(String playlistId, String accessToken)
-        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
+        throws IOException, SpotifyWebApiException
     {
-        this.trackList = new ArrayList<>();
+        trackList = new ArrayList<>();
 
         final SpotifyApi spotifyApi = new SpotifyApi.Builder().setAccessToken(accessToken).build();
         final GetPlaylistsTracksRequest getPlaylistsTracksRequest = spotifyApi.getPlaylistsTracks(playlistId).build();
         final PlaylistTrack[] playlistTracks = getPlaylistsTracksRequest.execute().getItems();
-        for (final com.wrapper.spotify.model_objects.specification.PlaylistTrack playlistTrack : playlistTracks)
+        for (final PlaylistTrack playlistTrack : playlistTracks)
         {
             trackList.add(new Track(playlistTrack.getTrack().getId(), accessToken));
         }
-
     }
 
     /**
@@ -48,13 +49,12 @@ public class Queue
         {
             trackList.add(new Track(trackId, accessToken));
         }
-        catch (java.io.IOException | com.wrapper.spotify.exceptions.SpotifyWebApiException e)
+        catch (IOException | SpotifyWebApiException e)
         {
             throw new InputMismatchException();
         }
 
-        this.sortAndDisplay();
-        return trackList;
+        return sortAndDisplay();
     }
 
     public ArrayList<Track> sortAndDisplay()
@@ -95,10 +95,13 @@ public class Queue
      *
      * @param trackId The ID of the track to vote on.
      * @param value 1 for an upvote, -1 for a downvote.
+     *
+     * @return The sorted vote queue;
+     *
      * @throws InputMismatchException Thrown whenever the track is not in the queue or the value is not 1 or -1.
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    public void vote(String trackId, int value)
+    public ArrayList<Track> vote(String trackId, int value)
         throws InputMismatchException
     {
         for (Track track : trackList)
@@ -109,10 +112,10 @@ public class Queue
                 {
                     case 1:
                         track.incrementScore();
-                        return;
+                        return sortAndDisplay();
                     case -1:
                         track.decrementScore();
-                        return;
+                        return sortAndDisplay();
                     default:
                         throw new InputMismatchException();
                 }

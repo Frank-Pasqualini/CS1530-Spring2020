@@ -16,8 +16,9 @@ public class Guest
      */
     public Guest(String id, Event event)
     {
+        voteList = new ArrayList<>();
+
         this.id = id;
-        this.voteList = new ArrayList<>();
         this.event = event;
     }
 
@@ -34,34 +35,48 @@ public class Guest
     public ArrayList<String> changeVote(String trackId, int value)
         throws InputMismatchException
     {
-        if (this.voteList.contains("+" + trackId))
+        if (voteList.contains("+" + trackId))
         {
-            this.voteList.remove("+" + trackId);
-            this.event.getQueue().vote(trackId, -1);
+            voteList.remove("+" + trackId);
+            event.getQueue().vote(trackId, -1);
         }
-        if (this.voteList.contains("+" + trackId))
+        if (voteList.contains("-" + trackId))
         {
-            this.voteList.remove("+" + trackId);
-            this.event.getQueue().vote(trackId, 1);
+            voteList.remove("-" + trackId);
+            event.getQueue().vote(trackId, 1);
         }
 
         switch (value)
         {
             case -1:
-                this.voteList.add("-" + trackId);
-                this.event.getQueue().vote(trackId, -1);
+                try
+                {
+                    event.getQueue().vote(trackId, -1);
+                    voteList.add("-" + trackId);
+                }
+                catch (InputMismatchException ignored)
+                {
+                    // Nothing bad should happen if a song is voted for that does not exist.
+                }
                 break;
             case 0:
                 break;
             case 1:
-                this.voteList.add("+" + trackId);
-                this.event.getQueue().vote(trackId, 1);
+                try
+                {
+                    event.getQueue().vote(trackId, 1);
+                    voteList.add("+" + trackId);
+                }
+                catch (InputMismatchException ignored)
+                {
+                    // Nothing bad should happen if a song is voted for that does not exist.
+                }
                 break;
             default:
                 throw new InputMismatchException();
 
         }
 
-        return this.voteList;
+        return voteList;
     }
 }
