@@ -1,7 +1,6 @@
 package media.jambox;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -20,7 +19,6 @@ public class GuestTest
     final transient String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
     final transient String despacito = "6rPO02ozF3bM7NnOV4h6s2";
     final transient String allStar = "3cfOd4CMv2snFaKAnMdnvK";
-    final transient String pumpedUpKicks = "7w87IxuO7BDcJ3YUqCyMTT";
     final transient String sandstorm = "24CXuh2WNpgeSYUOvz14jk";
 
     /**
@@ -46,69 +44,84 @@ public class GuestTest
     }
 
     @Test
-    public void testVote()
+    public void testVoteUp()
     {
-
         expectedVotes.add("+" + neverGonnaGiveYouUp);
         assertEquals(expectedVotes, testGuest.changeVote(neverGonnaGiveYouUp, 1));
+    }
 
-        assertEquals(expectedVotes, testGuest.changeVote(neverGonnaGiveYouUp, 1));
-
+    @Test
+    public void testVoteDown()
+    {
         expectedVotes.add("-" + despacito);
         assertEquals(expectedVotes, testGuest.changeVote(despacito, -1));
+    }
 
+    @Test
+    public void testDoubleVoteUp()
+    {
+        expectedVotes.add("+" + neverGonnaGiveYouUp);
+        testGuest.changeVote(neverGonnaGiveYouUp, 1);
+        assertEquals(expectedVotes, testGuest.changeVote(neverGonnaGiveYouUp, 1));
+    }
+
+    @Test
+    public void testDoubleVoteDown()
+    {
+        expectedVotes.add("-" + despacito);
+        testGuest.changeVote(despacito, -1);
         assertEquals(expectedVotes, testGuest.changeVote(despacito, -1));
+    }
 
-        expectedVotes.add("-" + allStar);
-        assertEquals(expectedVotes, testGuest.changeVote(allStar, -1));
-
-        expectedVotes.remove("-" + allStar);
+    @Test
+    public void testVoteRemoval()
+    {
+        testGuest.changeVote(allStar, 1);
         assertEquals(expectedVotes, testGuest.changeVote(allStar, 0));
     }
 
     @Test
-    public void testBadVote()
+    public void testVoteUpInvalidSong()
     {
         when(mockQueue.vote(sandstorm, 1)).thenThrow(new InputMismatchException());
-        when(mockQueue.vote(sandstorm, -1)).thenThrow(new InputMismatchException());
         assertEquals(expectedVotes, testGuest.changeVote(sandstorm, 1));
+    }
+
+    @Test
+    public void testVoteDownInvalidSong()
+    {
+        when(mockQueue.vote(sandstorm, -1)).thenThrow(new InputMismatchException());
         assertEquals(expectedVotes, testGuest.changeVote(sandstorm, -1));
+    }
+
+    @Test
+    public void testVoteRemovalInvalidSong()
+    {
+        when(mockQueue.vote(sandstorm, 0)).thenThrow(new InputMismatchException());
         assertEquals(expectedVotes, testGuest.changeVote(sandstorm, 0));
+    }
 
-        try
-        {
-            testGuest.changeVote(despacito, -2);
-        }
-        catch (java.util.InputMismatchException e)
-        {
-            assertNull(e.getMessage());
-        }
+    @Test(expected = InputMismatchException.class)
+    public void testLowVoteValue()
+    {
+        testGuest.changeVote(despacito, -2);
+    }
 
-        try
-        {
-            testGuest.changeVote(neverGonnaGiveYouUp, 2);
-        }
-        catch (java.util.InputMismatchException e)
-        {
-            assertNull(e.getMessage());
-        }
+    @Test(expected = InputMismatchException.class)
+    public void testLowestVoteValue()
+    {
+        testGuest.changeVote(despacito, Integer.MIN_VALUE);
+    }
 
-        try
-        {
-            testGuest.changeVote(allStar, Integer.MAX_VALUE);
-        }
-        catch (java.util.InputMismatchException e)
-        {
-            assertNull(e.getMessage());
-        }
+    @Test(expected = InputMismatchException.class)
+    public void testLowHighValue()
+    {
+        testGuest.changeVote(neverGonnaGiveYouUp, 2);
+    }
 
-        try
-        {
-            testGuest.changeVote(pumpedUpKicks, Integer.MIN_VALUE);
-        }
-        catch (java.util.InputMismatchException e)
-        {
-            assertNull(e.getMessage());
-        }
+    @Test(expected = InputMismatchException.class)
+    public void testLowestHighestValue()
+    {
+        testGuest.changeVote(neverGonnaGiveYouUp, Integer.MAX_VALUE);
     }
 }
