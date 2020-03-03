@@ -20,7 +20,7 @@ public class PlaylistTest
     private final transient String accessToken = System.getenv("TEST_ACCESS_CODE");
     private final transient String accessTokenScoped = System.getenv("TEST_ACCESS_CODE_SCOPED");
     private final transient String id = "45McaMvSG3vovfffyxEHz8";
-    private final String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
+    private final transient String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
     private transient Playlist testPlaylist;
 
     @Before

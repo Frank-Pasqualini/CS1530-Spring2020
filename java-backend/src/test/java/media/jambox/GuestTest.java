@@ -17,11 +17,11 @@ public class GuestTest
     static Event mockEvent;
     static Queue mockQueue;
 
-    final String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
-    final String despacito = "6rPO02ozF3bM7NnOV4h6s2";
-    final String allStar = "3cfOd4CMv2snFaKAnMdnvK";
-    final String pumpedUpKicks = "7w87IxuO7BDcJ3YUqCyMTT";
-    final String sandstorm = "24CXuh2WNpgeSYUOvz14jk";
+    final transient String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
+    final transient String despacito = "6rPO02ozF3bM7NnOV4h6s2";
+    final transient String allStar = "3cfOd4CMv2snFaKAnMdnvK";
+    final transient String pumpedUpKicks = "7w87IxuO7BDcJ3YUqCyMTT";
+    final transient String sandstorm = "24CXuh2WNpgeSYUOvz14jk";
 
     /**
      * Sets up mock objects for the tests.
