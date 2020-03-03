@@ -19,6 +19,12 @@ public class QueueTest
 
     private final transient String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
     private final transient String despacito = "6rPO02ozF3bM7NnOV4h6s2";
+    private final transient String putYourRecordsOn = "2nGFzvICaeEWjIrBrL2RAx";
+    private final transient String yellowEyes = "7t304VesCjiRAvpJ6IW8HG";
+    private final transient String fuckItILoveYou = "7MtVPRGtZl6rPjMfLoI3Lh";
+    private final transient String river = "3mRLHiSHYtC8Hk7bzZdUs1";
+    private final transient String lifeAintTheSame = "2fwS74WBkH2cRweraxie9P";
+    private final transient String belAmi = "1WJPsblf1uqY9sr1IEWDrV";
 
     /**
      * Run before each test case.
@@ -30,61 +36,19 @@ public class QueueTest
             throws IOException, SpotifyWebApiException
     {
         testQueue = new Queue(id, accessToken);
-        testQueue.vote(neverGonnaGiveYouUp, 1);
-        testQueue.vote(neverGonnaGiveYouUp, 1);
-        testQueue.vote(neverGonnaGiveYouUp, -1);
-        testQueue.vote(neverGonnaGiveYouUp, 1);
 
-        testQueue.vote(neverGonnaGiveYouUp, -1);
     }
-
     @Test
-    public void testSortAndDisplay()
-    {
-        testQueue.sortAndDisplay();
-    }
-
-    @Test
-    public void testPop()
-    {
-        testQueue.pop();
-    }
-
-    @Test
-    public void testAppend()
-    {
-
-        testQueue.append(despacito, accessToken); // track not yet in queue
-
-        try
-        {
-            testQueue.append(despacito, accessToken); // track already in queue
-        }
-        catch (InputMismatchException e)
-        {
-            assertEquals("Tried to add Track already in Queue", e.getMessage());
-        }
-    }
-
-    @Test
-    public void testRemoveTrackSucceed()
+    public void testAppendSuccess()
     {
         testQueue.append(despacito, accessToken); // track not yet in queue
-        testQueue.removeTrack(despacito); //remove track in queue
     }
 
-    @Test
-    public void testRemoveTrackFailed()
+    @Test(expected = InputMismatchException.class)
+    public void testAppendCopy()
     {
-        try
-        {
-            testQueue.removeTrack(despacito);
-        }
-        catch (InputMismatchException e)
-        {
-            assertEquals("Tried to remove Track not in Queue", e.getMessage());
-        }
-
+        testQueue.append(despacito, accessToken); // track not yet in queue
+        testQueue.append(despacito, accessToken); // track already in queue
     }
 
     @Test
@@ -101,30 +65,68 @@ public class QueueTest
         testQueue.vote(despacito, -1); //vote -1 for track in queue
     }
 
-    @Test
+    @Test(expected = InputMismatchException.class)
     public void testVoteAmountFailed()
     {
         testQueue.append(despacito,  accessToken); // track not yet in queue
-        try
-        {
-            testQueue.vote(despacito, 2); //vote +2 for track in queue
-        }
-        catch (InputMismatchException e)
-        {
-            assertEquals("invalid vote increment/decrement", e.getMessage());
-        }
+        testQueue.vote(despacito, 2); //vote +2 for track in queue
+    }
+
+    @Test(expected = InputMismatchException.class)
+    public void testVoteOnInvalidTrack()
+    {
+        testQueue.vote(despacito, 1); //vote +1 for track not in queue
     }
 
     @Test
-    public void testVoteOnInvalidTrack()
+    public void testSortAndDisplay()
     {
-        try
-        {
-            testQueue.vote(despacito, 1); //vote +1 for track not in queue
-        }
-        catch (InputMismatchException e)
-        {
-            assertEquals("Cannot vote on Track not in Queue", e.getMessage());
-        }
+        testQueue.append(neverGonnaGiveYouUp, accessToken);
+        testQueue.append(putYourRecordsOn, accessToken);
+        testQueue.append(yellowEyes, accessToken);
+        testQueue.append(fuckItILoveYou, accessToken);
+        testQueue.append(river, accessToken);
+        testQueue.append(lifeAintTheSame, accessToken);
+        testQueue.append(belAmi, accessToken);
+
+        testQueue.vote(neverGonnaGiveYouUp, 1);
+        testQueue.vote(neverGonnaGiveYouUp, 1);
+        testQueue.vote(neverGonnaGiveYouUp, 1);
+
+        testQueue.vote(putYourRecordsOn, 1);
+        testQueue.vote(putYourRecordsOn, 1);
+
+        testQueue.vote(lifeAintTheSame, 1);
+
+        testQueue.vote(fuckItILoveYou, -1);
+        testQueue.vote(fuckItILoveYou, -1);
+
+        testQueue.vote(belAmi, -1);
+        testQueue.vote(belAmi, -1);
+        testQueue.vote(belAmi, -1);
+
+        testQueue.sortAndDisplay();
     }
+
+    @Test
+    public void testPop()
+    {
+        testQueue.pop();
+    }
+
+
+
+    @Test
+    public void testRemoveTrackSucceed()
+    {
+        testQueue.append(despacito, accessToken); // track not yet in queue
+        testQueue.removeTrack(despacito); //remove track in queue
+    }
+
+    @Test(expected = InputMismatchException.class)
+    public void testRemoveTrackFailed()
+    {
+        testQueue.removeTrack(despacito);
+    }
+
 }
