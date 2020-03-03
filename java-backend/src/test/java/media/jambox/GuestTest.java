@@ -52,6 +52,8 @@ public class GuestTest
         expectedVotes.add("+" + neverGonnaGiveYouUp);
         assertEquals(expectedVotes, testGuest.changeVote(neverGonnaGiveYouUp, 1));
 
+        assertEquals(expectedVotes, testGuest.changeVote(neverGonnaGiveYouUp, 1));
+
         expectedVotes.add("-" + despacito);
         assertEquals(expectedVotes, testGuest.changeVote(despacito, -1));
 
@@ -68,7 +70,10 @@ public class GuestTest
     public void testBadVote()
     {
         when(mockQueue.vote(sandstorm, 1)).thenThrow(new InputMismatchException());
+        when(mockQueue.vote(sandstorm, -1)).thenThrow(new InputMismatchException());
         assertEquals(expectedVotes, testGuest.changeVote(sandstorm, 1));
+        assertEquals(expectedVotes, testGuest.changeVote(sandstorm, -1));
+        assertEquals(expectedVotes, testGuest.changeVote(sandstorm, 0));
 
         try
         {

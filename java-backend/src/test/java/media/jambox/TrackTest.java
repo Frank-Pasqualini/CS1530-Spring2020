@@ -17,6 +17,7 @@ public class TrackTest
 {
     private final transient String accessToken = System.getenv("TEST_ACCESS_CODE");
     private final transient String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
+    private final transient String despacito = "6rPO02ozF3bM7NnOV4h6s2";
     private transient Track testTrack;
 
     @Before
@@ -44,7 +45,6 @@ public class TrackTest
     public void testCompare()
         throws IOException, SpotifyWebApiException
     {
-        final String despacito = "6rPO02ozF3bM7NnOV4h6s2";
         Track testTrack2 = new Track(despacito, accessToken);
 
         testTrack.incrementScore();
@@ -65,6 +65,11 @@ public class TrackTest
     {
         Track testTrack2 = new Track(neverGonnaGiveYouUp, accessToken);
         assertEquals(testTrack, testTrack2);
+
+        Track testTrack3 = new Track(despacito, accessToken);
+        assertNotEquals(testTrack, testTrack3);
+
+        assertNotEquals(testTrack, "test");
     }
 
     @Test
