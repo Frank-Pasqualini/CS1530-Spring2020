@@ -20,6 +20,7 @@ public class PlaylistTest
     private final transient String accessToken = System.getenv("TEST_ACCESS_CODE");
     private final transient String accessTokenScoped = System.getenv("TEST_ACCESS_CODE_SCOPED");
     private final transient String id = "45McaMvSG3vovfffyxEHz8";
+    private final String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
     private transient Playlist testPlaylist;
 
     @Before
@@ -38,11 +39,11 @@ public class PlaylistTest
     public void testAppend()
         throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
     {
-        final JsonArray tracks = new JsonParser().parse("[{\"uri\":\"spotify:track:7GhIk7Il098yCjg4BQjzvb\"}]").getAsJsonArray();
+        final JsonArray tracks = new JsonParser().parse("[{\"uri\":\"spotify:track:" + neverGonnaGiveYouUp + "\"}]").getAsJsonArray();
         final SpotifyApi spotifyApi = new SpotifyApi.Builder().setAccessToken(accessTokenScoped).build();
         final RemoveTracksFromPlaylistRequest removeTracksFromPlaylistRequest = spotifyApi.removeTracksFromPlaylist(id, tracks).build();
 
-        testPlaylist.append("7GhIk7Il098yCjg4BQjzvb", accessTokenScoped);
+        testPlaylist.append(neverGonnaGiveYouUp, accessTokenScoped);
 
         removeTracksFromPlaylistRequest.execute();
     }
@@ -62,7 +63,7 @@ public class PlaylistTest
 
         try
         {
-            assertNull(testPlaylist.append("7GhIk7Il098yCjg4BQjzvb", null));
+            assertNull(testPlaylist.append(neverGonnaGiveYouUp, null));
         }
         catch (AssertionError e)
         {
@@ -108,7 +109,8 @@ public class PlaylistTest
     {
         try
         {
-            assertNull(testPlaylist.append("6M14BiCN00nOsba4JaYsHW", ""));
+            final String oceanMan = "6M14BiCN00nOsba4JaYsHW";
+            assertNull(testPlaylist.append(oceanMan, ""));
         }
         catch (AssertionError e)
         {
@@ -117,7 +119,8 @@ public class PlaylistTest
 
         try
         {
-            assertNull(testPlaylist.append("3cfOd4CMv2snFaKAnMdnvK", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+            final String allStar = "3cfOd4CMv2snFaKAnMdnvK";
+            assertNull(testPlaylist.append(allStar, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
         }
         catch (UnauthorizedException e)
         {
@@ -126,7 +129,8 @@ public class PlaylistTest
 
         try
         {
-            assertNull(testPlaylist.append("24CXuh2WNpgeSYUOvz14jk", "BQCjm_vxykeaXCWOTOTFj2q1-fm7c1JtqtiOSrxRSfk19w7FoWI77Wh0W93JD50lYRIkoV8R5F-fY5kUdWuTVgPShQg40x_GMVDQMTDf1CMRBye-wcd3GkZbbAQzPGk3cLx_vbeguZxLT8U"));
+            final String sandstorm = "24CXuh2WNpgeSYUOvz14jk";
+            assertNull(testPlaylist.append(sandstorm, "BQCjm_vxykeaXCWOTOTFj2q1-fm7c1JtqtiOSrxRSfk19w7FoWI77Wh0W93JD50lYRIkoV8R5F-fY5kUdWuTVgPShQg40x_GMVDQMTDf1CMRBye-wcd3GkZbbAQzPGk3cLx_vbeguZxLT8U"));
         }
         catch (UnauthorizedException e)
         {

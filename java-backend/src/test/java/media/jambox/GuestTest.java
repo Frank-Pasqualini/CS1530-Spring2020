@@ -17,6 +17,12 @@ public class GuestTest
     static Event mockEvent;
     static Queue mockQueue;
 
+    final String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
+    final String despacito = "6rPO02ozF3bM7NnOV4h6s2";
+    final String allStar = "3cfOd4CMv2snFaKAnMdnvK";
+    final String pumpedUpKicks = "7w87IxuO7BDcJ3YUqCyMTT";
+    final String sandstorm = "24CXuh2WNpgeSYUOvz14jk";
+
     /**
      * Sets up mock objects for the tests.
      */
@@ -43,30 +49,30 @@ public class GuestTest
     public void testVote()
     {
 
-        expectedVotes.add("+7GhIk7Il098yCjg4BQjzvb");
-        assertEquals(expectedVotes, testGuest.changeVote("7GhIk7Il098yCjg4BQjzvb", 1));
+        expectedVotes.add("+" + neverGonnaGiveYouUp);
+        assertEquals(expectedVotes, testGuest.changeVote(neverGonnaGiveYouUp, 1));
 
-        expectedVotes.add("-6rPO02ozF3bM7NnOV4h6s2");
-        assertEquals(expectedVotes, testGuest.changeVote("6rPO02ozF3bM7NnOV4h6s2", -1));
+        expectedVotes.add("-" + despacito);
+        assertEquals(expectedVotes, testGuest.changeVote(despacito, -1));
 
-        assertEquals(expectedVotes, testGuest.changeVote("6rPO02ozF3bM7NnOV4h6s2", -1));
+        assertEquals(expectedVotes, testGuest.changeVote(despacito, -1));
 
-        expectedVotes.add("-3cfOd4CMv2snFaKAnMdnvK");
-        assertEquals(expectedVotes, testGuest.changeVote("3cfOd4CMv2snFaKAnMdnvK", -1));
+        expectedVotes.add("-" + allStar);
+        assertEquals(expectedVotes, testGuest.changeVote(allStar, -1));
 
-        expectedVotes.remove("-3cfOd4CMv2snFaKAnMdnvK");
-        assertEquals(expectedVotes, testGuest.changeVote("3cfOd4CMv2snFaKAnMdnvK", 0));
+        expectedVotes.remove("-" + allStar);
+        assertEquals(expectedVotes, testGuest.changeVote(allStar, 0));
     }
 
     @Test
     public void testBadVote()
     {
-        when(mockQueue.vote("6Sy9BUbgFse0n0LPA5lwy5", 1)).thenThrow(new InputMismatchException());
-        assertEquals(expectedVotes, testGuest.changeVote("6Sy9BUbgFse0n0LPA5lwy5", 1));
+        when(mockQueue.vote(sandstorm, 1)).thenThrow(new InputMismatchException());
+        assertEquals(expectedVotes, testGuest.changeVote(sandstorm, 1));
 
         try
         {
-            testGuest.changeVote("6rPO02ozF3bM7NnOV4h6s2", -2);
+            testGuest.changeVote(despacito, -2);
         }
         catch (java.util.InputMismatchException e)
         {
@@ -75,7 +81,7 @@ public class GuestTest
 
         try
         {
-            testGuest.changeVote("7GhIk7Il098yCjg4BQjzvb", 2);
+            testGuest.changeVote(neverGonnaGiveYouUp, 2);
         }
         catch (java.util.InputMismatchException e)
         {
@@ -84,7 +90,7 @@ public class GuestTest
 
         try
         {
-            testGuest.changeVote("3cfOd4CMv2snFaKAnMdnvK", Integer.MAX_VALUE);
+            testGuest.changeVote(allStar, Integer.MAX_VALUE);
         }
         catch (java.util.InputMismatchException e)
         {
@@ -93,7 +99,7 @@ public class GuestTest
 
         try
         {
-            testGuest.changeVote("7w87IxuO7BDcJ3YUqCyMTT", Integer.MIN_VALUE);
+            testGuest.changeVote(pumpedUpKicks, Integer.MIN_VALUE);
         }
         catch (java.util.InputMismatchException e)
         {
