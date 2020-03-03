@@ -29,7 +29,7 @@ public class Event
         final com.wrapper.spotify.model_objects.specification.Playlist playlist = createPlaylistRequest.execute();
         this.eventPlaylist = new Playlist(playlist.getId());
 
-        this.eventQueue = new Queue(playlistId);
+        this.eventQueue = new Queue(playlistId, accessToken);
         this.nowPlaying = eventQueue.pop();
         this.eventPlaylist.append(nowPlaying.getId(), accessToken);
         this.eventCode = eventCode;

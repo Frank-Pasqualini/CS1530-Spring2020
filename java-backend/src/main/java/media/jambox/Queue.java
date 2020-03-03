@@ -53,8 +53,7 @@ public class Queue
             throw new InputMismatchException();
         }
 
-        this.sortAndDisplay();
-        return trackList;
+        return sortAndDisplay();
     }
 
     public ArrayList<Track> sortAndDisplay()
@@ -95,10 +94,13 @@ public class Queue
      *
      * @param trackId The ID of the track to vote on.
      * @param value 1 for an upvote, -1 for a downvote.
+     *
+     * @return The sorted vote queue;
+     *
      * @throws InputMismatchException Thrown whenever the track is not in the queue or the value is not 1 or -1.
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    public void vote(String trackId, int value)
+    public ArrayList<Track> vote(String trackId, int value)
         throws InputMismatchException
     {
         for (Track track : trackList)
@@ -109,10 +111,10 @@ public class Queue
                 {
                     case 1:
                         track.incrementScore();
-                        return;
+                        return sortAndDisplay();
                     case -1:
                         track.decrementScore();
-                        return;
+                        return sortAndDisplay();
                     default:
                         throw new InputMismatchException();
                 }

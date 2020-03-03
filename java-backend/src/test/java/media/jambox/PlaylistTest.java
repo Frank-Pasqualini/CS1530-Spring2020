@@ -135,7 +135,12 @@ public class PlaylistTest
 
         try
         {
+            final JsonArray tracks = new JsonParser().parse("[{\"uri\":\"spotify:track:0l2kEdf5XjlckyybbNjmYS\"}]").getAsJsonArray();
+            final SpotifyApi spotifyApi = new SpotifyApi.Builder().setAccessToken(accessTokenScoped).build();
+            final RemoveTracksFromPlaylistRequest removeTracksFromPlaylistRequest = spotifyApi.removeTracksFromPlaylist(id, tracks).build();
             assertEquals("0l2kEdf5XjlckyybbNjmYS", testPlaylist.append("0l2kEdf5XjlckyybbNjmYS", accessToken));
+            removeTracksFromPlaylistRequest.execute();
+
         }
         catch (ForbiddenException e)
         {

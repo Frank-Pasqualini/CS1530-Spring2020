@@ -39,23 +39,37 @@ public class Guest
             this.voteList.remove("+" + trackId);
             this.event.getQueue().vote(trackId, -1);
         }
-        if (this.voteList.contains("+" + trackId))
+        if (this.voteList.contains("-" + trackId))
         {
-            this.voteList.remove("+" + trackId);
+            this.voteList.remove("-" + trackId);
             this.event.getQueue().vote(trackId, 1);
         }
 
         switch (value)
         {
             case -1:
-                this.voteList.add("-" + trackId);
-                this.event.getQueue().vote(trackId, -1);
+                try
+                {
+                    this.event.getQueue().vote(trackId, -1);
+                    this.voteList.add("-" + trackId);
+                }
+                catch (InputMismatchException ignored)
+                {
+                    // Nothing bad should happen if a song is voted for that does not exist.
+                }
                 break;
             case 0:
                 break;
             case 1:
-                this.voteList.add("+" + trackId);
-                this.event.getQueue().vote(trackId, 1);
+                try
+                {
+                    this.event.getQueue().vote(trackId, 1);
+                    this.voteList.add("+" + trackId);
+                }
+                catch (InputMismatchException ignored)
+                {
+                    // Nothing bad should happen if a song is voted for that does not exist.
+                }
                 break;
             default:
                 throw new InputMismatchException();
