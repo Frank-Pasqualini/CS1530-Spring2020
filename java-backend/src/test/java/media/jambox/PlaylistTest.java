@@ -35,120 +35,114 @@ public class PlaylistTest
         assertEquals(id, testPlaylist.getId());
     }
 
-    @Test
-    public void testAppend()
-        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
+    /**
+     * Removes a song from the playlist to ensure the same environment for each test.
+     *
+     * @param track The ID of the track to remove.
+     * @param accessToken The access token to attempt to remove with.
+     *
+     * @throws IOException An I/O exception occurred while removing the Track.
+     * @throws SpotifyWebApiException An API exception occurred while removing the Track.
+     */
+    public void removeFromPlaylist(String track, String accessToken)
+        throws IOException, SpotifyWebApiException
     {
-        final JsonArray tracks = new JsonParser().parse("[{\"uri\":\"spotify:track:" + neverGonnaGiveYouUp + "\"}]").getAsJsonArray();
-        final SpotifyApi spotifyApi = new SpotifyApi.Builder().setAccessToken(accessTokenScoped).build();
+        final JsonArray tracks = new JsonParser().parse("[{\"uri\":\"spotify:track:" + track + "\"}]").getAsJsonArray();
+        final SpotifyApi spotifyApi = new SpotifyApi.Builder().setAccessToken(accessToken).build();
         final RemoveTracksFromPlaylistRequest removeTracksFromPlaylistRequest = spotifyApi.removeTracksFromPlaylist(id, tracks).build();
-
-        testPlaylist.append(neverGonnaGiveYouUp, accessTokenScoped);
-
         removeTracksFromPlaylistRequest.execute();
     }
 
     @Test
-    public void testNullInputs()
-        throws IOException, SpotifyWebApiException
+    public void testAppend()
+        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
     {
-        try
-        {
-            assertNull(testPlaylist.append(null, accessTokenScoped));
-        }
-        catch (BadRequestException e)
-        {
-            assertEquals("Invalid track uri: spotify:track:null", e.getMessage());
-        }
-
-        try
-        {
-            assertNull(testPlaylist.append(neverGonnaGiveYouUp, null));
-        }
-        catch (AssertionError e)
-        {
-            assertNull(e.getMessage());
-        }
+        assertEquals(neverGonnaGiveYouUp, testPlaylist.append(neverGonnaGiveYouUp, accessTokenScoped));
+        removeFromPlaylist(neverGonnaGiveYouUp, accessTokenScoped);
     }
 
-    @Test
-    public void testBadID()
+    @Test(expected = BadRequestException.class)
+    public void testNullTrack()
         throws IOException, SpotifyWebApiException
     {
-        try
-        {
-            assertNull(testPlaylist.append("", accessTokenScoped));
-        }
-        catch (BadRequestException e)
-        {
-            assertEquals("Invalid track uri: spotify:track:", e.getMessage());
-        }
-
-        try
-        {
-            assertNull(testPlaylist.append("a", accessTokenScoped));
-        }
-        catch (BadRequestException e)
-        {
-            assertEquals("Invalid track uri: spotify:track:a", e.getMessage());
-        }
-
-        try
-        {
-            assertNull(testPlaylist.append("aaaaaaaaaaaaaaaaaaaaaa", accessTokenScoped));
-        }
-        catch (BadRequestException e)
-        {
-            assertEquals("Payload contains a non-existing ID", e.getMessage());
-        }
+        testPlaylist.append(null, accessTokenScoped);
+        removeFromPlaylist(null, accessTokenScoped);
     }
 
-    @Test
-    public void testBadAccessToken()
+    @Test(expected = AssertionError.class)
+    public void testNullAccessToken()
         throws IOException, SpotifyWebApiException
     {
-        try
-        {
-            final String oceanMan = "6M14BiCN00nOsba4JaYsHW";
-            assertNull(testPlaylist.append(oceanMan, ""));
-        }
-        catch (AssertionError e)
-        {
-            assertNull(e.getMessage());
-        }
+        testPlaylist.append(neverGonnaGiveYouUp, null);
+        removeFromPlaylist(neverGonnaGiveYouUp, null);
+    }
 
-        try
-        {
-            final String allStar = "3cfOd4CMv2snFaKAnMdnvK";
-            assertNull(testPlaylist.append(allStar, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
-        }
-        catch (UnauthorizedException e)
-        {
-            assertEquals("Invalid access token", e.getMessage());
-        }
+    @Test(expected = BadRequestException.class)
+    public void testEmptyID()
+        throws IOException, SpotifyWebApiException
+    {
+        testPlaylist.append("", accessTokenScoped);
+        removeFromPlaylist("", accessTokenScoped);
+    }
 
-        try
-        {
-            final String sandstorm = "24CXuh2WNpgeSYUOvz14jk";
-            assertNull(testPlaylist.append(sandstorm, "BQCjm_vxykeaXCWOTOTFj2q1-fm7c1JtqtiOSrxRSfk19w7FoWI77Wh0W93JD50lYRIkoV8R5F-fY5kUdWuTVgPShQg40x_GMVDQMTDf1CMRBye-wcd3GkZbbAQzPGk3cLx_vbeguZxLT8U"));
-        }
-        catch (UnauthorizedException e)
-        {
-            assertEquals("The access token expired", e.getMessage());
-        }
+    @Test(expected = BadRequestException.class)
+    public void testSmallID()
+        throws IOException, SpotifyWebApiException
+    {
+        testPlaylist.append("a", accessTokenScoped);
+        removeFromPlaylist("a", accessTokenScoped);
+    }
 
-        try
-        {
-            final JsonArray tracks = new JsonParser().parse("[{\"uri\":\"spotify:track:0l2kEdf5XjlckyybbNjmYS\"}]").getAsJsonArray();
-            final SpotifyApi spotifyApi = new SpotifyApi.Builder().setAccessToken(accessTokenScoped).build();
-            final RemoveTracksFromPlaylistRequest removeTracksFromPlaylistRequest = spotifyApi.removeTracksFromPlaylist(id, tracks).build();
-            assertEquals("0l2kEdf5XjlckyybbNjmYS", testPlaylist.append("0l2kEdf5XjlckyybbNjmYS", accessToken));
-            removeTracksFromPlaylistRequest.execute();
+    @Test(expected = BadRequestException.class)
+    public void testInvalidID()
+        throws IOException, SpotifyWebApiException
+    {
+        testPlaylist.append("aaaaaaaaaaaaaaaaaaaaaa", accessTokenScoped);
+        removeFromPlaylist("aaaaaaaaaaaaaaaaaaaaaa", accessTokenScoped);
+    }
 
-        }
-        catch (ForbiddenException e)
-        {
-            assertEquals("Insufficient client scope", e.getMessage());
-        }
+    @Test(expected = AssertionError.class)
+    public void testEmptyAccessToken()
+        throws IOException, SpotifyWebApiException
+    {
+        final String oceanMan = "6M14BiCN00nOsba4JaYsHW";
+        testPlaylist.append(oceanMan, "");
+        removeFromPlaylist(oceanMan, "");
+    }
+
+    @Test(expected = UnauthorizedException.class)
+    public void testShortAccessToken()
+        throws IOException, SpotifyWebApiException
+    {
+        final String pumpedUpKicks = "7w87IxuO7BDcJ3YUqCyMTT";
+        testPlaylist.append(pumpedUpKicks, "a");
+        removeFromPlaylist(pumpedUpKicks, "a");
+    }
+
+    @Test(expected = UnauthorizedException.class)
+    public void testInvalidAccessToken()
+        throws IOException, SpotifyWebApiException
+    {
+        final String allStar = "3cfOd4CMv2snFaKAnMdnvK";
+        testPlaylist.append(allStar, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        removeFromPlaylist(allStar, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    }
+
+    @Test(expected = UnauthorizedException.class)
+    public void testExpiredAccessToken()
+        throws IOException, SpotifyWebApiException
+    {
+        final String sandstorm = "24CXuh2WNpgeSYUOvz14jk";
+        testPlaylist.append(sandstorm, "BQCjm_vxykeaXCWOTOTFj2q1-fm7c1JtqtiOSrxRSfk19w7FoWI77Wh0W93JD50lYRIkoV8R5F-fY5kUdWuTVgPShQg40x_GMVDQMTDf1CMRBye-wcd3GkZbbAQzPGk3cLx_vbeguZxLT8U");
+        removeFromPlaylist(sandstorm, "BQCjm_vxykeaXCWOTOTFj2q1-fm7c1JtqtiOSrxRSfk19w7FoWI77Wh0W93JD50lYRIkoV8R5F-fY5kUdWuTVgPShQg40x_GMVDQMTDf1CMRBye-wcd3GkZbbAQzPGk3cLx_vbeguZxLT8U");
+    }
+
+    @Test(expected = UnauthorizedException.class)
+    public void testUnauthorizedAccessToken()
+        throws IOException, SpotifyWebApiException
+    {
+        final String roundabout = "0l2kEdf5XjlckyybbNjmYS";
+        testPlaylist.append(roundabout, accessToken);
+        removeFromPlaylist(roundabout, accessToken);
     }
 }
