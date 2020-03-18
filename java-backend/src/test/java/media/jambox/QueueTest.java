@@ -13,7 +13,6 @@ public class QueueTest
 {
 
     private final transient String accessToken = System.getenv("TEST_ACCESS_CODE");
-    private final transient String accessTokenScoped = System.getenv("TEST_ACCESS_CODE_SCOPED");
     private final transient String id = "65zguqi47ENgOSL285EIdU";
     private transient Queue testQueue;
 
@@ -54,11 +53,11 @@ public class QueueTest
     public void testAppend()
     {
 
-        testQueue.append(despacito, accessToken); // track not yet in queue
+        testQueue.append(despacito); // track not yet in queue
 
         try
         {
-            testQueue.append(despacito, accessToken); // track already in queue
+            testQueue.append(despacito); // track already in queue
         }
         catch (InputMismatchException e)
         {
@@ -69,7 +68,7 @@ public class QueueTest
     @Test
     public void testRemoveTrackSucceed()
     {
-        testQueue.append(despacito, accessToken); // track not yet in queue
+        testQueue.append(despacito); // track not yet in queue
         testQueue.removeTrack(despacito); //remove track in queue
     }
 
@@ -90,21 +89,21 @@ public class QueueTest
     @Test
     public void testVoteUpSucceed()
     {
-        testQueue.append(despacito, accessToken); // track not yet in queue
+        testQueue.append(despacito); // track not yet in queue
         testQueue.vote(despacito, 1); //vote +1 for track in queue
     }
 
     @Test
     public void testVoteDownSucceed()
     {
-        testQueue.append(despacito, accessToken); // track not yet in queue
+        testQueue.append(despacito); // track not yet in queue
         testQueue.vote(despacito, -1); //vote -1 for track in queue
     }
 
     @Test
     public void testVoteAmountFailed()
     {
-        testQueue.append(despacito,  accessToken); // track not yet in queue
+        testQueue.append(despacito); // track not yet in queue
         try
         {
             testQueue.vote(despacito, 2); //vote +2 for track in queue

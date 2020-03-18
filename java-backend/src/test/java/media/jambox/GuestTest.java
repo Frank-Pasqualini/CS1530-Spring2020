@@ -124,4 +124,18 @@ public class GuestTest
     {
         testGuest.changeVote(neverGonnaGiveYouUp, Integer.MAX_VALUE);
     }
+
+    @Test
+    public void testRequestTrack()
+    {
+        when(mockQueue.append(neverGonnaGiveYouUp)).thenReturn(0);
+        assertEquals(0, testGuest.requestTrack(neverGonnaGiveYouUp));
+    }
+
+    @Test
+    public void testRequestInvalidTrack()
+    {
+        when(mockQueue.append("a")).thenThrow(InputMismatchException.class);
+        assertEquals(-1, testGuest.requestTrack("a"));
+    }
 }

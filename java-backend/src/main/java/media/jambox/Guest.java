@@ -79,4 +79,23 @@ public class Guest
 
         return voteList;
     }
+
+    /**
+     * Requests a song.
+     *
+     * @param trackId The ID of the track being requested.
+     *
+     * @return -1 if the song does not exist, otherwise the position of the song in the Queue.
+     */
+    public int requestTrack(String trackId)
+    {
+        try
+        {
+            return event.getQueue().append(trackId);
+        }
+        catch (java.util.InputMismatchException e)
+        {
+            return -1;
+        }
+    }
 }
