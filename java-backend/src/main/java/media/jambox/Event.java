@@ -43,7 +43,7 @@ public class Event
 
     public ArrayList<User> addGuest(String userId)
     {
-        users.add(new Guest(userId, this));
+        users.add(new User(userId, this));
         return users;
     }
 

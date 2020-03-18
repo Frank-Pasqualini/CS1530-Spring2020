@@ -5,7 +5,6 @@ public class Host
 {
     public Host(String id, Event event)
     {
-        this.id = id;
-        this.event = event;
+        super(id, event);
     }
 }
