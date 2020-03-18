@@ -71,7 +71,7 @@ function Homepage(props) {
       <Logo navBar={false} />
       <Link to="/join-code">
         <JoinEventButton>Join Event</JoinEventButton>
-      </Link>
+      </Link> 
       <CreateEventButton>Create Event <Spotify src={SpotifyLogo} /></CreateEventButton>
     </HomePageContainer>
   )

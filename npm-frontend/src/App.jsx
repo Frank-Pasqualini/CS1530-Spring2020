@@ -10,6 +10,8 @@ import Logo from './Logo'
 import Homepage from './Homepage';
 import JoinEventCode from './JoinEventCode';
 import JoinEventUsername from './JoinEventUsername';
+import ErrorPage from './ErrorPage';
+import NewEvent from './CreateNewEvent';
 
 const Background = styled.div`
   background-color: #272727;
@@ -52,7 +54,10 @@ class App extends Component {
                 <JoinEventUsername />
               </Route>
               <Route path="/premium-error">
-                {/* Add error page for when a user doesn't have premium */}
+                <ErrorPage />
+              </Route>
+              <Route path="/CreateNewEvent"> 
+                <NewEvent />
               </Route>
             </Switch>
           </Background>
