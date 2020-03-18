@@ -8,7 +8,6 @@ import com.google.gson.JsonParser;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.exceptions.detailed.BadRequestException;
-import com.wrapper.spotify.exceptions.detailed.ForbiddenException;
 import com.wrapper.spotify.exceptions.detailed.UnauthorizedException;
 import com.wrapper.spotify.requests.data.playlists.RemoveTracksFromPlaylistRequest;
 import java.io.IOException;
@@ -18,7 +17,6 @@ import org.junit.Test;
 public class PlaylistTest
 {
     private final transient String accessToken = System.getenv("TEST_ACCESS_CODE");
-    private final transient String accessTokenScoped = System.getenv("TEST_ACCESS_CODE_SCOPED");
     private final transient String id = "45McaMvSG3vovfffyxEHz8";
     private final transient String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
     private transient Playlist testPlaylist;
@@ -57,16 +55,16 @@ public class PlaylistTest
     public void testAppend()
         throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
     {
-        assertEquals(neverGonnaGiveYouUp, testPlaylist.append(neverGonnaGiveYouUp, accessTokenScoped));
-        removeFromPlaylist(neverGonnaGiveYouUp, accessTokenScoped);
+        assertEquals(neverGonnaGiveYouUp, testPlaylist.append(neverGonnaGiveYouUp, accessToken));
+        removeFromPlaylist(neverGonnaGiveYouUp, accessToken);
     }
 
     @Test(expected = BadRequestException.class)
     public void testNullTrack()
         throws IOException, SpotifyWebApiException
     {
-        testPlaylist.append(null, accessTokenScoped);
-        removeFromPlaylist(null, accessTokenScoped);
+        testPlaylist.append(null, accessToken);
+        removeFromPlaylist(null, accessToken);
     }
 
     @Test(expected = AssertionError.class)
@@ -81,24 +79,24 @@ public class PlaylistTest
     public void testEmptyID()
         throws IOException, SpotifyWebApiException
     {
-        testPlaylist.append("", accessTokenScoped);
-        removeFromPlaylist("", accessTokenScoped);
+        testPlaylist.append("", accessToken);
+        removeFromPlaylist("", accessToken);
     }
 
     @Test(expected = BadRequestException.class)
     public void testSmallID()
         throws IOException, SpotifyWebApiException
     {
-        testPlaylist.append("a", accessTokenScoped);
-        removeFromPlaylist("a", accessTokenScoped);
+        testPlaylist.append("a", accessToken);
+        removeFromPlaylist("a", accessToken);
     }
 
     @Test(expected = BadRequestException.class)
     public void testInvalidID()
         throws IOException, SpotifyWebApiException
     {
-        testPlaylist.append("aaaaaaaaaaaaaaaaaaaaaa", accessTokenScoped);
-        removeFromPlaylist("aaaaaaaaaaaaaaaaaaaaaa", accessTokenScoped);
+        testPlaylist.append("aaaaaaaaaaaaaaaaaaaaaa", accessToken);
+        removeFromPlaylist("aaaaaaaaaaaaaaaaaaaaaa", accessToken);
     }
 
     @Test(expected = AssertionError.class)
@@ -135,14 +133,5 @@ public class PlaylistTest
         final String sandstorm = "24CXuh2WNpgeSYUOvz14jk";
         testPlaylist.append(sandstorm, "BQCjm_vxykeaXCWOTOTFj2q1-fm7c1JtqtiOSrxRSfk19w7FoWI77Wh0W93JD50lYRIkoV8R5F-fY5kUdWuTVgPShQg40x_GMVDQMTDf1CMRBye-wcd3GkZbbAQzPGk3cLx_vbeguZxLT8U");
         removeFromPlaylist(sandstorm, "BQCjm_vxykeaXCWOTOTFj2q1-fm7c1JtqtiOSrxRSfk19w7FoWI77Wh0W93JD50lYRIkoV8R5F-fY5kUdWuTVgPShQg40x_GMVDQMTDf1CMRBye-wcd3GkZbbAQzPGk3cLx_vbeguZxLT8U");
-    }
-
-    @Test(expected = UnauthorizedException.class)
-    public void testUnauthorizedAccessToken()
-        throws IOException, SpotifyWebApiException
-    {
-        final String roundabout = "0l2kEdf5XjlckyybbNjmYS";
-        testPlaylist.append(roundabout, accessToken);
-        removeFromPlaylist(roundabout, accessToken);
     }
 }
