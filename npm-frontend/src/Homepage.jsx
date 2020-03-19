@@ -72,7 +72,8 @@ function Homepage(props) {
       <Link to="/join-code">
         <JoinEventButton>Join Event</JoinEventButton>
       </Link>
-      <CreateEventButton>Create Event <Spotify src={SpotifyLogo} /></CreateEventButton>
+      <a href='http://localhost:8888/login'>
+      <CreateEventButton>Create Event <Spotify src={SpotifyLogo} /></CreateEventButton></a>
     </HomePageContainer>
   )
 }
