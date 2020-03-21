@@ -29,7 +29,7 @@ const ErrorContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 150px;
+  padding: 70px;
   width: 450px;
 `;
 

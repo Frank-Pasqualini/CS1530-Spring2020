@@ -19,7 +19,7 @@ const ChooseDefaultButton = styled.button`
   &:hover {
     height: 170px;
     width: 250px;
-    font-size: 40px;
+    font-size: 47px;
     background-color: limegreen;
   }
   `;
@@ -40,7 +40,7 @@ const ChooseExsistingButton = styled.button`
   &:hover {
     height: 170px;
     width: 250px;
-    font-size: 40px;
+    font-size: 47px;
     background-color: #2A77D6;
   }
   `;
@@ -55,7 +55,7 @@ const CreateEventContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 150px;
+  padding: 70px;
   width: 450px;
 `;
 

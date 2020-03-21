@@ -66,7 +66,7 @@ class App extends Component {
               <Route path="/premium-error">
                 <ErrorPage />
               </Route>
-              <Route path="/CreateNewEvent"> 
+              <Route path="/create-new-event"> 
                 <NewEvent />
               </Route>
             </Switch>
