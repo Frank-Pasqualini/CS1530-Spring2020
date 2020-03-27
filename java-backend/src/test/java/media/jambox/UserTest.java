@@ -9,9 +9,9 @@ import java.util.InputMismatchException;
 import org.junit.Before;
 import org.junit.Test;
 
-public class GuestTest
+public class UserTest
 {
-    static Guest testGuest;
+    static User testUser;
     static ArrayList<String> expectedVotes;
     static Event mockEvent;
     static Queue mockQueue;
@@ -34,94 +34,108 @@ public class GuestTest
 
         expectedVotes = new ArrayList<>();
 
-        testGuest = new Guest("0", mockEvent);
+        testUser = new User("0", mockEvent);
     }
 
     @Test
     public void testGetId()
     {
-        assertEquals("0", testGuest.getId());
+        assertEquals("0", testUser.getId());
     }
 
     @Test
     public void testVoteUp()
     {
         expectedVotes.add("+" + neverGonnaGiveYouUp);
-        assertEquals(expectedVotes, testGuest.changeVote(neverGonnaGiveYouUp, 1));
+        assertEquals(expectedVotes, testUser.changeVote(neverGonnaGiveYouUp, 1));
     }
 
     @Test
     public void testVoteDown()
     {
         expectedVotes.add("-" + despacito);
-        assertEquals(expectedVotes, testGuest.changeVote(despacito, -1));
+        assertEquals(expectedVotes, testUser.changeVote(despacito, -1));
     }
 
     @Test
     public void testDoubleVoteUp()
     {
         expectedVotes.add("+" + neverGonnaGiveYouUp);
-        testGuest.changeVote(neverGonnaGiveYouUp, 1);
-        assertEquals(expectedVotes, testGuest.changeVote(neverGonnaGiveYouUp, 1));
+        testUser.changeVote(neverGonnaGiveYouUp, 1);
+        assertEquals(expectedVotes, testUser.changeVote(neverGonnaGiveYouUp, 1));
     }
 
     @Test
     public void testDoubleVoteDown()
     {
         expectedVotes.add("-" + despacito);
-        testGuest.changeVote(despacito, -1);
-        assertEquals(expectedVotes, testGuest.changeVote(despacito, -1));
+        testUser.changeVote(despacito, -1);
+        assertEquals(expectedVotes, testUser.changeVote(despacito, -1));
     }
 
     @Test
     public void testVoteRemoval()
     {
-        testGuest.changeVote(allStar, 1);
-        assertEquals(expectedVotes, testGuest.changeVote(allStar, 0));
+        testUser.changeVote(allStar, 1);
+        assertEquals(expectedVotes, testUser.changeVote(allStar, 0));
     }
 
     @Test
     public void testVoteUpInvalidSong()
     {
         when(mockQueue.vote(sandstorm, 1)).thenThrow(new InputMismatchException());
-        assertEquals(expectedVotes, testGuest.changeVote(sandstorm, 1));
+        assertEquals(expectedVotes, testUser.changeVote(sandstorm, 1));
     }
 
     @Test
     public void testVoteDownInvalidSong()
     {
         when(mockQueue.vote(sandstorm, -1)).thenThrow(new InputMismatchException());
-        assertEquals(expectedVotes, testGuest.changeVote(sandstorm, -1));
+        assertEquals(expectedVotes, testUser.changeVote(sandstorm, -1));
     }
 
     @Test
     public void testVoteRemovalInvalidSong()
     {
         when(mockQueue.vote(sandstorm, 0)).thenThrow(new InputMismatchException());
-        assertEquals(expectedVotes, testGuest.changeVote(sandstorm, 0));
+        assertEquals(expectedVotes, testUser.changeVote(sandstorm, 0));
     }
 
     @Test(expected = InputMismatchException.class)
     public void testLowVoteValue()
     {
-        testGuest.changeVote(despacito, -2);
+        testUser.changeVote(despacito, -2);
     }
 
     @Test(expected = InputMismatchException.class)
     public void testLowestVoteValue()
     {
-        testGuest.changeVote(despacito, Integer.MIN_VALUE);
+        testUser.changeVote(despacito, Integer.MIN_VALUE);
     }
 
     @Test(expected = InputMismatchException.class)
     public void testLowHighValue()
     {
-        testGuest.changeVote(neverGonnaGiveYouUp, 2);
+        testUser.changeVote(neverGonnaGiveYouUp, 2);
     }
 
     @Test(expected = InputMismatchException.class)
     public void testLowestHighestValue()
     {
-        testGuest.changeVote(neverGonnaGiveYouUp, Integer.MAX_VALUE);
+        testUser.changeVote(neverGonnaGiveYouUp, Integer.MAX_VALUE);
+    }
+
+    @Test
+    public void testRequestTrack()
+    {
+        when(mockQueue.append(neverGonnaGiveYouUp)).thenReturn(0);
+        assertEquals(0, testUser.requestTrack(neverGonnaGiveYouUp));
+    }
+
+    @Test
+    public void testRequestInvalidTrack()
+    {
+        when(mockQueue.append("a")).thenThrow(InputMismatchException.class);
+        assertEquals(-1, testUser.requestTrack("a"));
     }
 }

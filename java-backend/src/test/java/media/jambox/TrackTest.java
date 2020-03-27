@@ -71,6 +71,18 @@ public class TrackTest
     }
 
     @Test
+    public void testIncrementScore()
+    {
+        assertEquals(1, testTrack.incrementScore());
+    }
+
+    @Test
+    public void testDecrementScore()
+    {
+        assertEquals(-1, testTrack.decrementScore());
+    }
+
+    @Test
     public void testCompare()
         throws IOException, SpotifyWebApiException
     {

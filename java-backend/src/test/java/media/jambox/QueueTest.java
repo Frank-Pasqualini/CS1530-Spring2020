@@ -36,8 +36,8 @@ public class QueueTest
             throws IOException, SpotifyWebApiException
     {
         testQueue = new Queue(id, accessToken);
-
     }
+
     @Test
     public void testAppendSuccess()
     {
@@ -47,8 +47,8 @@ public class QueueTest
     @Test(expected = InputMismatchException.class)
     public void testAppendCopy()
     {
-        testQueue.append(despacito, accessToken); // track not yet in queue
-        testQueue.append(despacito, accessToken); // track already in queue
+        testQueue.append(despacito); // track not yet in queue
+        testQueue.append(despacito); // track already in queue
     }
 
     @Test
@@ -68,7 +68,7 @@ public class QueueTest
     @Test(expected = InputMismatchException.class)
     public void testVoteAmountFailed()
     {
-        testQueue.append(despacito,  accessToken); // track not yet in queue
+        testQueue.append(despacito); // track not yet in queue
         testQueue.vote(despacito, 2); //vote +2 for track in queue
     }
 
@@ -113,8 +113,6 @@ public class QueueTest
     {
         testQueue.pop();
     }
-
-
 
     @Test
     public void testRemoveTrackSucceed()

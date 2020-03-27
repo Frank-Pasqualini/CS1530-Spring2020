@@ -13,6 +13,8 @@ public class Queue
 {
     private final transient ArrayList<Track> trackList;
 
+    private final transient String accessToken;
+
     Queue(String playlistId, String accessToken)
         throws IOException, SpotifyWebApiException
     {
@@ -25,6 +27,8 @@ public class Queue
         {
             trackList.add(new Track(playlistTrack.getTrack().getId(), accessToken));
         }
+
+        this.accessToken = accessToken;
     }
 
     /**
@@ -33,28 +37,31 @@ public class Queue
      *
      * @param trackId Track ID gained from user interaction.
      *
-     * @return The updated queue.
+     * @return The position of the new track in the queue
      */
-    public ArrayList<Track> append(String trackId, String accessToken)
+    public int append(String trackId)
     {
         for (int i = 0; i < trackList.size() - 1; i++)
         {
             if (trackList.get(i).getId().equals(trackId))
             {
-                return trackList;
+                return i;
             }
         }
 
+        Track addedTrack;
         try
         {
-            trackList.add(new Track(trackId, accessToken));
+            addedTrack = new Track(trackId, accessToken);
+            trackList.add(addedTrack);
         }
         catch (IOException | SpotifyWebApiException e)
         {
             throw new InputMismatchException();
         }
 
-        return sortAndDisplay();
+        sortAndDisplay();
+        return trackList.indexOf(addedTrack);
     }
 
     public ArrayList<Track> sortAndDisplay()
