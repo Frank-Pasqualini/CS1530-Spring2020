@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react';
 import {
   Link
 } from "react-router-dom";
@@ -70,21 +70,23 @@ const Arrow = styled(RightArrowCircle)`
   }
 `;
 
-function JoinEventUsername(props) {
-  return (
-    <JoinEventContainer>
-      <JoinEventText>Enter A Username</JoinEventText>
-      <JoinEventForm>
-        <JoinEventInput style={{width: "300px"}} type="text" placeholder="Username"/>
-        <Link to='/guest' style={{ textDecoration: 'none' }}>
-          <JoinEventUsernameButton>
-            <div>To The Music</div> 
-            <Arrow />
-          </JoinEventUsernameButton>
-        </Link>
-      </JoinEventForm>
-    </JoinEventContainer>
-  )
+class JoinEventUsername extends Component {
+  render() {
+    return (
+      <JoinEventContainer>
+        <JoinEventText>Enter A Username</JoinEventText>
+        <JoinEventForm>
+          <JoinEventInput style={{width: "300px"}} type="text" placeholder="Username" onChange={this.props.updateNameInput}/>
+          <Link to='/guest' style={{ textDecoration: 'none' }}>
+            <JoinEventUsernameButton onClick={this.props.addGuest}>
+              <div>To The Music</div> 
+              <Arrow />
+            </JoinEventUsernameButton>
+          </Link>
+        </JoinEventForm>
+      </JoinEventContainer>
+    )
+  }
 }
 
 export default JoinEventUsername; 

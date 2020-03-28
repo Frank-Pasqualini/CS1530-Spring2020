@@ -4,7 +4,7 @@ import styled from 'styled-components';
 class GuestInterface extends Component {
   render() {
     return (
-      <div>Guest Interface Page</div>
+      <div style={{color: 'white'}}>Guest Interface Page</div>
     )
   }
 }
