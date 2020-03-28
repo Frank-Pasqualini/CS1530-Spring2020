@@ -3,15 +3,19 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  Redirect
 } from "react-router-dom";
+import base from './base';
 import styled from 'styled-components';
-import Logo from './Logo'
+import Logo from './Logo';
 import Homepage from './Homepage';
 import JoinEventCode from './JoinEventCode';
 import JoinEventUsername from './JoinEventUsername';
 import ErrorPage from './ErrorPage';
 import NewEvent from './CreateNewEvent';
+import ShowCode from './ShowCode';
+import GuestInterface from './GuestInterface';
 
 const Background = styled.div`
   background-color: #272727;
@@ -32,6 +36,57 @@ class App extends Component {
     super();
     const params = this.getHashParams();
     console.log(params);
+    
+    // Get event code out of storage if there is one
+    const eventCode = JSON.parse(localStorage.getItem('eventCode'))
+
+    this.state = {
+      eventList: [],
+      thisEvent: eventCode || '',
+      validCode: false,
+      codeInput: 0
+    }
+  }
+
+  componentDidMount() {
+    base.syncState(`eventList`, {
+      context: this,
+      state: 'eventList',
+      asArray: true
+    });
+  }
+
+  addEvent = () => {
+    const eventList = [...this.state.eventList];
+    const thisEvent = Math.floor(1000 + Math.random() * 9000);
+    eventList.push({
+      eventCode: thisEvent,
+      hostName: `Host ${thisEvent}`
+    });
+
+    // Update the global event list with the new event code
+    this.setState({ eventList });
+    // Update state with the current event code
+    this.setState({ thisEvent });
+
+    // Store the event code in local storage so you won't lose it when you make changes to files
+    localStorage.setItem('eventCode', JSON.stringify(thisEvent))
+  }
+
+  updateCodeInput = (e) => {
+    console.log("updating input");
+    this.setState({
+       codeInput: parseFloat(e.target.value)
+    })
+  }
+
+  checkCode = () => {
+    const codeInput = this.state.codeInput
+    this.state.eventList.forEach((e) => {
+      if(e.eventCode === codeInput) {
+        this.setState({ validCode: true })
+      }
+    })
   }
 
   getHashParams() {
@@ -58,17 +113,22 @@ class App extends Component {
             <Switch>
               <Route exact path="/"> <Homepage /> </Route>
               <Route path="/join-code"> 
-                <JoinEventCode />
+                <JoinEventCode updateCodeInput={this.updateCodeInput} checkCode={this.checkCode} />
               </Route>
               <Route path="/join-username">
-                <JoinEventUsername />
+                {!this.state.validCode ? <Redirect to="/invalid-code" /> : <JoinEventUsername />}
               </Route>
               <Route path="/premium-error">
                 <ErrorPage />
               </Route>
-              <Route path="/create-new-event"> 
-                <NewEvent />
+              <Route path="/create-new-event">
+                <NewEvent addEvent={this.addEvent} />
               </Route>
+              <Route path="/show-code">
+                <ShowCode thisEvent={this.state.thisEvent} />
+              </Route>
+              <Route exact path="/guest"> <GuestInterface /> </Route>
+              <Route path="/invalid-code"></Route>
             </Switch>
           </Background>
       </Router>

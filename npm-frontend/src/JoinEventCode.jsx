@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -44,20 +44,31 @@ const JoinEventCodeButton = styled.button`
   font-weight: bold;
   box-shadow: inset 0px 0px 30px #000000, 13px 12px 20px -5px black;
   transition: width .5s, height .5s, font-size .5s, background-color .5s;
+
+  &:hover {
+    height: 110px;
+    width: 285px;
+    font-size: 50px;
+    background-color: #2A77D6;
+  }
 `;
 
-function JoinEventCode(props) {
-  return (
-    <JoinEventContainer>
-      <JoinEventText>Please Enter Your Event Code</JoinEventText>
-      <JoinEventForm>
-        <JoinEventInput type="text" placeholder="Code"/>
-        <Link to="/join-username">
-          <JoinEventCodeButton>Join Event</JoinEventCodeButton>
-        </Link>
-      </JoinEventForm>
-    </JoinEventContainer>
-  )
+
+
+class JoinEventCode extends Component {
+  render() {
+    return (
+      <JoinEventContainer>
+        <JoinEventText>Please Enter Your Event Code</JoinEventText>
+        <JoinEventForm>
+          <JoinEventInput type="text" placeholder="Code" onChange={this.props.updateCodeInput}/>
+          <Link to="/join-username">
+            <JoinEventCodeButton onClick={this.props.checkCode}>Join Event</JoinEventCodeButton>
+          </Link>
+        </JoinEventForm>
+      </JoinEventContainer>
+    )
+  }
 }
 
 export default JoinEventCode; 
