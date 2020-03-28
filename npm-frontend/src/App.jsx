@@ -6,7 +6,7 @@ import {
   Link,
   Redirect
 } from "react-router-dom";
-import base from './base';
+import base from './base.js';
 import styled from 'styled-components';
 import Logo from './Logo';
 import Homepage from './Homepage';
