@@ -70,7 +70,7 @@ class App extends Component {
               <Route path="/create-new-event"> 
                 <NewEvent />
               </Route>
-              <Route path="/join-code-error"> 
+              <Route path="/invalid-code"> 
                 <JoinCodeError />
               </Route>
             </Switch>
