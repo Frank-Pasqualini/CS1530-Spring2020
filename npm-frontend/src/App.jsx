@@ -12,6 +12,7 @@ import JoinEventCode from './JoinEventCode';
 import JoinEventUsername from './JoinEventUsername';
 import ErrorPage from './ErrorPage';
 import NewEvent from './CreateNewEvent';
+import JoinCodeError from './JoinCodeError';
 
 const Background = styled.div`
   background-color: #272727;
@@ -68,6 +69,9 @@ class App extends Component {
               </Route>
               <Route path="/create-new-event"> 
                 <NewEvent />
+              </Route>
+              <Route path="/join-code-error"> 
+                <JoinCodeError />
               </Route>
             </Switch>
           </Background>
