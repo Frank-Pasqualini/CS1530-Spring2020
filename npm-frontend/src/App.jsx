@@ -17,6 +17,7 @@ import NewEvent from './CreateNewEvent';
 import ShowCode from './ShowCode';
 import GuestInterface from './GuestInterface';
 import HostInterface from './HostInterface';
+import JoinCodeError from './JoinCodeError';
 
 const Background = styled.div`
   background-color: #272727;
@@ -182,7 +183,9 @@ class App extends Component {
               </Route>
               <Route path="/guest"> <GuestInterface /> </Route>
               <Route path="/host"> <HostInterface /> </Route>
-              <Route path="/invalid-code"></Route>
+              <Route path="/invalid-code"> 
+                <JoinCodeError />
+              </Route>
             </Switch>
           </Background>
       </Router>
