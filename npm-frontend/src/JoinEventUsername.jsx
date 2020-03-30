@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react';
+import {
+  Link
+} from "react-router-dom";
 import styled from 'styled-components';
 import {RightArrowCircle} from 'styled-icons/boxicons-regular/RightArrowCircle';
 
@@ -37,6 +40,14 @@ const JoinEventUsernameButton = styled.button`
   font-weight: bold;
   box-shadow: inset 0px 0px 30px #000000, 13px 12px 20px -5px black;
   transition: width .5s, height .5s, font-size .5s, background-color .5s;
+
+  &:hover {
+    height: 130px;
+    width: 230px;
+    font-size: 40px;
+    background-color: #67d667;;
+  }
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -52,21 +63,30 @@ const JoinEventForm = styled.form`
 
 const Arrow = styled(RightArrowCircle)`
   height: 85px;
+  transition: height .5s;
+
+  ${JoinEventUsernameButton}:hover & {
+    height: 94px;
+  }
 `;
 
-function JoinEventUsername(props) {
-  return (
-    <JoinEventContainer>
-      <JoinEventText>Enter A Username</JoinEventText>
-      <JoinEventForm>
-        <JoinEventInput style={{width: "300px"}} type="text" placeholder="Username"/>
-        <JoinEventUsernameButton>
-          <div>To The Music</div> 
-          <Arrow />
-        </JoinEventUsernameButton>
-      </JoinEventForm>
-    </JoinEventContainer>
-  )
+class JoinEventUsername extends Component {
+  render() {
+    return (
+      <JoinEventContainer>
+        <JoinEventText>Enter A Username</JoinEventText>
+        <JoinEventForm>
+          <JoinEventInput style={{width: "300px"}} type="text" placeholder="Username" onChange={this.props.updateNameInput}/>
+          <Link to='/guest' style={{ textDecoration: 'none' }}>
+            <JoinEventUsernameButton onClick={this.props.addGuest}>
+              <div>To The Music</div> 
+              <Arrow />
+            </JoinEventUsernameButton>
+          </Link>
+        </JoinEventForm>
+      </JoinEventContainer>
+    )
+  }
 }
 
 export default JoinEventUsername; 

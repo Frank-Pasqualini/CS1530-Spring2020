@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SpotifyLogo from './spotifylogo.png';
@@ -65,17 +65,19 @@ const Spotify = styled.img`
   }
 `;
 
-function Homepage(props) {
-  return (
-    <HomePageContainer>
-      <Logo navBar={false} />
-      <Link to="/join-code">
-        <JoinEventButton>Join Event</JoinEventButton>
-      </Link>
-      <a href='http://localhost:8888/login'>
-      <CreateEventButton>Create Event <Spotify src={SpotifyLogo} /></CreateEventButton></a>
-    </HomePageContainer>
-  )
+class Homepage extends Component {
+  render() {
+    return (
+      <HomePageContainer>
+        <Logo navBar={false} />
+        <Link to="/join-code">
+          <JoinEventButton onClick={this.props.clearLocalStorage}>Join Event</JoinEventButton>
+        </Link>
+        <a href='http://localhost:8888/login'>
+        <CreateEventButton onClick={this.props.clearLocalStorage}>Create Event <Spotify src={SpotifyLogo} /></CreateEventButton></a>
+      </HomePageContainer>
+    )
+  }
 }
 
 export default Homepage; 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -54,19 +54,24 @@ const CreateEventText = styled.div`
 const CreateEventContainer = styled.div`
   display: flex;
   flex-direction: column;
+  text-align: center;
   align-items: center;
   padding: 70px;
   width: 450px;
 `;
 
-function CreateNewEvent(props) {
+class CreateNewEvent extends Component {
+  render() {
     return (
       <CreateEventContainer>
-        <CreateEventText>Please Choose a Playlist</CreateEventText> 
-            <ChooseExsistingButton>Personal </ChooseExsistingButton>
-            <ChooseDefaultButton>Spotify Default</ChooseDefaultButton>
+        <CreateEventText>Please Choose a Playlist</CreateEventText>
+        <Link to="/show-code"> 
+          <ChooseExsistingButton onClick={this.props.addEvent}>Personal </ChooseExsistingButton>
+          <ChooseDefaultButton onClick={this.props.addEvent}>Spotify Default</ChooseDefaultButton>
+        </Link>
       </CreateEventContainer>
     )
   }
+}
   
   export default CreateNewEvent; 

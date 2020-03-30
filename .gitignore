@@ -42,4 +42,4 @@ gradle-app.setting
 *.iml
 
 # Firebase config
-base.js
+#base.js
