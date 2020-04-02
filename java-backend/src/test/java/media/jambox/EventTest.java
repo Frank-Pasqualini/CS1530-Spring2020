@@ -31,6 +31,13 @@ public class EventTest
         testEvent = new Event(eventCode, playlistId, accessToken, hostId);
     }
 
+    @Test(expected = InputMismatchException.class)
+    public void testEmptyPlaylist()
+        throws IOException, SpotifyWebApiException
+    {
+        new Event(eventCode, "45McaMvSG3vovfffyxEHz8", accessToken, hostId);
+    }
+
     @Test
     public void testAddUser()
     {
