@@ -1,6 +1,7 @@
 package media.jambox;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -137,5 +138,32 @@ public class UserTest
     {
         when(mockQueue.append("a")).thenThrow(InputMismatchException.class);
         assertEquals(-1, testUser.requestTrack("a"));
+    }
+
+    @Test
+    public void testEquals()
+    {
+        User testUser2 = new User("0", mockEvent);
+        assertEquals(testUser, testUser2);
+    }
+
+    @Test
+    public void testNotEquals()
+    {
+        User testUser3 = new User("1", mockEvent);
+        assertNotEquals(testUser, testUser3);
+    }
+
+    @Test
+    public void testNotEqualsWrongObject()
+    {
+        assertNotEquals(testUser, "test");
+    }
+
+    @Test
+    public void testHash()
+    {
+        User testUser4 = new User("1", mockEvent);
+        assertNotEquals(testUser.hashCode(), testUser4.hashCode());
     }
 }

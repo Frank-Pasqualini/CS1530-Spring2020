@@ -24,6 +24,18 @@ public class User
         this.event = event;
     }
 
+    @Override
+    public int hashCode()
+    {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(final Object obj)
+    {
+        return getClass() == obj.getClass() && getId().equals(((User)obj).getId());
+    }
+
     public String getId()
     {
         return id;

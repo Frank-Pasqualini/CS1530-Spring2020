@@ -13,14 +13,14 @@ public class Event
 {
 
     private final transient ArrayList<User> users;
-    private final transient Playlist eventPlaylist;
-    private final transient Queue eventQueue;
     private final int eventCode;
+    private transient Playlist eventPlaylist;
+    private transient Queue eventQueue;
     private transient Track nowPlaying;
     private transient Track upNext;
 
     Event(int eventCode, String playlistId, String accessToken, String hostId)
-        throws IOException, SpotifyWebApiException
+        throws IOException, InputMismatchException, SpotifyWebApiException
     {
         users = new ArrayList<>();
         users.add(new Host(hostId, this));
@@ -33,17 +33,38 @@ public class Event
         eventPlaylist = new Playlist(playlist.getId());
 
         eventQueue = new Queue(playlistId, accessToken);
-        nowPlaying = eventQueue.pop();
-        upNext = eventQueue.pop();
-
-        eventPlaylist.append(nowPlaying.getId(), accessToken);
+        try
+        {
+            nowPlaying = eventQueue.pop();
+            upNext = eventQueue.pop();
+            eventPlaylist.append(nowPlaying.getId(), accessToken);
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            throw new InputMismatchException();
+        }
 
         this.eventCode = eventCode;
     }
 
-    public ArrayList<User> addGuest(String userId)
+    /**
+     * Adds a new user to the Users list if it is not already in it.
+     *
+     * @param userId The ID for the user.
+     *
+     * @return The list of Users.
+     *
+     * @throws InputMismatchException Throws an exception if the User is already in the User list.
+     */
+    public ArrayList<User> addUser(String userId)
+        throws InputMismatchException
     {
-        users.add(new User(userId, this));
+        User newUser = new User(userId, this);
+        if (users.contains(newUser))
+        {
+            throw new java.util.InputMismatchException();
+        }
+        users.add(newUser);
         return users;
     }
 
@@ -68,6 +89,11 @@ public class Event
         }
 
         throw new InputMismatchException();
+    }
+
+    public Host getHost()
+    {
+        return (Host)users.get(0);
     }
 
     public Playlist getPlaylist()

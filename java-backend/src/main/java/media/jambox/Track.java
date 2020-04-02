@@ -111,6 +111,7 @@ public class Track
         return super.hashCode();
     }
 
+    @Override
     public boolean equals(final Object obj)
     {
         return getClass() == obj.getClass() && getId().equals(((Track)obj).getId());
