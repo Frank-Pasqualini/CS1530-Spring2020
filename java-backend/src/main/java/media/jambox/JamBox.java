@@ -8,7 +8,6 @@ public class JamBox
     public final transient ArrayList<Event> eventList;
     public final transient int numEvent;
 
-    // constructor
     private JamBox()
     {
         this.eventList = new ArrayList<>();
