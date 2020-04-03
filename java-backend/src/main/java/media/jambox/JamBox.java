@@ -1,5 +1,7 @@
 package media.jambox;
 
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class JamBox
@@ -25,6 +27,14 @@ public class JamBox
         {
             singleInstance = new JamBox();
         }
+        return singleInstance;
+    }
+
+    public static JamBox addEvent(int eventCode, String playlistId, String accessToken, String hostId)
+        throws IOException, SpotifyWebApiException
+    {
+        Event event = new Event(eventCode, playlistId, accessToken, hostId);
+        singleInstance.eventList.add(event);
         return singleInstance;
     }
 }

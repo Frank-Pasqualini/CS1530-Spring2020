@@ -12,7 +12,6 @@ import java.util.InputMismatchException;
 public class Queue
 {
     private final transient ArrayList<Track> trackList;
-
     private final transient String accessToken;
 
     Queue(String playlistId, String accessToken)
@@ -53,7 +52,7 @@ public class Queue
         try
         {
             addedTrack = new Track(trackId, accessToken);
-            trackList.add(addedTrack);
+            trackList.add(trackList.size(), addedTrack);
         }
         catch (IOException | SpotifyWebApiException e)
         {
@@ -66,7 +65,7 @@ public class Queue
 
     public ArrayList<Track> sortAndDisplay()
     {
-        Collections.sort(trackList);
+        Collections.sort(trackList, Collections.reverseOrder());
         return trackList;
     }
 
@@ -98,6 +97,16 @@ public class Queue
     }
 
     /**
+     * Checks to see if the Queue is empty.
+     *
+     * @return boolean true if empty, false if not
+     */
+    public boolean isEmpty()
+    {
+        return trackList.size() == 0;
+    }
+
+    /**
      * Votes on a track in the Queue.
      *
      * @param trackId The ID of the track to vote on.
@@ -117,11 +126,11 @@ public class Queue
             {
                 switch (value)
                 {
-                    case 1:
-                        track.incrementScore();
-                        return sortAndDisplay();
                     case -1:
                         track.decrementScore();
+                        return sortAndDisplay();
+                    case 1:
+                        track.incrementScore();
                         return sortAndDisplay();
                     default:
                         throw new InputMismatchException();
