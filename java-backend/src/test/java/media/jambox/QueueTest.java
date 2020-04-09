@@ -8,40 +8,21 @@ import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
-
 import org.junit.Before;
 import org.junit.Test;
 
 public class QueueTest
 {
+    private final transient String accessToken = System.getenv("TEST_ACCESS_CODE");
+    private final transient String takeOnMe = "2WfaOiMkCvy7F5fcp2zZ8L";
+    private final transient String despacito = "6rPO02ozF3bM7NnOV4h6s2";
     private transient Queue testQueue;
 
-    private final transient String accessToken = System.getenv("TEST_ACCESS_CODE");
-    private final transient String id = "65zguqi47ENgOSL285EIdU";
-
-    //in initial playlist
-    private final transient String takeOnMe = "2WfaOiMkCvy7F5fcp2zZ8L";
-    private final transient String madWorld = "3JOVTQ5h8HGFnDdp4VT3MP";
-
-    //songs to add to queue
-    private final transient String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
-    private final transient String despacito = "6rPO02ozF3bM7NnOV4h6s2";
-    private final transient String putYourRecordsOn = "2nGFzvICaeEWjIrBrL2RAx";
-    private final transient String yellowEyes = "7t304VesCjiRAvpJ6IW8HG";
-    private final transient String fuckItILoveYou = "7MtVPRGtZl6rPjMfLoI3Lh";
-    private final transient String river = "3mRLHiSHYtC8Hk7bzZdUs1";
-    private final transient String lifeAintTheSame = "2fwS74WBkH2cRweraxie9P";
-    private final transient String belAmi = "1WJPsblf1uqY9sr1IEWDrV";
-
-    /**
-     * Run before each test case.
-     * @throws IOException e
-     * @throws SpotifyWebApiException e
-     */
     @Before
     public void setUp()
-            throws IOException, SpotifyWebApiException
+        throws IOException, SpotifyWebApiException
     {
+        final String id = "65zguqi47ENgOSL285EIdU";
         testQueue = new Queue(id, accessToken);
     }
 
@@ -54,11 +35,14 @@ public class QueueTest
     @Test
     public void testAppendSuccess()
     {
-        int spot = testQueue.append(despacito); // track not yet in queue
-        // testQueue.pop();
-        // testQueue.pop();
-        // assertEquals(despacito, testQueue.pop().getId());
+        int spot = testQueue.append(despacito);
         assertEquals(2, spot);
+    }
+
+    @Test(expected = InputMismatchException.class)
+    public void testAppendInvalid()
+    {
+        testQueue.append("a");
     }
 
     @Test
@@ -124,16 +108,24 @@ public class QueueTest
         testQueue.vote(despacito, 1); //vote +1 for track not in queue
     }
 
-
     @Test
-    public void testSortAndDisplay() throws IOException, SpotifyWebApiException
+    public void testSortAndDisplay()
+        throws IOException, SpotifyWebApiException
     {
+        final String putYourRecordsOn = "2nGFzvICaeEWjIrBrL2RAx";
         testQueue.append(putYourRecordsOn);
+        //songs to add to queue
+        final String neverGonnaGiveYouUp = "7GhIk7Il098yCjg4BQjzvb";
         testQueue.append(neverGonnaGiveYouUp);
+        final String yellowEyes = "7t304VesCjiRAvpJ6IW8HG";
         testQueue.append(yellowEyes);
+        final String fuckItILoveYou = "7MtVPRGtZl6rPjMfLoI3Lh";
         testQueue.append(fuckItILoveYou);
+        final String lifeAintTheSame = "2fwS74WBkH2cRweraxie9P";
         testQueue.append(lifeAintTheSame);
+        final String river = "3mRLHiSHYtC8Hk7bzZdUs1";
         testQueue.append(river);
+        final String belAmi = "1WJPsblf1uqY9sr1IEWDrV";
         testQueue.append(belAmi);
 
         testQueue.vote(neverGonnaGiveYouUp, 1);
@@ -156,11 +148,12 @@ public class QueueTest
 
         testQueue.removeTrack(river);
 
-        ArrayList<Track> expectedQueue = new ArrayList();
+        ArrayList<Track> expectedQueue = new ArrayList<>();
         Track neverGonnaGiveYouUpTrack = new Track(neverGonnaGiveYouUp, accessToken);
         Track putYourRecordsOnTrack = new Track(putYourRecordsOn, accessToken);
         Track takeOnMeTrack = new Track(takeOnMe, accessToken);
         Track lifeAintTheSameTrack = new Track(lifeAintTheSame, accessToken);
+        final String madWorld = "3JOVTQ5h8HGFnDdp4VT3MP";
         Track madWorldTrack = new Track(madWorld, accessToken);
         Track yellowEyesTrack = new Track(yellowEyes, accessToken);
         Track fuckItILoveYouTrack = new Track(fuckItILoveYou, accessToken);

@@ -65,7 +65,7 @@ public class Queue
 
     public ArrayList<Track> sortAndDisplay()
     {
-        Collections.sort(trackList, Collections.reverseOrder());
+        trackList.sort(Collections.reverseOrder());
         return trackList;
     }
 
@@ -86,7 +86,7 @@ public class Queue
     public Track removeTrack(String trackId)
         throws InputMismatchException
     {
-        for (int i = 0; i < trackList.size() - 1; i++)
+        for (int i = 0; i < trackList.size(); i++)
         {
             if (trackList.get(i).getId().equals(trackId))
             {

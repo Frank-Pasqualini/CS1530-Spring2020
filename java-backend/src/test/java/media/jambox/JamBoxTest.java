@@ -9,11 +9,8 @@ import org.junit.Test;
 
 public class JamBoxTest
 {
-    private transient JamBox testJamBox;
     private final transient String accessToken = System.getenv("TEST_ACCESS_CODE");
-    private final transient String playlistId = "65zguqi47ENgOSL285EIdU";
-    private final transient int eventCode = 1111;
-    private final transient String hostId = "franklesby";
+    private transient JamBox testJamBox;
 
     @Before
     public void setUp()
@@ -28,9 +25,13 @@ public class JamBoxTest
     }
 
     @Test
-    public void testAddEvent() throws IOException, SpotifyWebApiException
+    public void testAddEvent()
+        throws IOException, SpotifyWebApiException
     {
-        testJamBox.addEvent(eventCode, playlistId, accessToken, hostId);
+        final String playlistId = "65zguqi47ENgOSL285EIdU";
+        final int eventCode = 1111;
+        final String hostId = "franklesby";
+        JamBox.addEvent(eventCode, playlistId, accessToken, hostId);
         assertEquals(1, testJamBox.eventList.size());
     }
 }
