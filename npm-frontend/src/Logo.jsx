@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 const LogoJ = styled.div`
   color: #2A77C9;
-  font-size: ${props => (props.isLogo ? "63px" : "250px")};
-  margin: ${props => (props.isLogo ? "-2px 0px -11px 0px" : "-35px")};  
+  font-size: ${props => (props.navBar ? "63px" : "250px")};
+  margin: ${props => (props.navBar ? "-2px 0px -11px 0px" : "-35px")};  
 `;
 
 const LogoTitle = styled.div`
   color: #EBEBEB;
-  font-size: ${props => (props.isLogo ? "22px" : "50px")};
+  font-size: ${props => (props.navBar ? "22px" : "50px")};
   font-weight: bold;
 `;
 
@@ -17,7 +17,7 @@ const LogoContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: ${props => props.isLogo ? "0 0 0 10px" : ""};
+  margin: ${props => props.navBar ? "0 0 0 10px" : ""};
 `;
 
 function Logo(props) {
