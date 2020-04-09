@@ -85,6 +85,19 @@ public class QueueTest
     }
 
     @Test
+    public void testRemoveTrackSucceed()
+    {
+        testQueue.append(despacito); // track not yet in queue
+        assertEquals(despacito, testQueue.removeTrack(despacito).getId()); //remove track in queue
+    }
+
+    @Test(expected = InputMismatchException.class)
+    public void testRemoveTrackFailed()
+    {
+        testQueue.removeTrack(despacito);
+    }
+
+    @Test
     public void testVoteUpSucceed()
     {
         testQueue.vote(takeOnMe, 1); //vote +1 for track in queue
@@ -111,18 +124,6 @@ public class QueueTest
         testQueue.vote(despacito, 1); //vote +1 for track not in queue
     }
 
-    @Test
-    public void testRemoveTrackSucceed()
-    {
-        testQueue.append(despacito); // track not yet in queue
-        assertEquals(despacito, testQueue.removeTrack(despacito).getId()); //remove track in queue
-    }
-
-    @Test(expected = InputMismatchException.class)
-    public void testRemoveTrackFailed()
-    {
-        testQueue.removeTrack(despacito);
-    }
 
     @Test
     public void testSortAndDisplay() throws IOException, SpotifyWebApiException
