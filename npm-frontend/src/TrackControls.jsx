@@ -101,7 +101,23 @@ const PauseButton = styled.button`
 `;
 
 
+
 class TrackControls extends Component {
+  constructor() {
+    super();
+    this.state = {
+      paused: true
+    }
+  }
+
+  playMusic = () => {
+    this.setState({ paused: false });
+  }
+
+  pauseMusic = () => {
+    this.setState({ paused: true });
+  }
+
   render() {
     return (
       <ControlsContainer>
@@ -114,8 +130,10 @@ class TrackControls extends Component {
         </CurrSongInfoContainer>
         <ButtonsContainer>
           <BackButton><Back /></BackButton>
-          <PlayButton><Play /></PlayButton>
-          <PauseButton><Pause /></PauseButton>
+          {
+            // this displays the play button if the music paused and the pause button if music is playing
+            this.state.paused ? <PlayButton onClick={this.playMusic}><Play /></PlayButton> : <PauseButton onClick={this.pauseMusic}><Pause /></PauseButton>
+          }
           <ForwardButton><Forward /></ForwardButton>
         </ButtonsContainer>
       </ControlsContainer>
