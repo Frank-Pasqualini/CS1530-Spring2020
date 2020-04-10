@@ -170,6 +170,4 @@ public class QueueTest
 
         assertEquals(expectedQueue, testQueue.sortAndDisplay());
     }
-
-
 }

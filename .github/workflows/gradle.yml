@@ -14,4 +14,4 @@ jobs:
       with:
         java-version: 11
     - name: Build with Gradle
-      run: export TEST_ACCESS_CODE_SCOPED=$(curl --data "grant_type=refresh_token&refresh_token=${{ secrets.refresh_token_scoped }}&client_id=${{ secrets.client_id }}&client_secret=${{ secrets.client_secret }}" https://accounts.spotify.com/api/token | sed -e 's/.*access_token":"\(.*\)","token_type.*/\1/') TEST_ACCESS_CODE=$(curl --data "grant_type=refresh_token&refresh_token=${{ secrets.refresh_token }}&client_id=${{ secrets.client_id }}&client_secret=${{ secrets.client_secret }}" https://accounts.spotify.com/api/token | sed -e 's/.*access_token":"\(.*\)","token_type.*/\1/') && ./gradlew clean build -Pprod
+      run: export TEST_ACCESS_CODE=$(curl --data "grant_type=refresh_token&refresh_token=${{ secrets.refresh_token_scoped }}&client_id=${{ secrets.client_id }}&client_secret=${{ secrets.client_secret }}" https://accounts.spotify.com/api/token | sed -e 's/.*access_token":"\(.*\)","token_type.*/\1/') && ./gradlew clean build -Pprod
