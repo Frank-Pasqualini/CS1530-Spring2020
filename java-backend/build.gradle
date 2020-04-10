@@ -23,6 +23,9 @@ jacocoTestCoverageVerification {
 }
 
 check.dependsOn jacocoTestCoverageVerification
+jacocoTestCoverageVerification.dependsOn jacocoTestReport
+test.dependsOn pmdTest
+test.dependsOn pmdMain
 
 tasks.withType(Checkstyle).each { checkstyleTask ->
     checkstyleTask.doLast {
@@ -42,5 +45,6 @@ repositories {
 dependencies {
     compile 'se.michaelthelin.spotify:spotify-web-api-java:4.2.1'
     testImplementation 'junit:junit:4.13'
+    testCompile "org.mockito:mockito-core:2.+"
     runtimeOnly project(':npm-frontend')
 }
