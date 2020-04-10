@@ -48,12 +48,12 @@ const SearchButton = styled.button`
 `;
 
 class GuestInterface extends Component {
-  constructor(){
-    super();
-
-    this.state = {
-
-    }
+  constructor(props) {
+    super()
+    // Create a song entry for every song in the list
+    this.songs = props.songList.map((item, key) =>
+      <Song title={item.title} album={item.img_url} artist={item.artist} voteCount='0' key={key}/>
+    );
   }
   render() {
     return (
@@ -63,8 +63,10 @@ class GuestInterface extends Component {
           <SearchBar/><SearchButton>Search</SearchButton>
         </div>
         <NextSong>Up Next</NextSong>
-        <Song title='song1' album='album1' artist='artist1' voteCount='19'/>
-        <Song title='song2' album='album2' artist='artist2' voteCount='14' />
+        {
+          // This renders all the song entries we created
+          this.songs
+        }
       </Container>
     )
   }

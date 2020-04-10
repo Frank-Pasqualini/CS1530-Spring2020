@@ -33,8 +33,8 @@ class HostInterface extends Component {
     super()
     // Create a song entry for every song in the list
     this.songs = props.songList.map((item, key) =>
-    <Song title={item.title} album={item.img_url} artist={item.artist} voteCount='0' key={key}/>
-);
+      <Song title={item.title} album={item.img_url} artist={item.artist} voteCount='0' key={key}/>
+    );
   }
   render() {
     return (
