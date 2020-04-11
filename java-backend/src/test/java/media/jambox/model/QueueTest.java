@@ -1,4 +1,4 @@
-package media.jambox;
+package media.jambox.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -168,6 +168,6 @@ public class QueueTest
         expectedQueue.add(fuckItILoveYouTrack);
         expectedQueue.add(belAmiTrack);
 
-        assertEquals(expectedQueue, testQueue.sortAndDisplay());
+        assertEquals(expectedQueue, testQueue.getTrackList());
     }
 }

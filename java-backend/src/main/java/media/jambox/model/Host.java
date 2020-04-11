@@ -1,4 +1,4 @@
-package media.jambox;
+package media.jambox.model;
 
 public class Host
     extends User

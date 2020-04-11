@@ -1,4 +1,4 @@
-package media.jambox;
+package media.jambox.model;
 
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
@@ -59,11 +59,11 @@ public class Queue
             throw new InputMismatchException();
         }
 
-        sortAndDisplay();
+        getTrackList();
         return trackList.indexOf(addedTrack);
     }
 
-    public ArrayList<Track> sortAndDisplay()
+    public ArrayList<Track> getTrackList()
     {
         trackList.sort(Collections.reverseOrder());
         return trackList;
@@ -128,10 +128,10 @@ public class Queue
                 {
                     case -1:
                         track.decrementScore();
-                        return sortAndDisplay();
+                        return getTrackList();
                     case 1:
                         track.incrementScore();
-                        return sortAndDisplay();
+                        return getTrackList();
                     default:
                         throw new InputMismatchException();
                 }

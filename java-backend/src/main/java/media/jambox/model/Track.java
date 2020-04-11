@@ -1,4 +1,4 @@
-package media.jambox;
+package media.jambox.model;
 
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
@@ -12,11 +12,11 @@ public class Track
     implements Comparable<Track>
 {
     private final transient String id;
-    private transient String name;
-    private transient int durationMS;
-    private transient String albumName;
-    private transient String[] albumImages;
-    private transient String[] artistNames;
+    private final transient String name;
+    private final transient int durationMS;
+    private final transient String albumName;
+    private final transient String[] albumImages;
+    private final transient String[] artistNames;
     private transient int score;
 
     /**

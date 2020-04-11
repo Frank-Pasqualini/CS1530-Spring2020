@@ -1,4 +1,4 @@
-package media.jambox;
+package media.jambox.model;
 
 import static org.mockito.Mockito.mock;
 
@@ -11,7 +11,7 @@ public class HostTest
     @Before
     public void setUp()
     {
-        Event mockEvent = mock(Event.class);
+        Event mockEvent = mock(media.jambox.model.Event.class);
         testHost = new Host("franklesby", mockEvent);
     }
 }
