@@ -57,13 +57,13 @@ const Pause = styled(PauseCircle)`
 `;
 
 const Forward = styled(SkipForward)`
-  height: 35px;
+  height: 25px;
   color: white;
   margin: 5px;
 `;
 
 const Back = styled(SkipBack)`
-  height: 35px;
+  height: 25px;
   color: white;
   margin: 5px;
 `;
@@ -72,7 +72,7 @@ const ForwardButton = styled.button`
   cursor: pointer;
   background-color: #444444;
   border: #444444;
-  width: 50px;
+  width: 40px;
   outline: none;
 `;
 
@@ -80,7 +80,7 @@ const BackButton = styled.button`
   cursor: pointer;
   background-color: #444444;
   border: #444444;
-  width: 50px;
+  width: 40px;
   outline: none;
 `;
 
