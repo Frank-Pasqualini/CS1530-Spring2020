@@ -66,4 +66,10 @@ public class Controller
     {
         ((Host)JamBox.getEvent(eventCode).getUser(hostId)).endEvent(accessToken);
     }
+
+    @RequestMapping("/api/remove_track")
+    public void removeTrack(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("trackId") String trackId, @RequestParam("accessToken") String accessToken)
+    {
+        ((Host)JamBox.getEvent(eventCode).getUser(hostId)).removeTrack(trackId, accessToken);
+    }
 }

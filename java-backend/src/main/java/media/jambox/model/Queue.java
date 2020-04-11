@@ -83,9 +83,14 @@ public class Queue
      *
      * @throws InputMismatchException Throws an exception when the Track to remove is not in the Queue.
      */
-    public Track removeTrack(String trackId)
+    public Track removeTrack(String trackId, String accessToken)
         throws InputMismatchException
     {
+        if (!accessToken.equals(this.accessToken))
+        {
+            throw new InputMismatchException();
+        }
+
         for (int i = 0; i < trackList.size(); i++)
         {
             if (trackList.get(i).getId().equals(trackId))

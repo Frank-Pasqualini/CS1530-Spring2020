@@ -17,7 +17,7 @@ public class Event
     private final transient Queue eventQueue;
     private final transient Track nowPlaying;
     private final transient Track upNext;
-    private transient String accessToken;
+    private final transient String accessToken;
 
     Event(int eventCode, String playlistId, String accessToken, String hostId, Playlist playlistOverride, Queue queueOverride)
         throws IOException, InputMismatchException, SpotifyWebApiException

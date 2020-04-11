@@ -18,4 +18,9 @@ public class Host
     {
         event.deleteEvent(accessToken);
     }
+
+    public void removeTrack(String trackId, String accessToken)
+    {
+        event.getQueue().removeTrack(trackId, accessToken);
+    }
 }

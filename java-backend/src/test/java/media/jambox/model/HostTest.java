@@ -29,4 +29,13 @@ public class HostTest
         testHost.endEvent(accessToken);
         Mockito.verify(mockEvent, Mockito.times(1)).deleteEvent(accessToken);
     }
+
+    @Test
+    public void testRemoveTrack()
+    {
+        Queue mockQueue = Mockito.mock(Queue.class);
+        Mockito.when(mockEvent.getQueue()).thenReturn(mockQueue);
+        testHost.removeTrack("6rPO02ozF3bM7NnOV4h6s2", accessToken);
+        Mockito.verify(mockQueue, Mockito.times(1)).removeTrack("6rPO02ozF3bM7NnOV4h6s2", accessToken);
+    }
 }
