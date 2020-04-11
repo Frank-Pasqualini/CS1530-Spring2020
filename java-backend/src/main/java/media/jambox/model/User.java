@@ -1,4 +1,4 @@
-package media.jambox;
+package media.jambox.model;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -7,8 +7,9 @@ public class User
 {
     protected final transient String id;
     protected final transient Event event;
-
-    protected final transient ArrayList<String> voteList;
+    protected final transient int eventCode;
+    protected final transient ArrayList<String> upvoted;
+    protected final transient ArrayList<String> downvoted;
 
     /**
      * Initializes the User with an ID and the Event it is a part of.
@@ -18,10 +19,12 @@ public class User
      */
     public User(String id, Event event)
     {
-        voteList = new java.util.ArrayList<>();
+        upvoted = new ArrayList<>();
+        downvoted = new ArrayList<>();
 
         this.id = id;
         this.event = event;
+        eventCode = event.getEventCode();
     }
 
     @Override
@@ -33,12 +36,27 @@ public class User
     @Override
     public boolean equals(final Object obj)
     {
-        return getClass() == obj.getClass() && getId().equals(((User)obj).getId());
+        return getClass() == obj.getClass() && (id.equals(((User)obj).getId()) && eventCode == ((User)obj).getEventCode());
     }
 
     public String getId()
     {
         return id;
+    }
+
+    public int getEventCode()
+    {
+        return eventCode;
+    }
+
+    public ArrayList<String> getUpvoted()
+    {
+        return upvoted;
+    }
+
+    public ArrayList<String> getDownvoted()
+    {
+        return downvoted;
     }
 
     /**
@@ -51,17 +69,18 @@ public class User
      *
      * @throws InputMismatchException Throws an exception if value is not 1, -1, or 0.
      */
-    public java.util.ArrayList<String> changeVote(String trackId, int value)
-        throws java.util.InputMismatchException
+    public ArrayList<ArrayList<String>> changeVote(String trackId, int value)
+        throws InputMismatchException
     {
-        if (voteList.contains("+" + trackId))
+        if (upvoted.contains(trackId))
         {
-            voteList.remove("+" + trackId);
+            upvoted.remove(trackId);
             event.getQueue().vote(trackId, -1);
         }
-        if (voteList.contains("-" + trackId))
+
+        if (downvoted.contains(trackId))
         {
-            voteList.remove("-" + trackId);
+            downvoted.remove(trackId);
             event.getQueue().vote(trackId, 1);
         }
 
@@ -71,7 +90,7 @@ public class User
                 try
                 {
                     event.getQueue().vote(trackId, -1);
-                    voteList.add("-" + trackId);
+                    downvoted.add(trackId);
                 }
                 catch (java.util.InputMismatchException ignored)
                 {
@@ -84,7 +103,7 @@ public class User
                 try
                 {
                     event.getQueue().vote(trackId, 1);
-                    voteList.add("+" + trackId);
+                    upvoted.add(trackId);
                 }
                 catch (java.util.InputMismatchException ignored)
                 {
@@ -96,6 +115,11 @@ public class User
 
         }
 
+        ArrayList<ArrayList<String>> voteList = new ArrayList<>();
+
+        voteList.add(upvoted);
+        voteList.add(downvoted);
+
         return voteList;
     }
 
@@ -104,17 +128,23 @@ public class User
      *
      * @param trackId The ID of the track being requested.
      *
-     * @return -1 if the song does not exist, otherwise the position of the song in the Queue.
+     * @return True if the song is successfully added, false otherwise.
      */
-    public int requestTrack(String trackId)
+    public boolean requestTrack(String trackId)
     {
         try
         {
-            return event.getQueue().append(trackId);
+            event.getQueue().append(trackId);
+            return true;
         }
         catch (java.util.InputMismatchException e)
         {
-            return -1;
+            return false;
         }
+    }
+
+    public void disconnect()
+    {
+        event.removeUser(id);
     }
 }

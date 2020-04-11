@@ -4,6 +4,8 @@ plugins {
     id 'jacoco'
     id 'java'
     id 'pmd'
+    id 'org.springframework.boot' version '2.2.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
 }
 
 group = 'media.jambox'
@@ -16,7 +18,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 1.0
+                minimum = 0.85
             }
         }
     }
@@ -43,6 +45,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     compile 'se.michaelthelin.spotify:spotify-web-api-java:4.2.1'
     testImplementation 'junit:junit:4.13'
     testCompile "org.mockito:mockito-core:2.+"

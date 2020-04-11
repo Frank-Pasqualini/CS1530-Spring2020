@@ -1,19 +1,20 @@
-package media.jambox;
+package media.jambox.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 public class UserTest
 {
     static User testUser;
-    static ArrayList<String> expectedVotes;
+    static ArrayList<ArrayList<String>> expectedVotes;
     static Event mockEvent;
     static Queue mockQueue;
 
@@ -28,12 +29,15 @@ public class UserTest
     @Before
     public void setUp()
     {
-        mockEvent = mock(Event.class);
-        mockQueue = mock(Queue.class);
+        mockEvent = Mockito.mock(Event.class);
+        Mockito.when(mockEvent.getEventCode()).thenReturn(0);
+        mockQueue = Mockito.mock(Queue.class);
 
-        when(mockEvent.getQueue()).thenReturn(mockQueue);
+        Mockito.when(mockEvent.getQueue()).thenReturn(mockQueue);
 
         expectedVotes = new ArrayList<>();
+        expectedVotes.add(new ArrayList<>());
+        expectedVotes.add(new ArrayList<>());
 
         testUser = new User("0", mockEvent);
     }
@@ -45,23 +49,41 @@ public class UserTest
     }
 
     @Test
+    public void testGetUpvoted()
+    {
+        ArrayList<String> expectedUpvotes = new ArrayList<>();
+        expectedUpvotes.add(neverGonnaGiveYouUp);
+        testUser.changeVote(neverGonnaGiveYouUp, 1);
+        assertEquals(expectedUpvotes, testUser.getUpvoted());
+    }
+
+    @Test
+    public void testGetDownvoted()
+    {
+        ArrayList<String> expectedDownvotes = new ArrayList<>();
+        expectedDownvotes.add(despacito);
+        testUser.changeVote(despacito, -1);
+        assertEquals(expectedDownvotes, testUser.getDownvoted());
+    }
+
+    @Test
     public void testVoteUp()
     {
-        expectedVotes.add("+" + neverGonnaGiveYouUp);
+        expectedVotes.get(0).add(neverGonnaGiveYouUp);
         assertEquals(expectedVotes, testUser.changeVote(neverGonnaGiveYouUp, 1));
     }
 
     @Test
     public void testVoteDown()
     {
-        expectedVotes.add("-" + despacito);
+        expectedVotes.get(1).add(despacito);
         assertEquals(expectedVotes, testUser.changeVote(despacito, -1));
     }
 
     @Test
     public void testDoubleVoteUp()
     {
-        expectedVotes.add("+" + neverGonnaGiveYouUp);
+        expectedVotes.get(0).add(neverGonnaGiveYouUp);
         testUser.changeVote(neverGonnaGiveYouUp, 1);
         assertEquals(expectedVotes, testUser.changeVote(neverGonnaGiveYouUp, 1));
     }
@@ -69,7 +91,7 @@ public class UserTest
     @Test
     public void testDoubleVoteDown()
     {
-        expectedVotes.add("-" + despacito);
+        expectedVotes.get(1).add(despacito);
         testUser.changeVote(despacito, -1);
         assertEquals(expectedVotes, testUser.changeVote(despacito, -1));
     }
@@ -84,21 +106,21 @@ public class UserTest
     @Test
     public void testVoteUpInvalidSong()
     {
-        when(mockQueue.vote(sandstorm, 1)).thenThrow(new InputMismatchException());
+        Mockito.when(mockQueue.vote(sandstorm, 1)).thenThrow(new InputMismatchException());
         assertEquals(expectedVotes, testUser.changeVote(sandstorm, 1));
     }
 
     @Test
     public void testVoteDownInvalidSong()
     {
-        when(mockQueue.vote(sandstorm, -1)).thenThrow(new InputMismatchException());
+        Mockito.when(mockQueue.vote(sandstorm, -1)).thenThrow(new InputMismatchException());
         assertEquals(expectedVotes, testUser.changeVote(sandstorm, -1));
     }
 
     @Test
     public void testVoteRemovalInvalidSong()
     {
-        when(mockQueue.vote(sandstorm, 0)).thenThrow(new InputMismatchException());
+        Mockito.when(mockQueue.vote(sandstorm, 0)).thenThrow(new InputMismatchException());
         assertEquals(expectedVotes, testUser.changeVote(sandstorm, 0));
     }
 
@@ -129,15 +151,15 @@ public class UserTest
     @Test
     public void testRequestTrack()
     {
-        when(mockQueue.append(neverGonnaGiveYouUp)).thenReturn(0);
-        assertEquals(0, testUser.requestTrack(neverGonnaGiveYouUp));
+        Mockito.when(mockQueue.append(neverGonnaGiveYouUp)).thenReturn(0);
+        assertTrue(testUser.requestTrack(neverGonnaGiveYouUp));
     }
 
     @Test
     public void testRequestInvalidTrack()
     {
-        when(mockQueue.append("a")).thenThrow(InputMismatchException.class);
-        assertEquals(-1, testUser.requestTrack("a"));
+        Mockito.when(mockQueue.append("a")).thenThrow(InputMismatchException.class);
+        assertFalse(testUser.requestTrack("a"));
     }
 
     @Test
@@ -155,6 +177,15 @@ public class UserTest
     }
 
     @Test
+    public void testNotEqualsEvent()
+    {
+        Event mockEvent2 = Mockito.mock(Event.class);
+        Mockito.when(mockEvent2.getEventCode()).thenReturn(1);
+        User testUser3 = new User("0", mockEvent2);
+        assertNotEquals(testUser, testUser3);
+    }
+
+    @Test
     public void testNotEqualsWrongObject()
     {
         assertNotEquals(testUser, "test");
@@ -165,5 +196,12 @@ public class UserTest
     {
         User testUser4 = new User("1", mockEvent);
         assertNotEquals(testUser.hashCode(), testUser4.hashCode());
+    }
+
+    @Test
+    public void testDisconnect()
+    {
+        testUser.disconnect();
+        Mockito.verify(mockEvent, Mockito.times(1)).removeUser("0");
     }
 }

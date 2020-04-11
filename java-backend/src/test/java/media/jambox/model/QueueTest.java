@@ -1,4 +1,4 @@
-package media.jambox;
+package media.jambox.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -72,27 +72,34 @@ public class QueueTest
     public void testRemoveTrackSucceed()
     {
         testQueue.append(despacito); // track not yet in queue
-        assertEquals(despacito, testQueue.removeTrack(despacito).getId()); //remove track in queue
+        assertEquals(despacito, testQueue.removeTrack(despacito, accessToken).getId()); //remove track in queue
+    }
+
+    @Test(expected = InputMismatchException.class)
+    public void testRemoveTrackInvalid()
+    {
+        testQueue.append(despacito); // track not yet in queue
+        assertEquals(despacito, testQueue.removeTrack(despacito, "wrongToken").getId()); //remove track in queue
     }
 
     @Test(expected = InputMismatchException.class)
     public void testRemoveTrackFailed()
     {
-        testQueue.removeTrack(despacito);
+        testQueue.removeTrack(despacito, accessToken);
     }
 
     @Test
     public void testVoteUpSucceed()
     {
         testQueue.vote(takeOnMe, 1); //vote +1 for track in queue
-        assertEquals(1, testQueue.removeTrack(takeOnMe).getScore());
+        assertEquals(1, testQueue.removeTrack(takeOnMe, accessToken).getScore());
     }
 
     @Test
     public void testVoteDownSucceed()
     {
         testQueue.vote(takeOnMe, -1); //vote -1 for track in queue
-        assertEquals(-1, testQueue.removeTrack(takeOnMe).getScore());
+        assertEquals(-1, testQueue.removeTrack(takeOnMe, accessToken).getScore());
     }
 
     @Test(expected = InputMismatchException.class)
@@ -146,7 +153,7 @@ public class QueueTest
         testQueue.vote(belAmi, -1);
         testQueue.vote(belAmi, -1);
 
-        testQueue.removeTrack(river);
+        testQueue.removeTrack(river, accessToken);
 
         ArrayList<Track> expectedQueue = new ArrayList<>();
         Track neverGonnaGiveYouUpTrack = new Track(neverGonnaGiveYouUp, accessToken);
@@ -168,6 +175,6 @@ public class QueueTest
         expectedQueue.add(fuckItILoveYouTrack);
         expectedQueue.add(belAmiTrack);
 
-        assertEquals(expectedQueue, testQueue.sortAndDisplay());
+        assertEquals(expectedQueue, testQueue.getTrackList());
     }
 }
