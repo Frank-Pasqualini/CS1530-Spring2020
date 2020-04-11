@@ -1,6 +1,7 @@
 package media.jambox;
 
 import media.jambox.model.Event;
+import media.jambox.model.Host;
 import media.jambox.model.JamBox;
 import media.jambox.model.User;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,19 +20,19 @@ public class Controller
     }
 
     @RequestMapping("/api/event")
-    public Event eventInfo(@RequestParam("eventCode") int eventCode)
+    public Event event(@RequestParam("eventCode") int eventCode)
     {
         return JamBox.getEvent(eventCode);
     }
 
     @RequestMapping("/api/add_user")
-    public void newUser(@RequestParam("eventCode") int eventCode, @RequestParam("userId") String userId)
+    public void addUser(@RequestParam("eventCode") int eventCode, @RequestParam("userId") String userId)
     {
         JamBox.getEvent(eventCode).addUser(userId);
     }
 
     @RequestMapping("/api/user")
-    public User userInfo(@RequestParam("eventCode") int eventCode, @RequestParam("userId") String userId)
+    public User user(@RequestParam("eventCode") int eventCode, @RequestParam("userId") String userId)
     {
         return JamBox.getEvent(eventCode).getUser(userId);
     }
@@ -52,5 +53,17 @@ public class Controller
     public boolean request(@RequestParam("eventCode") int eventCode, @RequestParam("userId") String userId, @RequestParam("trackId") String trackId)
     {
         return JamBox.getEvent(eventCode).getUser(userId).requestTrack(trackId);
+    }
+
+    @RequestMapping("/api/disconnect")
+    public void disconnect(@RequestParam("eventCode") int eventCode, @RequestParam("userId") String userId)
+    {
+        JamBox.getEvent(eventCode).getUser(userId).disconnect();
+    }
+
+    @RequestMapping("/api/end_event")
+    public void endEvent(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("accessToken") String accessToken)
+    {
+        ((Host)JamBox.getEvent(eventCode).getUser(hostId)).endEvent(accessToken);
     }
 }

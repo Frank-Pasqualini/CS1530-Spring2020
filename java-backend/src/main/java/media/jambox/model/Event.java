@@ -17,12 +17,15 @@ public class Event
     private final transient Queue eventQueue;
     private final transient Track nowPlaying;
     private final transient Track upNext;
+    private transient String accessToken;
 
     Event(int eventCode, String playlistId, String accessToken, String hostId, Playlist playlistOverride, Queue queueOverride)
         throws IOException, InputMismatchException, SpotifyWebApiException
     {
         users = new ArrayList<>();
         users.add(new Host(hostId, this));
+
+        this.accessToken = accessToken;
 
         Playlist eventPlaylist;
         if (playlistOverride == null)
@@ -144,5 +147,20 @@ public class Event
     public int getEventCode()
     {
         return eventCode;
+    }
+
+    /**
+     * Deletes the event if the host enters the correct accessToken.
+     *
+     * @param accessToken the accessToken associated with the event.
+     */
+    public void deleteEvent(String accessToken)
+    {
+        if (!accessToken.equals(this.accessToken))
+        {
+            throw new InputMismatchException();
+        }
+
+        JamBox.removeEvent(eventCode);
     }
 }

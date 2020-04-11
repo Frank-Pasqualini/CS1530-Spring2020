@@ -62,4 +62,20 @@ public class JamBoxTest
     {
         JamBox.getEvent(0);
     }
+
+    @Test(expected = InputMismatchException.class)
+    public void testRemoveEvent()
+        throws IOException, SpotifyWebApiException
+    {
+        JamBox.addEvent(playlistId, accessToken, hostId, 1, mockEvent);
+        Mockito.when(mockEvent.getEventCode()).thenReturn(1);
+        JamBox.removeEvent(1);
+        JamBox.getEvent(1);
+    }
+
+    @Test(expected = InputMismatchException.class)
+    public void testRemoveInvalidEvent()
+    {
+        JamBox.removeEvent(27);
+    }
 }

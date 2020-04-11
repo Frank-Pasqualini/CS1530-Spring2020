@@ -121,4 +121,10 @@ public class EventTest
     {
         assertEquals(1111, testEvent.getEventCode());
     }
+
+    @Test(expected = InputMismatchException.class)
+    public void testDelteEventInvalid()
+    {
+        testEvent.deleteEvent("wrongvalue");
+    }
 }

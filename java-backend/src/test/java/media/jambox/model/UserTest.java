@@ -197,4 +197,11 @@ public class UserTest
         User testUser4 = new User("1", mockEvent);
         assertNotEquals(testUser.hashCode(), testUser4.hashCode());
     }
+
+    @Test
+    public void testDisconnect()
+    {
+        testUser.disconnect();
+        Mockito.verify(mockEvent, Mockito.times(1)).removeUser("0");
+    }
 }

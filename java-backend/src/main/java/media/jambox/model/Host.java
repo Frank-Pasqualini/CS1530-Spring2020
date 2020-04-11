@@ -7,4 +7,15 @@ public class Host
     {
         super(id, event);
     }
+
+    @Override
+    public void disconnect()
+    {
+        //The host cannot disconnect.
+    }
+
+    public void endEvent(String accessToken)
+    {
+        event.deleteEvent(accessToken);
+    }
 }

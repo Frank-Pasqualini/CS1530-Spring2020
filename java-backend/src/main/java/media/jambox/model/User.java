@@ -142,4 +142,9 @@ public class User
             return false;
         }
     }
+
+    public void disconnect()
+    {
+        event.removeUser(id);
+    }
 }

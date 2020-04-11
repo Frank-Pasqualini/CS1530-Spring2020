@@ -89,4 +89,23 @@ public class JamBox
         }
         throw new InputMismatchException();
     }
+
+    /**
+     * Remove an event by it's ID.
+     *
+     * @param eventId The ID of the event to remove.
+     *
+     */
+    public static void removeEvent(int eventId)
+    {
+        for (int i = 0; i < singleInstance.eventList.size(); i++)
+        {
+            if (singleInstance.eventList.get(i).getEventCode() == eventId)
+            {
+                singleInstance.eventList.remove(i);
+                return;
+            }
+        }
+        throw new InputMismatchException();
+    }
 }
