@@ -56,7 +56,7 @@ public class JamBox
         }
         else if (eventCode < -1 || eventCode > 9999)
         {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Event codes must be in the range 0000-9999. -1 is the special case for non-mocked events to generate a code.");
         }
 
         for (int i = 0; i < singleInstance.eventList.size(); i++)
@@ -91,7 +91,7 @@ public class JamBox
     {
         if (eventCode < 0 || eventCode > 9999)
         {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Event codes must be in the range 0000-9999.");
         }
 
         for (int i = 0; i < singleInstance.eventList.size(); i++)
@@ -102,7 +102,7 @@ public class JamBox
             }
         }
 
-        throw new NoSuchElementException();
+        throw new NoSuchElementException("The event with code " + eventCode + " does not exist.");
     }
 
     /**
@@ -118,7 +118,7 @@ public class JamBox
     {
         if (eventCode < 0 || eventCode > 9999)
         {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Event codes must be in the range 0000-9999.");
         }
 
         for (int i = 0; i < singleInstance.eventList.size(); i++)
@@ -129,6 +129,6 @@ public class JamBox
                 return;
             }
         }
-        throw new NoSuchElementException();
+        throw new NoSuchElementException("The event with code " + eventCode + " does not exist.");
     }
 }
