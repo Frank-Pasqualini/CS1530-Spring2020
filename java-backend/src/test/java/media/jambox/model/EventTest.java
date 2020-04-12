@@ -6,7 +6,8 @@ import static org.junit.Assert.assertTrue;
 
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import java.io.IOException;
-import java.util.InputMismatchException;
+import java.security.InvalidKeyException;
+import java.util.NoSuchElementException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -49,7 +50,7 @@ public class EventTest
         new Event(eventCode, playlistId, accessToken, hostId, null, null);
     }
 
-    @Test(expected = InputMismatchException.class)
+    @Test(expected = IndexOutOfBoundsException.class)
     public void testEmptyPlaylist()
         throws IOException, SpotifyWebApiException
     {
@@ -77,7 +78,7 @@ public class EventTest
         assertEquals("0", testEvent.getUser("0").getId());
     }
 
-    @Test(expected = InputMismatchException.class)
+    @Test(expected = NoSuchElementException.class)
     public void testGetInvalidUser()
     {
         assertEquals("0", testEvent.getUser("0").getId());
@@ -90,7 +91,7 @@ public class EventTest
         assertEquals("0", testEvent.removeUser("0").getId());
     }
 
-    @Test(expected = InputMismatchException.class)
+    @Test(expected = NoSuchElementException.class)
     public void testRemoveNonexistentUser()
     {
         testEvent.removeUser("0");
@@ -122,8 +123,9 @@ public class EventTest
         assertEquals(1111, testEvent.getEventCode());
     }
 
-    @Test(expected = InputMismatchException.class)
-    public void testDelteEventInvalid()
+    @Test(expected = InvalidKeyException.class)
+    public void testDeleteEventInvalid()
+        throws InvalidKeyException
     {
         testEvent.deleteEvent("wrongvalue");
     }

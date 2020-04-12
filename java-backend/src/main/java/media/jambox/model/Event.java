@@ -4,30 +4,31 @@ import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import com.wrapper.spotify.requests.data.playlists.CreatePlaylistRequest;
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 
 public class Event
 {
 
     private final transient ArrayList<User> users;
     private final int eventCode;
+    private final transient Playlist eventPlaylist;
     private final transient Queue eventQueue;
     private final transient Track nowPlaying;
     private final transient Track upNext;
     private final transient String accessToken;
 
     Event(int eventCode, String playlistId, String accessToken, String hostId, Playlist playlistOverride, Queue queueOverride)
-        throws IOException, InputMismatchException, SpotifyWebApiException
+        throws IOException, IllegalArgumentException, IndexOutOfBoundsException, SpotifyWebApiException
     {
-        users = new ArrayList<>();
-        users.add(new Host(hostId, this));
+        if (eventCode < -1 || eventCode > 9999)
+        {
+            throw new IllegalArgumentException("Event codes must be in the range 0000-9999.");
+        }
 
-        this.accessToken = accessToken;
-
-        Playlist eventPlaylist;
         if (playlistOverride == null)
         {
             final SpotifyApi spotifyApi = new SpotifyApi.Builder().setAccessToken(accessToken).build();
@@ -59,9 +60,13 @@ public class Event
         }
         catch (IndexOutOfBoundsException e)
         {
-            throw new InputMismatchException();
+            throw new IndexOutOfBoundsException("The playlist submitted does not have at least 2 songs.");
         }
 
+        users = new ArrayList<>();
+        users.add(new Host(hostId, this));
+
+        this.accessToken = accessToken;
         this.eventCode = eventCode;
     }
 
@@ -90,10 +95,10 @@ public class Event
      *
      * @return The User that was removed.
      *
-     * @throws InputMismatchException Throws an exception when the User ID is not a current user.
+     * @throws NoSuchElementException Throws an exception when the User ID is not a current user.
      */
     public User removeUser(String userId)
-        throws InputMismatchException
+        throws NoSuchElementException
     {
         for (int i = 0; i < users.size(); i++)
         {
@@ -103,7 +108,7 @@ public class Event
             }
         }
 
-        throw new InputMismatchException();
+        throw new NoSuchElementException("A user with the ID " + userId + " does not exist.");
     }
 
     /**
@@ -113,11 +118,11 @@ public class Event
      *
      * @return The user with the matching ID
      *
-     * @throws InputMismatchException Throws an exception if the user searched for does not exist.
+     * @throws NoSuchElementException Throws an exception if the user searched for does not exist.
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public User getUser(String userId)
-        throws InputMismatchException
+        throws NoSuchElementException
     {
         for (User user : users)
         {
@@ -126,7 +131,7 @@ public class Event
                 return user;
             }
         }
-        throw new InputMismatchException();
+        throw new NoSuchElementException("A user with the ID " + userId + " does not exist.");
     }
 
     public Queue getQueue()
@@ -152,13 +157,16 @@ public class Event
     /**
      * Deletes the event if the host enters the correct accessToken.
      *
-     * @param accessToken the accessToken associated with the event.
+     * @param accessToken The accessToken associated with the event.
+     *
+     * @throws InvalidKeyException The user entered an incorrect access token.
      */
     public void deleteEvent(String accessToken)
+        throws InvalidKeyException
     {
         if (!accessToken.equals(this.accessToken))
         {
-            throw new InputMismatchException();
+            throw new InvalidKeyException("You do not have permission to perform this action.");
         }
 
         JamBox.removeEvent(eventCode);

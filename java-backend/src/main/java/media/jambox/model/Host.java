@@ -1,5 +1,7 @@
 package media.jambox.model;
 
+import java.security.InvalidKeyException;
+
 public class Host
     extends User
 {
@@ -15,6 +17,7 @@ public class Host
     }
 
     public void endEvent(String accessToken)
+        throws InvalidKeyException
     {
         event.deleteEvent(accessToken);
     }

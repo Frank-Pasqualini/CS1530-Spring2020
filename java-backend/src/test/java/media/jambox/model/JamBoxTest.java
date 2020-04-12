@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.util.NoSuchElementException;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -118,7 +119,7 @@ public class JamBoxTest
 
     @Test
     public void testEventDeleteEvent()
-        throws IOException, SpotifyWebApiException
+        throws IOException, InvalidKeyException, SpotifyWebApiException
     {
         int eventCode = JamBox.addEvent(playlistId, accessToken, hostId, -1, null);
         JamBox.getEvent(eventCode).deleteEvent(accessToken);

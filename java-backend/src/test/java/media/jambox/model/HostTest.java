@@ -1,5 +1,6 @@
 package media.jambox.model;
 
+import java.security.InvalidKeyException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -25,6 +26,7 @@ public class HostTest
 
     @Test
     public void testEndEvent()
+        throws InvalidKeyException
     {
         testHost.endEvent(accessToken);
         Mockito.verify(mockEvent, Mockito.times(1)).deleteEvent(accessToken);

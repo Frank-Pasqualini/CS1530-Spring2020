@@ -1,5 +1,6 @@
 package media.jambox;
 
+import java.security.InvalidKeyException;
 import media.jambox.model.Event;
 import media.jambox.model.Host;
 import media.jambox.model.JamBox;
@@ -61,10 +62,27 @@ public class Controller
         JamBox.getEvent(eventCode).getUser(userId).disconnect();
     }
 
+    /**
+     * The API call for ending an event.
+     *
+     * @param eventCode The code of the Event to end.
+     * @param hostId The Host of the Event's ID.
+     * @param accessToken The access token associated with the Event.
+     *
+     * @return True if the event was successfully ended, false otherwise.
+     */
     @RequestMapping("/api/end_event")
-    public void endEvent(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("accessToken") String accessToken)
+    public boolean endEvent(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("accessToken") String accessToken)
     {
-        ((Host)JamBox.getEvent(eventCode).getUser(hostId)).endEvent(accessToken);
+        try
+        {
+            ((Host)JamBox.getEvent(eventCode).getUser(hostId)).endEvent(accessToken);
+            return true;
+        }
+        catch (InvalidKeyException e)
+        {
+            return false;
+        }
     }
 
     @RequestMapping("/api/remove_track")
