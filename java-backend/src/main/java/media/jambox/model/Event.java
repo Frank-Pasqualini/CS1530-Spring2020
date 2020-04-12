@@ -24,7 +24,7 @@ public class Event
     Event(int eventCode, String playlistId, String accessToken, String hostId, Playlist playlistOverride, Queue queueOverride)
         throws IOException, IllegalArgumentException, IndexOutOfBoundsException, SpotifyWebApiException
     {
-        if (eventCode < -1 || eventCode > 9999)
+        if (eventCode < 0 || eventCode > 9999)
         {
             throw new IllegalArgumentException("Event codes must be in the range 0000-9999.");
         }

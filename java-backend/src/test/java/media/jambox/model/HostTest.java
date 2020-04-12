@@ -18,7 +18,7 @@ public class HostTest
         testHost = new Host("franklesby", mockEvent);
     }
 
-    @Test
+    @Test(expected = IllegalCallerException.class)
     public void testDisconnect()
     {
         testHost.disconnect();
@@ -34,6 +34,7 @@ public class HostTest
 
     @Test
     public void testRemoveTrack()
+        throws InvalidKeyException
     {
         Queue mockQueue = Mockito.mock(Queue.class);
         Mockito.when(mockEvent.getQueue()).thenReturn(mockQueue);

@@ -1,5 +1,7 @@
 package media.jambox;
 
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import media.jambox.model.Event;
 import media.jambox.model.Host;
@@ -13,11 +15,27 @@ import org.springframework.web.bind.annotation.RestController;
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class Controller
 {
+    /**
+     * API call to create a new event.
+     *
+     * @param playlistId The ID of the playlist that the event starts with.
+     * @param accessToken The access token needed to create Spotify API requests.
+     * @param hostId The ID of the Host on Spotify.
+     *
+     * @return The event code, -1 if the event setup failed.
+     */
     @RequestMapping("/api/add_event")
     public int newEvent(@RequestParam("playlistId") String playlistId, @RequestParam("accessToken") String accessToken, @RequestParam("hostId") String hostId)
-        throws java.io.IOException, com.wrapper.spotify.exceptions.SpotifyWebApiException
     {
-        return JamBox.addEvent(playlistId, accessToken, hostId, -1, null);
+        try
+        {
+            return JamBox.addEvent(playlistId, accessToken, hostId, -1, null);
+        }
+        catch (IOException | SpotifyWebApiException e)
+        {
+            return -1;
+        }
+
     }
 
     @RequestMapping("/api/event")
@@ -50,10 +68,27 @@ public class Controller
         JamBox.getEvent(eventCode).getUser(userId).changeVote(trackId, -1);
     }
 
+    /**
+     * API call to request that a song is added to the Queue.
+     *
+     * @param eventCode The code of the Event.
+     * @param userId The ID of the User making the request.
+     * @param trackId The ID of the Track being requested.
+     *
+     * @return True if the request is successful, false otherwise.
+     */
     @RequestMapping("/api/request")
     public boolean request(@RequestParam("eventCode") int eventCode, @RequestParam("userId") String userId, @RequestParam("trackId") String trackId)
     {
-        return JamBox.getEvent(eventCode).getUser(userId).requestTrack(trackId);
+        try
+        {
+            JamBox.getEvent(eventCode).getUser(userId).requestTrack(trackId);
+            return true;
+        }
+        catch (IOException | SpotifyWebApiException e)
+        {
+            return false;
+        }
     }
 
     @RequestMapping("/api/disconnect")
@@ -85,9 +120,27 @@ public class Controller
         }
     }
 
+    /**
+     * API Call to remove a Track frrom the Queue.
+     *
+     * @param eventCode The code for the Event.
+     * @param hostId The ID of the Event's Host.
+     * @param trackId The ID of the track to remove.
+     * @param accessToken The access token associated with the Event.
+     *
+     * @return True if the removal is successful, false otherwise.
+     */
     @RequestMapping("/api/remove_track")
-    public void removeTrack(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("trackId") String trackId, @RequestParam("accessToken") String accessToken)
+    public boolean removeTrack(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("trackId") String trackId, @RequestParam("accessToken") String accessToken)
     {
-        ((Host)JamBox.getEvent(eventCode).getUser(hostId)).removeTrack(trackId, accessToken);
+        try
+        {
+            ((Host)JamBox.getEvent(eventCode).getUser(hostId)).removeTrack(trackId, accessToken);
+            return true;
+        }
+        catch (InvalidKeyException e)
+        {
+            return false;
+        }
     }
 }
