@@ -25,7 +25,7 @@ class SelectPlist extends Component {
   render() {
     return (
       <Container>
-        <Lists>Your Playlists</Lists>
+        <Lists>Select a Playlist</Lists>
         {
           this.plist
         }
