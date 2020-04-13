@@ -1,7 +1,8 @@
 package media.jambox.model;
 
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 
 public class User
 {
@@ -67,10 +68,10 @@ public class User
      *
      * @return The list of votes that the User has made.
      *
-     * @throws InputMismatchException Throws an exception if value is not 1, -1, or 0.
+     * @throws IllegalArgumentException Throws an exception if value is not 1, -1, or 0.
      */
     public ArrayList<ArrayList<String>> changeVote(String trackId, int value)
-        throws InputMismatchException
+        throws IllegalArgumentException
     {
         if (upvoted.contains(trackId))
         {
@@ -87,32 +88,17 @@ public class User
         switch (value)
         {
             case -1:
-                try
-                {
-                    event.getQueue().vote(trackId, -1);
-                    downvoted.add(trackId);
-                }
-                catch (java.util.InputMismatchException ignored)
-                {
-                    // Nothing bad should happen if a song is voted for that does not exist.
-                }
+                event.getQueue().vote(trackId, -1);
+                downvoted.add(trackId);
                 break;
             case 0:
                 break;
             case 1:
-                try
-                {
-                    event.getQueue().vote(trackId, 1);
-                    upvoted.add(trackId);
-                }
-                catch (java.util.InputMismatchException ignored)
-                {
-                    // Nothing bad should happen if a song is voted for that does not exist.
-                }
+                event.getQueue().vote(trackId, 1);
+                upvoted.add(trackId);
                 break;
             default:
-                throw new java.util.InputMismatchException();
-
+                throw new IllegalArgumentException("Votes can only be 1 up, 1 down, or removed.");
         }
 
         ArrayList<ArrayList<String>> voteList = new ArrayList<>();
@@ -123,24 +109,10 @@ public class User
         return voteList;
     }
 
-    /**
-     * Requests a song.
-     *
-     * @param trackId The ID of the track being requested.
-     *
-     * @return True if the song is successfully added, false otherwise.
-     */
-    public boolean requestTrack(String trackId)
+    public void requestTrack(String trackId)
+        throws IOException, SpotifyWebApiException
     {
-        try
-        {
-            event.getQueue().append(trackId);
-            return true;
-        }
-        catch (java.util.InputMismatchException e)
-        {
-            return false;
-        }
+        event.getQueue().append(trackId);
     }
 
     public void disconnect()

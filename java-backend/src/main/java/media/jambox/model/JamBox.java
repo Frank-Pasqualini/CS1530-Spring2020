@@ -3,7 +3,7 @@ package media.jambox.model;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 public class JamBox
@@ -40,18 +40,23 @@ public class JamBox
      * @param eventCode Override for the randomly generated event code.
      * @param event Override for the generated event.
      *
-     * @throws IOException if wrong code/ID input
+     * @throws IOException If wrong code/ID input
+     * @throws IllegalArgumentException If the specified event code is not in the valid range of event codes.
      * @throws SpotifyWebApiException if wrong access token
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public static int addEvent(String playlistId, String accessToken, String hostId, int eventCode, Event event)
-        throws IOException, SpotifyWebApiException
+        throws IOException, IllegalArgumentException, SpotifyWebApiException
     {
         Random rand = new java.util.Random();
 
         if (eventCode == -1)
         {
             eventCode = rand.nextInt(10000);
+        }
+        else if (eventCode < -1 || eventCode > 9999)
+        {
+            throw new IllegalArgumentException("Event codes must be in the range 0000-9999. -1 is the special case for non-mocked events to generate a code.");
         }
 
         for (int i = 0; i < singleInstance.eventList.size(); i++)
@@ -74,38 +79,56 @@ public class JamBox
     /**
      * Gets the information of an event by it's ID.
      *
-     * @param eventId The ID of the event to check.
+     * @param eventCode The ID of the event to check.
      *
      * @return The event specified by the ID.
+     *
+     * @throws IllegalArgumentException If the specified event code is not in the valid range of event codes.
+     * @throws NoSuchElementException If the specified event code is not a valid event.
      */
-    public static Event getEvent(int eventId)
+    public static Event getEvent(int eventCode)
+        throws IllegalArgumentException, NoSuchElementException
     {
+        if (eventCode < 0 || eventCode > 9999)
+        {
+            throw new IllegalArgumentException("Event codes must be in the range 0000-9999.");
+        }
+
         for (int i = 0; i < singleInstance.eventList.size(); i++)
         {
-            if (singleInstance.eventList.get(i).getEventCode() == eventId)
+            if (singleInstance.eventList.get(i).getEventCode() == eventCode)
             {
                 return singleInstance.eventList.get(i);
             }
         }
-        throw new InputMismatchException();
+
+        throw new NoSuchElementException("The event with code " + eventCode + " does not exist.");
     }
 
     /**
      * Remove an event by it's ID.
      *
-     * @param eventId The ID of the event to remove.
+     * @param eventCode The ID of the event to remove.
      *
+     * @throws IllegalArgumentException If the specified event code is not in the valid range of event codes.
+     * @throws NoSuchElementException If the specified event code is not a valid event.
      */
-    public static void removeEvent(int eventId)
+    public static void removeEvent(int eventCode)
+        throws IllegalArgumentException, NoSuchElementException
     {
+        if (eventCode < 0 || eventCode > 9999)
+        {
+            throw new IllegalArgumentException("Event codes must be in the range 0000-9999.");
+        }
+
         for (int i = 0; i < singleInstance.eventList.size(); i++)
         {
-            if (singleInstance.eventList.get(i).getEventCode() == eventId)
+            if (singleInstance.eventList.get(i).getEventCode() == eventCode)
             {
                 singleInstance.eventList.remove(i);
                 return;
             }
         }
-        throw new InputMismatchException();
+        throw new NoSuchElementException("The event with code " + eventCode + " does not exist.");
     }
 }
