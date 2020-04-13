@@ -5,6 +5,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import org.junit.Before;
@@ -104,45 +106,31 @@ public class UserTest
     }
 
     @Test
-    public void testVoteUpInvalidSong()
-    {
-        Mockito.when(mockQueue.vote(sandstorm, 1)).thenThrow(new InputMismatchException());
-        assertEquals(expectedVotes, testUser.changeVote(sandstorm, 1));
-    }
-
-    @Test
-    public void testVoteDownInvalidSong()
-    {
-        Mockito.when(mockQueue.vote(sandstorm, -1)).thenThrow(new InputMismatchException());
-        assertEquals(expectedVotes, testUser.changeVote(sandstorm, -1));
-    }
-
-    @Test
     public void testVoteRemovalInvalidSong()
     {
         Mockito.when(mockQueue.vote(sandstorm, 0)).thenThrow(new InputMismatchException());
         assertEquals(expectedVotes, testUser.changeVote(sandstorm, 0));
     }
 
-    @Test(expected = InputMismatchException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testLowVoteValue()
     {
         testUser.changeVote(despacito, -2);
     }
 
-    @Test(expected = InputMismatchException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testLowestVoteValue()
     {
         testUser.changeVote(despacito, Integer.MIN_VALUE);
     }
 
-    @Test(expected = InputMismatchException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testLowHighValue()
     {
         testUser.changeVote(neverGonnaGiveYouUp, 2);
     }
 
-    @Test(expected = InputMismatchException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testLowestHighestValue()
     {
         testUser.changeVote(neverGonnaGiveYouUp, Integer.MAX_VALUE);
@@ -150,16 +138,11 @@ public class UserTest
 
     @Test
     public void testRequestTrack()
+        throws IOException, SpotifyWebApiException
     {
         Mockito.when(mockQueue.append(neverGonnaGiveYouUp)).thenReturn(0);
-        assertTrue(testUser.requestTrack(neverGonnaGiveYouUp));
-    }
-
-    @Test
-    public void testRequestInvalidTrack()
-    {
-        Mockito.when(mockQueue.append("a")).thenThrow(InputMismatchException.class);
-        assertFalse(testUser.requestTrack("a"));
+        testUser.requestTrack(neverGonnaGiveYouUp);
+        Mockito.verify(mockQueue, Mockito.times(1)).append(neverGonnaGiveYouUp);
     }
 
     @Test

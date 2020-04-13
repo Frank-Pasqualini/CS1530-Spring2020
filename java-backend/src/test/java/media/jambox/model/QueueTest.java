@@ -6,8 +6,10 @@ import static org.junit.Assert.assertTrue;
 
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,15 +36,10 @@ public class QueueTest
 
     @Test
     public void testAppendSuccess()
+        throws IOException, SpotifyWebApiException
     {
         int spot = testQueue.append(despacito);
         assertEquals(2, spot);
-    }
-
-    @Test(expected = InputMismatchException.class)
-    public void testAppendInvalid()
-    {
-        testQueue.append("a");
     }
 
     @Test
@@ -61,6 +58,7 @@ public class QueueTest
 
     @Test
     public void testAppendCopy()
+        throws IOException, SpotifyWebApiException
     {
         testQueue.append(takeOnMe); // track already in queue
         assertEquals(takeOnMe, testQueue.pop().getId());
@@ -70,26 +68,30 @@ public class QueueTest
 
     @Test
     public void testRemoveTrackSucceed()
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         testQueue.append(despacito); // track not yet in queue
         assertEquals(despacito, testQueue.removeTrack(despacito, accessToken).getId()); //remove track in queue
     }
 
-    @Test(expected = InputMismatchException.class)
+    @Test(expected = InvalidKeyException.class)
     public void testRemoveTrackInvalid()
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         testQueue.append(despacito); // track not yet in queue
         assertEquals(despacito, testQueue.removeTrack(despacito, "wrongToken").getId()); //remove track in queue
     }
 
-    @Test(expected = InputMismatchException.class)
+    @Test(expected = NoSuchElementException.class)
     public void testRemoveTrackFailed()
+        throws InvalidKeyException
     {
         testQueue.removeTrack(despacito, accessToken);
     }
 
     @Test
     public void testVoteUpSucceed()
+        throws InvalidKeyException
     {
         testQueue.vote(takeOnMe, 1); //vote +1 for track in queue
         assertEquals(1, testQueue.removeTrack(takeOnMe, accessToken).getScore());
@@ -97,19 +99,21 @@ public class QueueTest
 
     @Test
     public void testVoteDownSucceed()
+        throws InvalidKeyException
     {
         testQueue.vote(takeOnMe, -1); //vote -1 for track in queue
         assertEquals(-1, testQueue.removeTrack(takeOnMe, accessToken).getScore());
     }
 
-    @Test(expected = InputMismatchException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testVoteAmountFailed()
+        throws IOException, SpotifyWebApiException
     {
         testQueue.append(despacito); // track not yet in queue
         testQueue.vote(despacito, 2); //vote +2 for track in queue
     }
 
-    @Test(expected = InputMismatchException.class)
+    @Test(expected = NoSuchElementException.class)
     public void testVoteOnInvalidTrack()
     {
         testQueue.vote(despacito, 1); //vote +1 for track not in queue
@@ -117,7 +121,7 @@ public class QueueTest
 
     @Test
     public void testSortAndDisplay()
-        throws IOException, SpotifyWebApiException
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         final String putYourRecordsOn = "2nGFzvICaeEWjIrBrL2RAx";
         testQueue.append(putYourRecordsOn);
