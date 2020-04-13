@@ -18,6 +18,7 @@ import ShowCode from './ShowCode';
 import GuestInterface from './GuestInterface';
 import HostInterface from './HostInterface';
 import JoinCodeError from './JoinCodeError';
+import SelectPlist from './SelectPlist';
 
 const Background = styled.div`
   background-color: #272727;
@@ -32,7 +33,38 @@ const TopBar = styled.div`
   background-color: #EBEBEB;
   display: flex;
 `;
-
+const playList = [
+  {
+    "name": "Oldies",
+    "id": "1",
+    "web_url": "http://albumlinernotes.com/Good_Feeling__1997_.html",
+    "img_url": "http://albumlinernotes.com/images/2a102b85cb897c8823a86e045653bffd_kxkd.png",
+  },
+  {
+    "name": "DMT Playlist",
+    "id": "2",
+    "web_url": "http://albumlinernotes.com/Band_On_The_Run__1973_.html",
+    "img_url": "http://albumlinernotes.com/images/9376ca665018b046b3ec8f5c6b65f59d_r3i3_dm8p.png",
+  },
+  {
+    "name": "TGIF",
+    "id": "3",
+    "web_url": "http://aln3.albumlinernotes.com/21.html",
+    "img_url": "http://aln3.albumlinernotes.com/images/1f3330045cfe67c27739519980e23444_9ji6.png",
+  },
+  {
+    "name": "Movie OSTs",
+    "id": "4",
+    "web_url": "http://aln3.albumlinernotes.com/Charlotte_s_Web.html",
+    "img_url": "http://aln3.albumlinernotes.com/images/1f63da331aa3e8ee5d61a093b835fe24_w8bk.png",
+  },
+  {
+    "name": "Random",
+    "id": "5",
+    "web_url": "http://aln3.albumlinernotes.com/Rogers_-_21_Number_Ones.html",
+    "img_url": "http://aln3.albumlinernotes.com/images/bb9d7c262a03af6b59968e163ee3cf2d_d7zd_5c14.png",
+  },
+]
 const songList = [
   {
   "title": "1904",
@@ -354,6 +386,7 @@ class App extends Component {
               <Route path="/invalid-code"> 
                 <JoinCodeError />
               </Route>
+              <Route path="/choose-playlist"> <SelectPlist playList={playList}/> </Route>
             </Switch>
           </Background>
       </Router>

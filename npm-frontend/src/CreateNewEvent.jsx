@@ -65,7 +65,7 @@ class CreateNewEvent extends Component {
     return (
       <CreateEventContainer>
         <CreateEventText>Please Choose a Playlist</CreateEventText>
-        <Link to="/show-code"> 
+        <Link to="/choose-playlist"> 
           <ChooseExsistingButton onClick={this.props.addEvent}>Personal </ChooseExsistingButton>
           <ChooseDefaultButton onClick={this.props.addEvent}>Spotify Default</ChooseDefaultButton>
         </Link>
