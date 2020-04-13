@@ -24,10 +24,6 @@ const CoverArt = styled.img`
   margin: 15px;
 `;
 
-const PlayInfo = styled.div`
-  width: 450px;
-`;
-
 const PlistName = styled.div`
   font-size: 25px;
 `;
@@ -50,10 +46,9 @@ class Playlist extends Component {
     return (
         <Link to="/show-code">
       <PlistButton>
-        <CoverArt src={this.props.album} />
+        <CoverArt src={this.props.coverArt} />
         <PlistInfo>
           <PlistName>{this.props.name}</PlistName>
-          <PlistID>{this.props.id}</PlistID>
         </PlistInfo>
       </PlistButton>
       </Link>
