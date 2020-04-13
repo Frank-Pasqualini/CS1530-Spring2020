@@ -63,11 +63,11 @@ public class Event
             throw new IndexOutOfBoundsException("The playlist submitted does not have at least 2 songs.");
         }
 
-        users = new ArrayList<>();
-        users.add(new Host(hostId, this));
-
         this.accessToken = accessToken;
         this.eventCode = eventCode;
+
+        users = new ArrayList<>();
+        users.add(new Host(hostId, this));
     }
 
     /**
