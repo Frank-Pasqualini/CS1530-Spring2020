@@ -115,7 +115,7 @@ class TrackControls extends Component {
 
   playMusic = () => {
     this.setState({ paused: false });
-    fetch('https://api.spotify.com/v1/me/player/play?device_id=beae69b8ce63eb244aa37e735390a02cb1d96d7c', {
+    fetch('https://api.spotify.com/v1/me/player/play', {
       method: 'PUT',
 			headers: {
 			  'Authorization': `Bearer ${this.props.accessToken}`
@@ -128,7 +128,7 @@ class TrackControls extends Component {
 
   pauseMusic = () => {
     this.setState({ paused: true });
-    fetch('https://api.spotify.com/v1/me/player/pause?device_id=beae69b8ce63eb244aa37e735390a02cb1d96d7c', {
+    fetch('https://api.spotify.com/v1/me/player/pause', {
       method: 'PUT',
 			headers: {
 			  'Authorization': `Bearer ${this.props.accessToken}`
@@ -140,7 +140,7 @@ class TrackControls extends Component {
   }
 
   skipForward = () => {
-    fetch('https://api.spotify.com/v1/me/player/next?device_id=beae69b8ce63eb244aa37e735390a02cb1d96d7c', {
+    fetch('https://api.spotify.com/v1/me/player/next', {
       method: 'POST',
 			headers: {
 			  'Authorization': `Bearer ${this.props.accessToken}`
@@ -164,7 +164,7 @@ class TrackControls extends Component {
   }
 
   skipBack = () => {
-    fetch('https://api.spotify.com/v1/me/player/previous?device_id=beae69b8ce63eb244aa37e735390a02cb1d96d7c', {
+    fetch('https://api.spotify.com/v1/me/player/previous', {
       method: 'POST',
 			headers: {
 			  'Authorization': `Bearer ${this.props.accessToken}`
