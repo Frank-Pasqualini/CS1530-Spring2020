@@ -33,7 +33,7 @@ public class JamBoxTest
 
     @Test
     public void testAddEvent()
-        throws IOException, SpotifyWebApiException
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         JamBox.addEvent(playlistId, accessToken, hostId, 0, mockEvent);
         Mockito.when(mockEvent.getEventCode()).thenReturn(0);
@@ -42,21 +42,21 @@ public class JamBoxTest
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddIllegalEvent()
-        throws IOException, SpotifyWebApiException
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         JamBox.addEvent(playlistId, accessToken, hostId, -2, mockEvent);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddIllegalEvent2()
-        throws IOException, SpotifyWebApiException
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         JamBox.addEvent(playlistId, accessToken, hostId, 10000, mockEvent);
     }
 
     @Test
     public void testAddDuplicateEvent()
-        throws IOException, SpotifyWebApiException
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         int eventCode1 = JamBox.addEvent(playlistId, accessToken, hostId, 1, mockEvent);
         Mockito.when(mockEvent.getEventCode()).thenReturn(1);
@@ -84,7 +84,7 @@ public class JamBoxTest
 
     @Test
     public void testRemoveEvent()
-        throws IOException, SpotifyWebApiException
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         JamBox.addEvent(playlistId, accessToken, hostId, 3, mockEvent);
         Mockito.when(mockEvent.getEventCode()).thenReturn(3);
@@ -111,7 +111,7 @@ public class JamBoxTest
 
     @Test
     public void testAddNonMockEvent()
-        throws IOException, SpotifyWebApiException
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         int eventCode = JamBox.addEvent(playlistId, accessToken, hostId, -1, null);
         assertNotNull(JamBox.getEvent(eventCode));

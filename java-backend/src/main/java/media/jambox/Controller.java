@@ -3,10 +3,14 @@ package media.jambox;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
+import java.util.NoSuchElementException;
 import media.jambox.model.Event;
 import media.jambox.model.Host;
 import media.jambox.model.JamBox;
 import media.jambox.model.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,16 +32,9 @@ public class Controller
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/add_event")
     public int newEvent(@RequestParam("playlistId") String playlistId, @RequestParam("accessToken") String accessToken, @RequestParam("hostId") String hostId)
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
-        try
-        {
-            return JamBox.addEvent(playlistId, accessToken, hostId, -1, null);
-        }
-        catch (IOException | SpotifyWebApiException e)
-        {
-            return -1;
-        }
-
+        return JamBox.addEvent(playlistId, accessToken, hostId, -1, null);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -86,17 +83,10 @@ public class Controller
      */
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/request")
-    public boolean request(@RequestParam("eventCode") int eventCode, @RequestParam("userId") String userId, @RequestParam("trackId") String trackId)
+    public void request(@RequestParam("eventCode") int eventCode, @RequestParam("userId") String userId, @RequestParam("trackId") String trackId)
+        throws IOException, SpotifyWebApiException
     {
-        try
-        {
-            JamBox.getEvent(eventCode).getUser(userId).requestTrack(trackId);
-            return true;
-        }
-        catch (IOException | SpotifyWebApiException e)
-        {
-            return false;
-        }
+        JamBox.getEvent(eventCode).getUser(userId).requestTrack(trackId);
     }
 
     @CrossOrigin(origins = "http://localhost:3000")
@@ -117,17 +107,10 @@ public class Controller
      */
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/end_event")
-    public boolean endEvent(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("accessToken") String accessToken)
+    public void endEvent(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("accessToken") String accessToken)
+        throws InvalidKeyException
     {
-        try
-        {
-            ((Host)JamBox.getEvent(eventCode).getUser(hostId)).endEvent(accessToken);
-            return true;
-        }
-        catch (InvalidKeyException e)
-        {
-            return false;
-        }
+        ((Host)JamBox.getEvent(eventCode).getUser(hostId)).endEvent(accessToken);
     }
 
 
@@ -143,16 +126,41 @@ public class Controller
      */
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/remove_track")
-    public boolean removeTrack(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("trackId") String trackId, @RequestParam("accessToken") String accessToken)
+    public void removeTrack(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("trackId") String trackId, @RequestParam("accessToken") String accessToken)
+        throws InvalidKeyException
     {
-        try
-        {
-            ((Host)JamBox.getEvent(eventCode).getUser(hostId)).removeTrack(trackId, accessToken);
-            return true;
-        }
-        catch (InvalidKeyException e)
-        {
-            return false;
-        }
+        ((Host)JamBox.getEvent(eventCode).getUser(hostId)).removeTrack(trackId, accessToken);
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @RequestMapping("/api/cycle")
+    public void cycle(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("accessToken") String accessToken)
+        throws InvalidKeyException, IOException, SpotifyWebApiException
+    {
+        ((Host)JamBox.getEvent(eventCode).getUser(hostId)).skipSong(accessToken);
+    }
+
+    @ExceptionHandler(value = InvalidKeyException.class)
+    public ResponseEntity<Object> exception(InvalidKeyException exception)
+    {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(value = IOException.class)
+    public ResponseEntity<Object> exception(IOException exception)
+    {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = SpotifyWebApiException.class)
+    public ResponseEntity<Object> exception(SpotifyWebApiException exception)
+    {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = NoSuchElementException.class)
+    public ResponseEntity<Object> exception(java.util.NoSuchElementException exception)
+    {
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
