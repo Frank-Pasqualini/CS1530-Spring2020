@@ -18,6 +18,8 @@ import ShowCode from './ShowCode';
 import GuestInterface from './GuestInterface';
 import HostInterface from './HostInterface';
 import JoinCodeError from './JoinCodeError';
+import SelectPlist from './SelectPlist';
+import DisneyArt from './Disney.jpeg';
 
 const Background = styled.div`
   background-color: #272727;
@@ -32,7 +34,70 @@ const TopBar = styled.div`
   background-color: #EBEBEB;
   display: flex;
 `;
-
+const playListd = [
+  {
+    "name": "Rock",
+    "id": "6",
+    "web_url": "http://aln3.albumlinernotes.com/Vice_Verses.html",
+    "img_url": "http://aln3.albumlinernotes.com/images/a4012b5a07e2dcfb1ab219de77c6c019.jpg",
+  },
+  {
+    "name": "POP",
+    "id": "7",
+    "web_url": "https://musicbrainz.org/release-group/3843ba6a-0b1e-48c0-bc86-2f64e6d9525c",
+    "img_url": "https://coverartarchive.org/release-group/3843ba6a-0b1e-48c0-bc86-2f64e6d9525c/front.jpg",
+  },
+  {
+    "name": "Metal",
+    "id": "8",
+    "web_url": "https://musicbrainz.org/release-group/55d8ab42-990b-4c94-93c8-9ca7927b5fc0",
+    "img_url": "https://coverartarchive.org/release-group/55d8ab42-990b-4c94-93c8-9ca7927b5fc0/front.jpg",
+  },
+  {
+    "name": "Dubstep",
+    "id": "9",
+    "web_url": "https://musicbrainz.org/release-group/c2142471-c85b-4433-849c-839aafc8e3a4",
+    "img_url": "https://coverartarchive.org/release-group/c2142471-c85b-4433-849c-839aafc8e3a4/front.jpg",
+  },
+  {
+    "name": "Classical",
+    "id": "10",
+    "web_url": "http://aln3.albumlinernotes.com/Rogers_-_21_Number_Ones.html",
+    "img_url": "https://coverartarchive.org/release-group/0e587fbc-3d59-4f8b-b09d-dd2d57bf50bd/front.jpg",
+  },
+]
+const playList = [
+  {
+    "name": "Oldies",
+    "id": "1",
+    "web_url": "http://albumlinernotes.com/Good_Feeling__1997_.html",
+    "img_url": "http://albumlinernotes.com/images/2a102b85cb897c8823a86e045653bffd_kxkd.png",
+  },
+  {
+    "name": "DMT Playlist",
+    "id": "2",
+    "web_url": "http://albumlinernotes.com/Band_On_The_Run__1973_.html",
+    "img_url": "http://albumlinernotes.com/images/9376ca665018b046b3ec8f5c6b65f59d_r3i3_dm8p.png",
+  },
+  {
+    "name": "TGIF",
+    "id": "3",
+    "web_url": "http://aln3.albumlinernotes.com/21.html",
+    "img_url": "http://aln3.albumlinernotes.com/images/1f3330045cfe67c27739519980e23444_9ji6.png",
+  },
+  {
+    "name": "Movie OSTs",
+    "id": "4",
+    "web_url": "http://aln3.albumlinernotes.com/Charlotte_s_Web.html",
+    "img_url": "http://aln3.albumlinernotes.com/images/1f63da331aa3e8ee5d61a093b835fe24_w8bk.png",
+  },
+  {
+    "name": "Disney",
+    "id": "5",
+    "web_url": "http://aln3.albumlinernotes.com/Rogers_-_21_Number_Ones.html",
+    "img_url": `${DisneyArt}`,
+  },
+]
 const songList = [
   {
   "title": "1904",
@@ -354,6 +419,8 @@ class App extends Component {
               <Route path="/invalid-code"> 
                 <JoinCodeError />
               </Route>
+              <Route path="/choose-playlist-d"> <SelectPlist playList={playListd}/> </Route>
+              <Route path="/choose-playlist"> <SelectPlist playList={playList}/> </Route>
             </Switch>
           </Background>
       </Router>
