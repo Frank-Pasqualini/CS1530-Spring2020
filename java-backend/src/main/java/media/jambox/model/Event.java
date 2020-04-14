@@ -79,7 +79,6 @@ public class Event
      */
     public boolean addUser(String userId)
     {
-        System.out.println("userId: " + userId);
         User newUser = new User(userId, this);
         if (users.contains(newUser))
         {
