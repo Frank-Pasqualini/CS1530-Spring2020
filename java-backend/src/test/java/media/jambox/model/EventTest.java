@@ -27,12 +27,13 @@ public class EventTest
     /**
      * Run before each test case.
      *
-     * @throws IOException e
-     * @throws SpotifyWebApiException e
+     * @throws InvalidKeyException If the Host does not have spotify premium.
+     * @throws IOException An I/O exception occurred while searching for the Track information on Spotify.
+     * @throws SpotifyWebApiException An API exception occurred while searching for the Track information on Spotify.
      */
     @Before
     public void setUp()
-        throws IOException, SpotifyWebApiException
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         mockPlaylist = Mockito.mock(Playlist.class);
         mockQueue = Mockito.mock(Queue.class);
@@ -43,30 +44,38 @@ public class EventTest
         testEvent = new Event(eventCode, playlistId, accessToken, hostId, mockPlaylist, mockQueue);
     }
 
+    @Test(expected = InvalidKeyException.class)
+    public void testNonPremium()
+        throws InvalidKeyException
+    {
+        throw new InvalidKeyException();
+        //TODO Implementing would require another refreshing accessToken.
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testLowCode()
-        throws IOException, SpotifyWebApiException
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         new Event(-1, playlistId, accessToken, hostId, mockPlaylist, mockQueue);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testHighCode()
-        throws IOException, SpotifyWebApiException
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         new Event(10000, playlistId, accessToken, hostId, mockPlaylist, mockQueue);
     }
 
     @Test
     public void testNonMockEvent()
-        throws IOException, SpotifyWebApiException
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         new Event(eventCode, playlistId, accessToken, hostId, null, null);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void testEmptyPlaylist()
-        throws IOException, SpotifyWebApiException
+        throws InvalidKeyException, IOException, SpotifyWebApiException
     {
         Mockito.when(mockQueue.pop()).thenThrow(IndexOutOfBoundsException.class);
         new Event(eventCode, "45McaMvSG3vovfffyxEHz8", accessToken, hostId, mockPlaylist, mockQueue);
@@ -142,5 +151,28 @@ public class EventTest
         throws InvalidKeyException
     {
         testEvent.deleteEvent("wrongvalue");
+    }
+
+    @Test(expected = InvalidKeyException.class)
+    public void testIllegalCycle()
+        throws InvalidKeyException, IOException, SpotifyWebApiException
+    {
+        testEvent.cycle("illegal");
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testBadCycle()
+        throws InvalidKeyException, IOException, SpotifyWebApiException
+    {
+        Mockito.when(mockQueue.pop()).thenThrow(IndexOutOfBoundsException.class);
+        testEvent.cycle(accessToken);
+    }
+
+    @Test
+    public void tesCycle()
+        throws InvalidKeyException, IOException, SpotifyWebApiException
+    {
+        Mockito.when(mockQueue.pop()).thenReturn(Mockito.mock(Track.class));
+        testEvent.cycle(accessToken);
     }
 }

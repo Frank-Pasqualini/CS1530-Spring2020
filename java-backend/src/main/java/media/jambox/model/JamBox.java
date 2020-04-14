@@ -2,6 +2,7 @@ package media.jambox.model;
 
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
 import java.io.IOException;
+import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Random;
@@ -40,13 +41,14 @@ public class JamBox
      * @param eventCode Override for the randomly generated event code.
      * @param event Override for the generated event.
      *
+     * @throws IllegalArgumentException If the specified event code is not in the valid range of event codes
+     * @throws InvalidKeyException If the User is not a Spotify Premium member.
      * @throws IOException If wrong code/ID input
-     * @throws IllegalArgumentException If the specified event code is not in the valid range of event codes.
      * @throws SpotifyWebApiException if wrong access token
      */
     @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public static int addEvent(String playlistId, String accessToken, String hostId, int eventCode, Event event)
-        throws IOException, IllegalArgumentException, SpotifyWebApiException
+        throws IllegalArgumentException, InvalidKeyException, IOException, SpotifyWebApiException
     {
         Random rand = new java.util.Random();
 

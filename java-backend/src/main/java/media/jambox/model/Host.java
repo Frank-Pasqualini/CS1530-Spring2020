@@ -1,5 +1,7 @@
 package media.jambox.model;
 
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import java.io.IOException;
 import java.security.InvalidKeyException;
 
 public class Host
@@ -27,5 +29,11 @@ public class Host
         throws InvalidKeyException
     {
         event.getQueue().removeTrack(trackId, accessToken);
+    }
+
+    public void skipSong(String accessToken)
+        throws InvalidKeyException, IOException, SpotifyWebApiException
+    {
+        event.cycle(accessToken);
     }
 }
