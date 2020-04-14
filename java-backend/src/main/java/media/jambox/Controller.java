@@ -29,9 +29,9 @@ public class Controller
      *
      * @return The event code, -1 if the event setup failed.
      *
-     * @throws InvalidKeyException
-     * @throws IOException
-     * @throws SpotifyWebApiException
+     * @throws InvalidKeyException When the user does not have Spotify premium.
+     * @throws IOException An I/O exception occurred while searching for the rack information on Spotify.
+     * @throws SpotifyWebApiException An API exception occurred while searching for the Track information on Spotify.
      */
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/add_event")
@@ -83,10 +83,8 @@ public class Controller
      * @param userId The ID of the User making the request.
      * @param trackId The ID of the Track being requested.
      *
-     * @return True if the request is successful, false otherwise.
-     *
-     * @throws InvalidKeyException
-     * @throws SpotifyWebApiException
+     * @throws IOException An I/O exception occurred while searching for the rack information on Spotify.
+     * @throws SpotifyWebApiException An API exception occurred while searching for the Track information on Spotify.
      */
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/request")
@@ -110,9 +108,7 @@ public class Controller
      * @param hostId The Host of the Event's ID.
      * @param accessToken The access token associated with the Event.
      *
-     * @return True if the event was successfully ended, false otherwise.
-     *
-     * @throws InvalidKeyException
+     * @throws InvalidKeyException When the user does not authenticate as host.
      */
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/end_event")
@@ -122,18 +118,15 @@ public class Controller
         ((Host)JamBox.getEvent(eventCode).getUser(hostId)).endEvent(accessToken);
     }
 
-
     /**
-     * API Call to remove a Track frrom the Queue.
+     * API Call to remove a Track from the Queue.
      *
      * @param eventCode The code for the Event.
      * @param hostId The ID of the Event's Host.
      * @param trackId The ID of the track to remove.
      * @param accessToken The access token associated with the Event.
      *
-     * @return True if the removal is successful, false otherwise.
-     *
-     * @throws InvalidKeyException
+     * @throws InvalidKeyException When the user does not authenticate as host.
      */
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/remove_track")
