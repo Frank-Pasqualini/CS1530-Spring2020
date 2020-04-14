@@ -10,11 +10,11 @@ import media.jambox.model.JamBox;
 import media.jambox.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
@@ -31,6 +31,7 @@ public class Controller
      */
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/add_event")
+    @throws
     public int newEvent(@RequestParam("playlistId") String playlistId, @RequestParam("accessToken") String accessToken, @RequestParam("hostId") String hostId)
         throws InvalidKeyException, IOException, SpotifyWebApiException
     {
@@ -81,6 +82,7 @@ public class Controller
      *
      * @return True if the request is successful, false otherwise.
      */
+    @throws
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/request")
     public void request(@RequestParam("eventCode") int eventCode, @RequestParam("userId") String userId, @RequestParam("trackId") String trackId)
@@ -107,6 +109,7 @@ public class Controller
      */
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/end_event")
+    @throws
     public void endEvent(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("accessToken") String accessToken)
         throws InvalidKeyException
     {
@@ -126,6 +129,7 @@ public class Controller
      */
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/remove_track")
+    @throws
     public void removeTrack(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("trackId") String trackId, @RequestParam("accessToken") String accessToken)
         throws InvalidKeyException
     {
@@ -134,6 +138,7 @@ public class Controller
 
     @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping("/api/cycle")
+    @throws
     public void cycle(@RequestParam("eventCode") int eventCode, @RequestParam("hostId") String hostId, @RequestParam("accessToken") String accessToken)
         throws InvalidKeyException, IOException, SpotifyWebApiException
     {
@@ -141,6 +146,7 @@ public class Controller
     }
 
     @ExceptionHandler(value = InvalidKeyException.class)
+    @throws
     public ResponseEntity<Object> exception(InvalidKeyException exception)
     {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.UNAUTHORIZED);
