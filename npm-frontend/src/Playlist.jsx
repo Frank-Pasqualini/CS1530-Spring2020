@@ -21,16 +21,11 @@ const PlistButton = styled.button`
 
 const CoverArt = styled.img`
   height: 75px;
-  margin: 15px;
+  margin: 0 15px;
 `;
 
 const PlistName = styled.div`
   font-size: 25px;
-`;
-
-const PlistID = styled.div`
-  color: #aaa;
-  font-size: 18px;
 `;
 
 const PlistInfo = styled.div`
@@ -44,13 +39,13 @@ class Playlist extends Component {
 
   render() {
     return (
-        <Link to="/show-code">
-      <PlistButton>
-        <CoverArt src={this.props.coverArt} />
-        <PlistInfo>
-          <PlistName>{this.props.name}</PlistName>
-        </PlistInfo>
-      </PlistButton>
+      <Link to="/show-code" style={{ textDecoration: 'none' }}>
+        <PlistButton>
+          <CoverArt src={this.props.coverArt} />
+          <PlistInfo>
+            <PlistName>{this.props.name}</PlistName>
+          </PlistInfo>
+        </PlistButton>
       </Link>
     )
   }

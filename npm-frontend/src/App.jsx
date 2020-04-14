@@ -19,6 +19,7 @@ import GuestInterface from './GuestInterface';
 import HostInterface from './HostInterface';
 import JoinCodeError from './JoinCodeError';
 import SelectPlist from './SelectPlist';
+import DisneyArt from './Disney.jpeg';
 
 const Background = styled.div`
   background-color: #272727;
@@ -91,10 +92,10 @@ const playList = [
     "img_url": "http://aln3.albumlinernotes.com/images/1f63da331aa3e8ee5d61a093b835fe24_w8bk.png",
   },
   {
-    "name": "Random",
+    "name": "Disney",
     "id": "5",
     "web_url": "http://aln3.albumlinernotes.com/Rogers_-_21_Number_Ones.html",
-    "img_url": "http://aln3.albumlinernotes.com/images/bb9d7c262a03af6b59968e163ee3cf2d_d7zd_5c14.png",
+    "img_url": `${DisneyArt}`,
   },
 ]
 const songList = [
