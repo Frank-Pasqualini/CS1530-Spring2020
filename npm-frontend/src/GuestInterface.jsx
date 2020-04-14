@@ -48,24 +48,43 @@ const SearchButton = styled.button`
 `;
 
 class GuestInterface extends Component {
-  constructor(props) {
-    super()
-    // Create a song entry for every song in the list
-    this.songs = props.songList.map((item, key) =>
-      <Song title={item.title} album={item.img_url} artist={item.artist} voteCount={item.voteCount} key={key}/>
-    );
-  }
   render() {
     return (
       <Container>
-        <Header>Event 2011</Header>
+        <Header>Event {this.props.currEventCode}</Header>
         <div>
           <SearchBar/><SearchButton>Search</SearchButton>
         </div>
         <NextSong>Up Next</NextSong>
+        <Song 
+          title={this.props.songData.upNext.name} 
+          album={this.props.songData.upNext.albumImages[1]} 
+          artist={this.props.songData.upNext.artistNames[0]} 
+          voteCount={this.props.songData.upNext.score} 
+          updateSongs={this.props.updateSongs} 
+          currEventCode={this.props.currEventCode} 
+          userID={this.props.userID} 
+          upVoteSong={this.props.upVoteSong}
+          downVoteSong={this.props.downVoteSong}
+          host
+        />
+        <NextSong>In The Queue</NextSong>
         {
           // This renders all the song entries we created
-          this.songs
+          // Create a song entry for every song in the list
+          this.props.songData.queue.trackList.map((item, key) =>
+            <Song 
+              title={item.name} 
+              album={item.albumImages[1]} 
+              artist={item.artistNames[0]} 
+              voteCount={item.score} 
+              id={item.id} 
+              key={key} 
+              userID={this.props.userID} 
+              updateSongs={this.props.updateSongs} 
+              currEventCode={this.props.currEventCode} 
+            />
+          )
         }
       </Container>
     )

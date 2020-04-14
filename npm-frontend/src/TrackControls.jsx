@@ -4,7 +4,6 @@ import {PlayCircle} from '@styled-icons/boxicons-regular/PlayCircle';
 import {PauseCircle} from '@styled-icons/boxicons-regular/PauseCircle';
 import {SkipForward} from '@styled-icons/remix-fill/SkipForward';
 import {SkipBack} from '@styled-icons/remix-fill/SkipBack';
-import DefaultArt from './defaultart.png';
 
 const ControlsContainer = styled.div`
   height: 100px;
@@ -112,29 +111,73 @@ class TrackControls extends Component {
 
   playMusic = () => {
     this.setState({ paused: false });
+    fetch('https://api.spotify.com/v1/me/player/play?device_id=beae69b8ce63eb244aa37e735390a02cb1d96d7c', {
+      method: 'PUT',
+			headers: {
+			  'Authorization': `Bearer ${this.props.accessToken}`
+      },
+      query: {
+        'client_id': `${this.props.accessToken}`
+      }
+		})
   }
 
   pauseMusic = () => {
     this.setState({ paused: true });
+    fetch('https://api.spotify.com/v1/me/player/pause?device_id=beae69b8ce63eb244aa37e735390a02cb1d96d7c', {
+      method: 'PUT',
+			headers: {
+			  'Authorization': `Bearer ${this.props.accessToken}`
+      },
+      query: {
+        'client_id': `${this.props.accessToken}`
+      }
+		})
+  }
+
+  skipForward = () => {
+    fetch('https://api.spotify.com/v1/me/player/next?device_id=beae69b8ce63eb244aa37e735390a02cb1d96d7c', {
+      method: 'POST',
+			headers: {
+			  'Authorization': `Bearer ${this.props.accessToken}`
+      },
+      query: {
+        'client_id': `${this.props.accessToken}`
+      }
+    })
+    this.setState({ paused: false });
+  }
+
+  skipBack = () => {
+    fetch('https://api.spotify.com/v1/me/player/previous?device_id=beae69b8ce63eb244aa37e735390a02cb1d96d7c', {
+      method: 'POST',
+			headers: {
+			  'Authorization': `Bearer ${this.props.accessToken}`
+      },
+      query: {
+        'client_id': `${this.props.accessToken}`
+      }
+    })
+    this.setState({ paused: false });
   }
 
   render() {
     return (
       <ControlsContainer>
         <CurrSongInfoContainer>
-          <AlbumArt src={DefaultArt}/>
+          <AlbumArt src={this.props.song.albumImages[1]}/>
           <div>
-            <SongTitle>Song Name</SongTitle>
-            <ArtistName>Artist Name</ArtistName>
+            <SongTitle>{this.props.song.name}</SongTitle>
+            <ArtistName>{this.props.song.artistNames[0]}</ArtistName>
           </div>
         </CurrSongInfoContainer>
         <ButtonsContainer>
-          <BackButton><Back /></BackButton>
+          <BackButton onClick={this.skipBack}><Back /></BackButton>
           {
             // this displays the play button if the music paused and the pause button if music is playing
             this.state.paused ? <PlayButton onClick={this.playMusic}><Play /></PlayButton> : <PauseButton onClick={this.pauseMusic}><Pause /></PauseButton>
           }
-          <ForwardButton><Forward /></ForwardButton>
+          <ForwardButton onClick={this.skipForward}><Forward /></ForwardButton>
         </ButtonsContainer>
       </ControlsContainer>
     )

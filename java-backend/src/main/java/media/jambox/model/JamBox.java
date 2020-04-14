@@ -80,6 +80,7 @@ public class JamBox
      */
     public static Event getEvent(int eventId)
     {
+        System.out.println("eventId: " + eventId);
         for (int i = 0; i < singleInstance.eventList.size(); i++)
         {
             if (singleInstance.eventList.get(i).getEventCode() == eventId)

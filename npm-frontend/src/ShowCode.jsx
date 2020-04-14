@@ -11,6 +11,12 @@ const EventCode = styled.div`
   display: flex;
   justify-content: center;
 `;
+const Loading = styled.div`
+  color: white;
+  font-size: 50px;
+  display: flex;
+  justify-content: center;
+`;
 
 const Container = styled.div`
   color: white;
@@ -57,14 +63,34 @@ const Arrow = styled(RightArrowCircle)`
 `;
 
 class ShowCode extends Component {
+  constructor() {
+    super();
+    this.state = {
+      loading: true
+    }
+  }
+  componentDidMount() {
+    fetch(`http://localhost:8080/api/add_event?playlistId=37i9dQZF1DX8C9xQcOrE6T&accessToken=${this.props.accessToken}&hostId=chipmilotis`)
+    .then(response => response.json())
+    .then(data => {
+      this.props.addEvent(data);
+      this.setState({ loading: false });
+    });
+
+  }
+
   render() {
     return (
       <Container>
-        This is your Event Code:
-        <EventCode>{this.props.thisEvent}</EventCode>
-        <Link to='/host' style={{ textDecoration: 'none' }}>
-          <JoinEventCodeButton>Start Event <Arrow /></JoinEventCodeButton>
-        </Link>
+        {this.state.loading ? <Loading>Your Event Code is Loading...</Loading> :
+        <div>
+          This is your Event Code:
+          <EventCode>{this.props.currEventCode}</EventCode>
+          <Link to='/host' style={{ textDecoration: 'none', display: 'flex', justifyContent: 'center'}}>
+            <JoinEventCodeButton>Start Event <Arrow /></JoinEventCodeButton>
+          </Link>
+        </div>
+        }
       </Container>
     );
   }
