@@ -67,6 +67,7 @@ class CreateNewEvent extends Component {
     const params = this.getHashParams();
     console.log(params);
     this.props.updateToken(params.access_token);
+    this.props.updateHostId(params.host_id, params.account_type);
   }
 
   getHashParams() {

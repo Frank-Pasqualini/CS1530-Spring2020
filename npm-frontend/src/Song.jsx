@@ -95,6 +95,12 @@ class Song extends Component {
     }
   }
 
+  componentDidUpdate() {
+    if(this.state.up || this.state.down) {
+      this.setState({ up: false, down: false })
+    }
+  }
+
   upVote = () => {
     // Update vote count if up wasn't clicked
     // If up was already clicked, don't do anything

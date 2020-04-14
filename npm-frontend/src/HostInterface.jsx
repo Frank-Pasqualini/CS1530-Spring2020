@@ -77,8 +77,7 @@ class HostInterface extends Component {
   }
 
   removeSong = (id) => {
-    // Replace chipmilotis with your own spotify username to use this on your own 
-    fetch(`http://localhost:8080/api/remove_track?eventCode=${this.props.currEventCode}&hostId=chipmilotis&trackId=${id}&accessToken=${this.props.accessToken}`);
+    fetch(`http://localhost:8080/api/remove_track?eventCode=${this.props.currEventCode}&hostId=${this.props.hostId}&trackId=${id}&accessToken=${this.props.accessToken}`);
 
     fetch(`http://localhost:8080/api/event?eventCode=${this.props.currEventCode}`)
     .then(response => response.json())
@@ -109,7 +108,7 @@ class HostInterface extends Component {
         }
       </SongContainer>
       { this.state.loading ? <div></div> : 
-        <TrackControls currEventCode={this.props.currEventCode} accessToken={this.props.accessToken} song={this.props.songData.nowPlaying} updateSongs={this.props.updateSongs} />
+        <TrackControls currEventCode={this.props.currEventCode} accessToken={this.props.accessToken} song={this.props.songData.nowPlaying} updateSongs={this.props.updateSongs} hostId={this.props.hostId} />
       }
     </PageContainer>
     )

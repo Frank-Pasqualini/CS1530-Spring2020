@@ -150,8 +150,7 @@ class TrackControls extends Component {
       }
     })
 
-    // Replace chipmilotis with your own spotify username to use this on your own 
-    fetch(`http://localhost:8080/api/cycle?eventCode=${this.props.currEventCode}&hostId=chipmilotis&accessToken=${this.props.accessToken}`);
+    fetch(`http://localhost:8080/api/cycle?eventCode=${this.props.currEventCode}&hostId=${this.props.hostId}&accessToken=${this.props.accessToken}`);
 
     fetch(`http://localhost:8080/api/event?eventCode=${this.props.currEventCode}`)
     .then(response => response.json())

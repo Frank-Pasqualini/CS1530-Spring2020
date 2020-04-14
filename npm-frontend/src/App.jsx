@@ -110,6 +110,7 @@ class App extends Component {
     const currName = JSON.parse(localStorage.getItem('currName'));
     const accessToken = JSON.parse(localStorage.getItem('accessToken'));
     const songData = JSON.parse(localStorage.getItem('songData'));
+    const hostId = JSON.parse(localStorage.getItem('hostId'));
 
     this.state = {
       eventList: [],
@@ -119,7 +120,9 @@ class App extends Component {
       name: currName || '',
       accessToken: accessToken || '', 
       songData: songData || '',
-      host: false
+      host: false,
+      hostId: hostId || '',
+      accountType: ''
     }
   }
 
@@ -134,6 +137,13 @@ class App extends Component {
       context: this,
       state: 'songData'
     });
+  }
+
+  updateHostId = (id, type) => {
+    let pieces = id.split("user:");
+    console.log(pieces);
+    this.setState({ hostId: pieces[1], accountType: type });
+    localStorage.setItem('hostId', JSON.stringify(pieces[1]));
   }
 
   updateEventCode = (code) => {
@@ -243,17 +253,13 @@ class App extends Component {
 
   endEvent = () => {
     // Change the hostid if you want to run this with your own spotify account
-    fetch(`http://localhost:8080/api/end_event?eventCode=${this.state.currEventCode}&hostId=chipmilotis&accessToken=${this.state.accessToken}`);
+    fetch(`http://localhost:8080/api/end_event?eventCode=${this.state.currEventCode}&hostId=${this.state.hostId}&accessToken=${this.state.accessToken}`);
 
     this.emptyLocalStorage();
   }
 
   logout = () => {
     fetch(`http://localhost:8080/api/disconnect?eventCode=${this.state.currEventCode}&userId=${this.state.name}`)
-    .then(response => response.json())
-    .then(data => {
-      console.log(data);
-    });
   }
 
   render() {
@@ -277,10 +283,16 @@ class App extends Component {
                 <ErrorPage />
               </Route>
               <Route path="/create-new-event">
-                <CreateNewEvent updateToken={this.updateToken} />
+                <CreateNewEvent updateToken={this.updateToken} updateHostId={this.updateHostId} />
               </Route>
               <Route path="/show-code">
-                <ShowCode currEventCode={this.state.currEventCode} accessToken={this.state.accessToken} addEvent={this.addEvent} updateEventCode={this.updateEventCode} />
+                <ShowCode 
+                  currEventCode={this.state.currEventCode} 
+                  accessToken={this.state.accessToken} 
+                  addEvent={this.addEvent} 
+                  updateEventCode={this.updateEventCode} 
+                  hostId={this.state.hostId}
+                />
               </Route>
               <Route path="/guest"> 
                 <GuestInterface 
@@ -299,6 +311,7 @@ class App extends Component {
                   updateSongs={this.updateSongs} 
                   songData={this.state.songData} 
                   endEvent={this.endEvent}
+                  hostId={this.state.hostId}
                   /> 
                 </Route>
               <Route path="/invalid-code"> 

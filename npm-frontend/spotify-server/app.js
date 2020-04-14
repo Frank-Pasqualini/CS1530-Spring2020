@@ -98,17 +98,29 @@ app.get('/callback', function(req, res) {
           json: true
         };
 
+        var username, accountType;
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
           console.log(body);
-        });
+          username = body.uri;
+          accountType = body.product;
 
-        // we can also pass the token to the browser to make requests from there
-        res.redirect('http://localhost:3000/create-new-event#' +
+          if(accountType == 'premium') {
+
+          
+          // Pass data to front end
+          res.redirect('http://localhost:3000/create-new-event#' +
           querystring.stringify({
             access_token: access_token,
-            refresh_token: refresh_token
+            refresh_token: refresh_token,
+            host_id: username,
+            account_type: accountType
           }));
+         } else {
+           res.redirect('http://localhost:3000/premium-error#');
+         }
+        });
+
       } else {
         res.redirect('/#' +
           querystring.stringify({
