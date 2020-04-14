@@ -93,7 +93,7 @@ class HostInterface extends Component {
       <PageContainer>
         
       <SongContainer>
-      <Link to="/" onClick={this.props.endEvent} ><LogOutButton>End Event</LogOutButton></Link>
+      <Link to="/end-event"><LogOutButton>End Event</LogOutButton></Link>
         <Header>Event {this.props.currEventCode}</Header>
         <NextSong>Up Next</NextSong>
         {this.state.loading ? <div></div> : <Song title={this.props.songData.upNext.name} album={this.props.songData.upNext.albumImages[1]} artist={this.props.songData.upNext.artistNames[0]} voteCount={this.props.songData.upNext.score} host />}

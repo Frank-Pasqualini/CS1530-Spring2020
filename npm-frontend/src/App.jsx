@@ -19,6 +19,7 @@ import GuestInterface from './GuestInterface';
 import HostInterface from './HostInterface';
 import JoinCodeError from './JoinCodeError';
 import SelectPlist from './SelectPlist';
+import EndEvent from './EndEvent';
 import DisneyArt from './Disney.jpeg';
 
 const Background = styled.div`
@@ -319,6 +320,7 @@ class App extends Component {
               </Route>
               <Route path="/choose-playlist-d"> <SelectPlist playList={playListd}/> </Route>
               <Route path="/choose-playlist"> <SelectPlist playList={playList}/> </Route>
+              <Route path="/end-event"><EndEvent emptyLocalStorage={this.emptyLocalStorage} /></Route>
             </Switch>
           </Background>
       </Router>
