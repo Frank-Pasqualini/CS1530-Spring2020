@@ -1,5 +1,7 @@
 package media.jambox.model;
 
+import com.wrapper.spotify.exceptions.SpotifyWebApiException;
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import org.junit.Before;
 import org.junit.Test;
@@ -40,5 +42,13 @@ public class HostTest
         Mockito.when(mockEvent.getQueue()).thenReturn(mockQueue);
         testHost.removeTrack("6rPO02ozF3bM7NnOV4h6s2", accessToken);
         Mockito.verify(mockQueue, Mockito.times(1)).removeTrack("6rPO02ozF3bM7NnOV4h6s2", accessToken);
+    }
+
+    @Test
+    public void testSkipSong()
+        throws InvalidKeyException, IOException, SpotifyWebApiException
+    {
+        testHost.skipSong(accessToken);
+        Mockito.verify(mockEvent, Mockito.times(1)).cycle(accessToken);
     }
 }
