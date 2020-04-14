@@ -33,6 +33,7 @@ const TopBar = styled.div`
   height: 60px;
   background-color: #EBEBEB;
   display: flex;
+  justify-content: space-between;
 `;
 
 const playListd = [
@@ -117,7 +118,8 @@ class App extends Component {
       codeInput: 0,
       name: currName || '',
       accessToken: accessToken || '', 
-      songData: songData || ''
+      songData: songData || '',
+      host: false
     }
   }
 
@@ -155,6 +157,7 @@ class App extends Component {
     this.setState({ currEventCode: code });
     // Update the name in state with the host's name
     this.setState({name: `Host ${code}` });
+    this.setState({ host: true });
 
     // Store the event code in local storage so you won't lose it when you make changes to files
     localStorage.setItem('eventCode', JSON.stringify(code));
@@ -224,6 +227,7 @@ class App extends Component {
     console.log('emptying storage')
     // Clear out any event code from local storage
     localStorage.clear();
+    this.setState({ host: false });
   }
 
   updateToken = (token) => {
@@ -235,6 +239,21 @@ class App extends Component {
   updateSongs = (data) => {
     this.setState({ songData: data })
     localStorage.setItem('songData', JSON.stringify(data));
+  }
+
+  endEvent = () => {
+    // Change the hostid if you want to run this with your own spotify account
+    fetch(`http://localhost:8080/api/end_event?eventCode=${this.state.currEventCode}&hostId=chipmilotis&accessToken=${this.state.accessToken}`);
+
+    this.emptyLocalStorage();
+  }
+
+  logout = () => {
+    fetch(`http://localhost:8080/api/disconnect?eventCode=${this.state.currEventCode}&userId=${this.state.name}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+    });
   }
 
   render() {
@@ -269,6 +288,8 @@ class App extends Component {
                   currEventCode={this.state.currEventCode} 
                   updateSongs={this.updateSongs} 
                   userID={this.state.name} 
+                  logout={this.logout}
+                  name={this.state.name}
                 /> 
               </Route>
               <Route path="/host">
@@ -277,6 +298,7 @@ class App extends Component {
                   currEventCode={this.state.currEventCode} 
                   updateSongs={this.updateSongs} 
                   songData={this.state.songData} 
+                  endEvent={this.endEvent}
                   /> 
                 </Route>
               <Route path="/invalid-code"> 

@@ -27,7 +27,7 @@ const AlbumArt = styled.img`
 `;
 
 const SongTitle = styled.div`
-  font-size: 25px;
+  font-size: 24px;
 `;
 
 const ArtistName = styled.div`
@@ -59,6 +59,8 @@ const CancelButton = styled.button`
   background-color: #272726;
   border: #272726;
   outline: none;
+  position: relative;
+  right: -5.5em;
 `;
 
 const ArrowButton = styled.button`
@@ -79,7 +81,8 @@ const SongContainer = styled.div`
 `;
 
 const VoteContainer = styled.div`
-  margin: 25px;
+  position: relative;
+  right: ${props => props.removable ? "-50px" : "18px"};
 `;
 
 class Song extends Component {
@@ -135,7 +138,7 @@ class Song extends Component {
             <ArtistName>{this.props.artist}</ArtistName>
           </SongInfo>
           {
-            this.props.host ? <VoteContainer>{this.props.voteCount}</VoteContainer> :
+            this.props.host ? <VoteContainer removable={this.props.removable}>Votes: {this.props.voteCount}</VoteContainer> :
             <RatingBox>
               <ArrowButton onClick={this.upVote}><Up up={this.state.up}/></ArrowButton>
               <div>{this.props.voteCount}</div>
@@ -144,6 +147,7 @@ class Song extends Component {
           } 
           {this.props.removable ? <CancelButton onClick={() => this.props.removeSong(this.props.id)}><CancelShape /></CancelButton> : ''} 
         </SongBox>
+        
       </SongContainer>
     )
   }

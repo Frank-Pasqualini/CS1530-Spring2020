@@ -70,6 +70,8 @@ class ShowCode extends Component {
     }
   }
   componentDidMount() {
+    // Replace chipmilotis with your own spotify username to use this on your own 
+    // Change the playlist ID to whatever playlist id you want (it's the playlist URI)
     fetch(`http://localhost:8080/api/add_event?playlistId=37i9dQZF1DX8C9xQcOrE6T&accessToken=${this.props.accessToken}&hostId=chipmilotis`)
     .then(response => response.json())
     .then(data => {

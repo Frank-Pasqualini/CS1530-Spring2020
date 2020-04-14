@@ -35,7 +35,7 @@ const AlbumArt = styled.img`
 
 const SongTitle = styled.div`
   color: white;
-  font-size: 25px;
+  font-size: 18px;
 `;
 
 const ArtistName = styled.div`
@@ -99,7 +99,11 @@ const PauseButton = styled.button`
   outline: none;
 `;
 
-
+const TrackInfo = styled.div`
+  display: flex;
+  width: 325px;
+  flex-direction: column;
+`;
 
 class TrackControls extends Component {
   constructor() {
@@ -145,6 +149,18 @@ class TrackControls extends Component {
         'client_id': `${this.props.accessToken}`
       }
     })
+
+    // Replace chipmilotis with your own spotify username to use this on your own 
+    fetch(`http://localhost:8080/api/cycle?eventCode=${this.props.currEventCode}&hostId=chipmilotis&accessToken=${this.props.accessToken}`);
+
+    fetch(`http://localhost:8080/api/event?eventCode=${this.props.currEventCode}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      this.props.updateSongs(data);
+      this.setState({ loading: false });
+    });
+
     this.setState({ paused: false });
   }
 
@@ -166,10 +182,10 @@ class TrackControls extends Component {
       <ControlsContainer>
         <CurrSongInfoContainer>
           <AlbumArt src={this.props.song.albumImages[1]}/>
-          <div>
+          <TrackInfo>
             <SongTitle>{this.props.song.name}</SongTitle>
             <ArtistName>{this.props.song.artistNames[0]}</ArtistName>
-          </div>
+          </TrackInfo>
         </CurrSongInfoContainer>
         <ButtonsContainer>
           <BackButton onClick={this.skipBack}><Back /></BackButton>
