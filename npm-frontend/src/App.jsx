@@ -320,7 +320,7 @@ class App extends Component {
               </Route>
               <Route path="/choose-playlist-d"> <SelectPlist playList={playListd}/> </Route>
               <Route path="/choose-playlist"> <SelectPlist playList={playList}/> </Route>
-              <Route path="/end-event"><EndEvent emptyLocalStorage={this.emptyLocalStorage} /></Route>
+              <Route path="/end-event"><EndEvent endEvent={this.endEvent} /></Route>
             </Switch>
           </Background>
       </Router>
