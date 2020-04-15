@@ -263,6 +263,9 @@ class App extends Component {
     fetch(`http://localhost:8080/api/disconnect?eventCode=${this.state.currEventCode}&userId=${this.state.name}`)
   }
 
+  updateEventCode = () => {
+    this.setState({ validCode: false });
+  }
   render() {
     return (
       <Router>
@@ -273,7 +276,7 @@ class App extends Component {
           </TopBar>
           <Background>
             <Switch>
-              <Route exact path="/"> <Homepage /> </Route>
+              <Route exact path="/"> <Homepage updateEventCode={this.updateEventCode} /> </Route>
               <Route path="/join-code"> 
                 <JoinEventCode updateCodeInput={this.updateCodeInput} checkCode={this.checkCode} />
               </Route>

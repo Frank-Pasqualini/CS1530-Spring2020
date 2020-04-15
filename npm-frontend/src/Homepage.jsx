@@ -71,7 +71,7 @@ class Homepage extends Component {
       <HomePageContainer>
         <Logo navBar={false} />
         <Link to="/join-code">
-          <JoinEventButton>Join Event</JoinEventButton>
+          <JoinEventButton onClick={this.props.updateEventCode}>Join Event</JoinEventButton>
         </Link>
         <a href='http://localhost:8888/login'>
         <CreateEventButton>Create Event <Spotify src={SpotifyLogo} /></CreateEventButton></a>
