@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from "react-router-dom";
 import styled from 'styled-components';
 import TrackControls from './TrackControls';
 import Song from './Song';
@@ -28,26 +29,87 @@ const NextSong = styled.div`
   margin: 30px 0 0;
 `;
 
+const SongsLoading = styled.div`
+  color: white;
+  font-size: 60px;
+  margin: 43px 0;
+  display: flex;
+  justify-content: center;
+`;
+
+const LogOutButton = styled.button`
+  font-size: 20px;
+  border-color: #ebebeb;
+  background-color: #2e83dc;
+  cursor: pointer;
+  border-radius: 11px;
+  height: 41px;
+  color: white;
+  align-self: center;
+  margin: 10px;
+  padding: 0 10px;
+  outline: none;
+  font-weight: 500;
+  box-shadow: 5px 6px 6px grey;
+  border-color: #2e83dc;
+  position: absolute;
+  right: 2px;
+  top: -1px;
+`;
+
 class HostInterface extends Component {
-  constructor(props) {
+  constructor() {
     super()
-    // Create a song entry for every song in the list
-    this.songs = props.songList.map((item, key) =>
-      <Song title={item.title} album={item.img_url} artist={item.artist} voteCount={item.voteCount} key={key}/>
-    );
+
+    this.state = {
+      loading: true
+    }
   }
+
+  componentDidMount() {
+    fetch(`http://localhost:8080/api/event?eventCode=${this.props.currEventCode}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      this.props.updateSongs(data);
+      this.setState({ loading: false });
+    });
+  }
+
+  removeSong = (id) => {
+    fetch(`http://localhost:8080/api/remove_track?eventCode=${this.props.currEventCode}&hostId=${this.props.hostId}&trackId=${id}&accessToken=${this.props.accessToken}`);
+
+    fetch(`http://localhost:8080/api/event?eventCode=${this.props.currEventCode}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      this.props.updateSongs(data);
+      this.setState({ loading: false });
+    });
+  }
+
   render() {
     return (
       <PageContainer>
+        
       <SongContainer>
-        <Header>Event 2011</Header>
+      <Link to="/end-event"><LogOutButton>End Event</LogOutButton></Link>
+        <Header>Event {this.props.currEventCode}</Header>
         <NextSong>Up Next</NextSong>
+        {this.state.loading ? <div></div> : <Song title={this.props.songData.upNext.name} album={this.props.songData.upNext.albumImages[1]} artist={this.props.songData.upNext.artistNames[0]} voteCount={this.props.songData.upNext.score} host />}
+        <NextSong>In The Queue</NextSong>
         {
+          this.state.loading ? <SongsLoading>Loading Songs...</SongsLoading> :
           // This renders all the song entries we created
-          this.songs
+          // Create a song entry for every song in the list
+          this.props.songData.queue.trackList.map((item, key) =>
+            <Song title={item.name} album={item.albumImages[1]} artist={item.artistNames[0]} voteCount={item.score} id={item.id} removable removeSong={this.removeSong} host key={key}/>
+          )
         }
       </SongContainer>
-      <TrackControls />
+      { this.state.loading ? <div></div> : 
+        <TrackControls currEventCode={this.props.currEventCode} accessToken={this.props.accessToken} song={this.props.songData.nowPlaying} updateSongs={this.props.updateSongs} hostId={this.props.hostId} />
+      }
     </PageContainer>
     )
   }

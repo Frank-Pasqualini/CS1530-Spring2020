@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import {ArrowUp} from '@styled-icons/entypo/ArrowUp'
-import {ArrowDown} from '@styled-icons/entypo/ArrowDown'
+import {ArrowUp} from '@styled-icons/entypo/ArrowUp';
+import {ArrowDown} from '@styled-icons/entypo/ArrowDown';
+import {CancelCircle} from '@styled-icons/icomoon/CancelCircle';
 
 
 const SongBox = styled.div`
@@ -26,7 +27,7 @@ const AlbumArt = styled.img`
 `;
 
 const SongTitle = styled.div`
-  font-size: 25px;
+  font-size: 24px;
 `;
 
 const ArtistName = styled.div`
@@ -40,11 +41,26 @@ const SongInfo = styled.div`
 
 const Up = styled(ArrowUp)`
   height: 35px;
-  color: ${props => props.up ? '#3e97d8' : 'white'};
+  color: #3e97d8;
 `;
 const Down = styled(ArrowDown)`
   height: 35px;
-  color: ${props => props.down ? '#3e97d8' : 'white'};
+  color: #3e97d8;
+`;
+
+const CancelShape = styled(CancelCircle)`
+  height 35px;
+  color: #e21717;
+  margin: 5px;
+`;
+
+const CancelButton = styled.button`
+  cursor: pointer;
+  background-color: #272726;
+  border: #272726;
+  outline: none;
+  position: relative;
+  right: -5.5em;
 `;
 
 const ArrowButton = styled.button`
@@ -59,6 +75,16 @@ const RatingBox = styled.div`
   align-items: center;
 `;
 
+const SongContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const VoteContainer = styled.div`
+  position: relative;
+  right: ${props => props.removable ? "-50px" : "18px"};
+`;
+
 class Song extends Component {
   constructor(props) {
     super();
@@ -66,40 +92,69 @@ class Song extends Component {
     this.state = {
       up: false,
       down: false,
-      votes: props.voteCount || 0
+    }
+  }
+
+  componentDidUpdate() {
+    if(this.state.up || this.state.down) {
+      this.setState({ up: false, down: false })
     }
   }
 
   upVote = () => {
-    let votes = this.state.votes
-    // If down was already clicked, need to change value by 2
-    if(this.state.down) { votes += 2; }
-    else if(!this.state.up) { votes += 1; }
-    this.setState({ up: true, down: false, votes: votes })
+    // Update vote count if up wasn't clicked
+    // If up was already clicked, don't do anything
+    if(!this.state.up) { 
+      this.setState({ up: true, down: false});
+
+      fetch(`http://localhost:8080/api/upvote?eventCode=${this.props.currEventCode}&userId=${this.props.userID}&trackId=${this.props.id}`);
+
+      fetch(`http://localhost:8080/api/event?eventCode=${this.props.currEventCode}`)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        this.props.updateSongs(data);
+      });
+    }
   }
 
   downVote = () => {
-    let votes = this.state.votes
-    // If up was already clicked, need to change value by 2
-    if(this.state.up) { votes -= 2; }
-    else if(!this.state.down) { votes -= 1; }
-    this.setState({ up: false, down: true, votes: votes })
+    // Update vote count if down wasn't clicked
+    // If down was already clicked, don't do anything
+    if(!this.state.down) { 
+      this.setState({ up: false, down: true });
+
+      fetch(`http://localhost:8080/api/downvote?eventCode=${this.props.currEventCode}&userId=${this.props.userID}&trackId=${this.props.id}`);
+
+      fetch(`http://localhost:8080/api/event?eventCode=${this.props.currEventCode}`)
+      .then(response => response.json())
+      .then(data => {
+        this.props.updateSongs(data);
+      });
+    }
   }
 
   render() {
     return (
-      <SongBox>
-        <AlbumArt src={this.props.album} />
-        <SongInfo>
-          <SongTitle>{this.props.title}</SongTitle>
-          <ArtistName>{this.props.artist}</ArtistName>
-        </SongInfo>
-        <RatingBox>
-          <ArrowButton onClick={this.upVote}><Up up={this.state.up}/></ArrowButton>
-          <div>{this.state.votes}</div>
-          <ArrowButton onClick={this.downVote}><Down down={this.state.down}/></ArrowButton>
-        </RatingBox>
-      </SongBox>
+      <SongContainer>
+        <SongBox>
+          <AlbumArt src={this.props.album} />
+          <SongInfo>
+            <SongTitle>{this.props.title}</SongTitle>
+            <ArtistName>{this.props.artist}</ArtistName>
+          </SongInfo>
+          {
+            this.props.host ? <VoteContainer removable={this.props.removable}>Votes: {this.props.voteCount}</VoteContainer> :
+            <RatingBox>
+              <ArrowButton onClick={this.upVote}><Up up={this.state.up}/></ArrowButton>
+              <div>{this.props.voteCount}</div>
+              <ArrowButton onClick={this.downVote}><Down down={this.state.down}/></ArrowButton>
+           </RatingBox>
+          } 
+          {this.props.removable ? <CancelButton onClick={() => this.props.removeSong(this.props.id)}><CancelShape /></CancelButton> : ''} 
+        </SongBox>
+        
+      </SongContainer>
     )
   }
 }

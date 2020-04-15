@@ -13,12 +13,13 @@ import Homepage from './Homepage';
 import JoinEventCode from './JoinEventCode';
 import JoinEventUsername from './JoinEventUsername';
 import ErrorPage from './ErrorPage';
-import NewEvent from './CreateNewEvent';
+import CreateNewEvent from './CreateNewEvent';
 import ShowCode from './ShowCode';
 import GuestInterface from './GuestInterface';
 import HostInterface from './HostInterface';
 import JoinCodeError from './JoinCodeError';
 import SelectPlist from './SelectPlist';
+import EndEvent from './EndEvent';
 import DisneyArt from './Disney.jpeg';
 
 const Background = styled.div`
@@ -33,7 +34,9 @@ const TopBar = styled.div`
   height: 60px;
   background-color: #EBEBEB;
   display: flex;
+  justify-content: space-between;
 `;
+
 const playListd = [
   {
     "name": "Rock",
@@ -98,185 +101,29 @@ const playList = [
     "img_url": `${DisneyArt}`,
   },
 ]
-const songList = [
-  {
-  "title": "1904",
-  "artist": "The Tallest Man on Earth",
-  "year": "2012",
-  "web_url": "http://www.songnotes.cc/songs/78-the-tallest-man-on-earth-1904",
-  "img_url": "http://www.songnotes.cc/images/artists/TheTallestManOnEarth.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "#40",
-  "artist": "Dave Matthews",
-  "year": "1999",
-  "web_url": "http://www.songnotes.cc/songs/119-dave-matthews-40",
-  "img_url": "http://www.songnotes.cc/images/artists/DaveMatthews.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "40oz to Freedom",
-  "artist": "Sublime",
-  "year": "1996",
-  "web_url": "http://www.songnotes.cc/songs/45-sublime-40oz-to-freedom",
-  "img_url": "http://www.songnotes.cc/images/artists/Sublime.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "#41",
-  "artist": "Dave Matthews",
-  "year": "1996",
-  "web_url": "http://www.songnotes.cc/songs/46-dave-matthews-band-41",
-  "img_url": "http://www.songnotes.cc/images/artists/DaveMatthews.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "American Girl",
-  "artist": "Tom Petty",
-  "year": "1977",
-  "web_url": "http://www.songnotes.cc/songs/86-tom-petty-american-girl",
-  "img_url": "http://www.songnotes.cc/images/artists/TomPetty.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "American Music",
-  "artist": "Violent Femmes",
-  "year": "1991",
-  "web_url": "http://www.songnotes.cc/songs/123-violent-femmes-american-music",
-  "img_url": "http://www.songnotes.cc/images/artists/ViolentFemmes.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "American Pie",
-  "artist": "Don McLean",
-  "year": "1972",
-  "web_url": "http://www.songnotes.cc/songs/132-don-mclean-american-pie",
-  "img_url": "http://www.songnotes.cc/images/artists/DonMcLean.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "And it Stoned Me",
-  "artist": "Van Morrison",
-  "year": "1970",
-  "web_url": "http://www.songnotes.cc/songs/27-van-morrison-and-it-stoned-me",
-  "img_url": "http://www.songnotes.cc/images/artists/VanMorrison.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "A Sailor's Christmas",
-  "artist": "Jimmy Buffett",
-  "year": "1996",
-  "web_url": "http://www.songnotes.cc/songs/11-jimmy-buffett-a-sailors-christmas",
-  "img_url": "http://www.songnotes.cc/images/artists/JimmyBuffett.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "Badfish",
-  "artist": "Sublime",
-  "year": "1996",
-  "web_url": "http://www.songnotes.cc/songs/21-sublime-badfish",
-  "img_url": "http://www.songnotes.cc/images/artists/Sublime.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "Banana Pancakes",
-  "artist": "Jack Johnson",
-  "year": "2005",
-  "web_url": "http://www.songnotes.cc/songs/102-jack-johnson-banana-pancakes",
-  "img_url": "http://www.songnotes.cc/images/artists/JackJohnson.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "Barefoot Children",
-  "artist": "Jimmy Buffett",
-  "year": "1995",
-  "web_url": "http://www.songnotes.cc/songs/9-jimmy-buffett-barefoot-children",
-  "img_url": "http://www.songnotes.cc/images/artists/JimmyBuffett.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "Big Parade",
-  "artist": "The Lumineers",
-  "year": "2012",
-  "web_url": "http://www.songnotes.cc/songs/63-the-lumineers-big-parade",
-  "img_url": "http://www.songnotes.cc/images/artists/TheLumineers.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "Brown Eyed Girl",
-  "artist": "Van Morrison",
-  "year": "1967",
-  "web_url": "http://www.songnotes.cc/songs/69-van-morrison-brown-eyed-girl",
-  "img_url": "http://www.songnotes.cc/images/artists/VanMorrison.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "Cape Canaveral",
-  "artist": "Conor Oberst",
-  "year": "2008",
-  "web_url": "http://www.songnotes.cc/songs/75-conor-oberst-cape-canaveral",
-  "img_url": "http://www.songnotes.cc/images/artists/ConorOberst.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "Carry On",
-  "artist": "fun.",
-  "year": "2012",
-  "web_url": "http://www.songnotes.cc/songs/122-fun-carry-on",
-  "img_url": "http://www.songnotes.cc/images/artists/Fun.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "Catch the Wind",
-  "artist": "Donovan",
-  "year": "1965",
-  "web_url": "http://www.songnotes.cc/songs/131-donovan-catch-the-wind",
-  "img_url": "http://www.songnotes.cc/images/artists/Donovan.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "Cat's in the Cradle",
-  "artist": "Harry Chapin",
-  "year": "1974",
-  "web_url": "http://www.songnotes.cc/songs/47-harry-chapin-cats-in-the-cradle",
-  "img_url": "http://www.songnotes.cc/images/artists/HarryChapin.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "Changes in Latitudes, Changes in Attitudes",
-  "artist": "Jimmy Buffett",
-  "year": "1977",
-  "web_url": "http://www.songnotes.cc/songs/38-jimmy-buffett-changes-in-latitudes-changes-in-attitudes",
-  "img_url": "http://www.songnotes.cc/images/artists/JimmyBuffett.jpg",
-  "voteCount": 0
-  },
-  {
-  "title": "Classy Girls",
-  "artist": "The Lumineers",
-  "year": "2012",
-  "web_url": "http://www.songnotes.cc/songs/55-the-lumineers-classy-girls",
-  "img_url": "http://www.songnotes.cc/images/artists/TheLumineers.jpg",
-  "voteCount": 0
-  }
-];
 
 class App extends Component {
   constructor(){
     super();
-    const params = this.getHashParams();
-    console.log(params);
-    
+
     // Get event code out of storage if there is one
     const eventCode = JSON.parse(localStorage.getItem('eventCode'));
     const currName = JSON.parse(localStorage.getItem('currName'));
+    const accessToken = JSON.parse(localStorage.getItem('accessToken'));
+    const songData = JSON.parse(localStorage.getItem('songData'));
+    const hostId = JSON.parse(localStorage.getItem('hostId'));
 
     this.state = {
       eventList: [],
-      thisEvent: eventCode || '',
+      currEventCode: eventCode || '',
       validCode: false,
       codeInput: 0,
-      name: currName || ''
+      name: currName || '',
+      accessToken: accessToken || '', 
+      songData: songData || '',
+      host: false,
+      hostId: hostId || '',
+      accountType: ''
     }
   }
 
@@ -287,30 +134,44 @@ class App extends Component {
       state: 'eventList',
       asArray: true
     });
+    base.syncState(`songData`, {
+      context: this,
+      state: 'songData'
+    });
+  }
+
+  updateHostId = (id, type) => {
+    let pieces = id.split("user:");
+    console.log(pieces);
+    this.setState({ hostId: pieces[1], accountType: type });
+    localStorage.setItem('hostId', JSON.stringify(pieces[1]));
+  }
+
+  updateEventCode = (code) => {
+    this.setState({ currEventCode: code });
   }
 
   // This is run from CreateNewEvent and adds a new event to the event list
-  addEvent = () => {
+  addEvent = (code) => {
     const eventList = [...this.state.eventList];
-    // Create a random 4 digit number for the event code
-    const thisEvent = Math.floor(1000 + Math.random() * 9000);
 
     // Add the new event code to the event list along with the host name
     eventList.push({
-      eventCode: thisEvent,
+      eventCode: code,
       // TODO: Update hostname with their spotify name
-      hostName: `Host ${thisEvent}`
+      hostName: `Host ${code}`
     });
 
     // Update the global event list with the new event code
     this.setState({ eventList });
     // Update state with the current event code
-    this.setState({ thisEvent });
+    this.setState({ currEventCode: code });
     // Update the name in state with the host's name
-    this.setState({name: `Host ${thisEvent}` })
+    this.setState({name: `Host ${code}` });
+    this.setState({ host: true });
 
     // Store the event code in local storage so you won't lose it when you make changes to files
-    localStorage.setItem('eventCode', JSON.stringify(thisEvent))
+    localStorage.setItem('eventCode', JSON.stringify(code));
   }
 
   // This is run from JoinEventCode and updates state with the input from the textbox
@@ -340,10 +201,10 @@ class App extends Component {
         // Update the validCode status to true so that the correct page renders (the username page can now render)
         this.setState({ validCode: true })
         // Update the current event code 
-        this.setState({ thisEvent: codeInput})
+        this.setState({ currEventCode: codeInput})
 
         // Store the event code in local storage so it stays when you make changes to files 
-        localStorage.setItem('eventCode', JSON.stringify(this.state.thisEvent))
+        localStorage.setItem('eventCode', JSON.stringify(this.state.currEventCode))
       }
     })
   }
@@ -352,12 +213,12 @@ class App extends Component {
   // TODO (maybe): update the connection with firebase so we don't have to loop through all the events all the time 
   addGuest = () => {
     const eventList = [...this.state.eventList];
-    const thisEvent = this.state.thisEvent
+    const currEventCode = this.state.currEventCode    
 
     // Loop through each event in the event list
     eventList.forEach((e) => {
       // Check if the event code equals the current event
-      if(e.eventCode === thisEvent) {
+      if(e.eventCode === currEventCode) {
         // If guestList hasn't been created, create one
         if(e.guestList === undefined) {e.guestList = [];}
         // Add the name to the guestList
@@ -365,40 +226,57 @@ class App extends Component {
         // Update the eventList
         this.setState({ eventList });
 
-
+        console.log(this.state.name);
       }
     })
+    // Update the backend with the new user
+    fetch(`http://localhost:8080/api/add_user?eventCode=${this.state.currEventCode}&userId=${this.state.name}`);
   }
 
   // This is run when "Join Event" or "Create Event" are clicked on the homepage
   emptyLocalStorage = () => {
+    console.log('emptying storage')
     // Clear out any event code from local storage
     localStorage.clear();
+    this.setState({ host: false });
   }
 
-  getHashParams() {
-    let hashParams = {};
-    let e, r = /([^&;=]+)=?([^&;]*)/g,
-        q = window.location.hash.substring(1);
-    e = r.exec(q)
-    while (e) {
-       hashParams[e[1]] = decodeURIComponent(e[2]);
-       e = r.exec(q);
-    }
-    return hashParams;
+  updateToken = (token) => {
+    // Store the access token
+    localStorage.setItem('accessToken', JSON.stringify(token));
+    this.setState({ accessToken: token });
   }
 
+  updateSongs = (data) => {
+    this.setState({ songData: data })
+    localStorage.setItem('songData', JSON.stringify(data));
+  }
+
+  endEvent = () => {
+    // Change the hostid if you want to run this with your own spotify account
+    fetch(`http://localhost:8080/api/end_event?eventCode=${this.state.currEventCode}&hostId=${this.state.hostId}&accessToken=${this.state.accessToken}`);
+
+    this.emptyLocalStorage();
+  }
+
+  logout = () => {
+    fetch(`http://localhost:8080/api/disconnect?eventCode=${this.state.currEventCode}&userId=${this.state.name}`)
+  }
+
+  updateEventCode = () => {
+    this.setState({ validCode: false });
+  }
   render() {
     return (
       <Router>
           <TopBar>
-            <Link to="/" style={{ textDecoration: 'none' }}>
-              <Logo navBar={true}/>
+            <Link to="/" onClick={this.emptyLocalStorage} style={{ textDecoration: 'none' }}>
+              <Logo navBar={true} />
             </Link>
           </TopBar>
           <Background>
             <Switch>
-              <Route exact path="/"> <Homepage emptyLocalStorage={this.emptyLocalStorage} /> </Route>
+              <Route exact path="/"> <Homepage updateEventCode={this.updateEventCode} /> </Route>
               <Route path="/join-code"> 
                 <JoinEventCode updateCodeInput={this.updateCodeInput} checkCode={this.checkCode} />
               </Route>
@@ -409,18 +287,43 @@ class App extends Component {
                 <ErrorPage />
               </Route>
               <Route path="/create-new-event">
-                <NewEvent addEvent={this.addEvent} />
+                <CreateNewEvent updateToken={this.updateToken} updateHostId={this.updateHostId} />
               </Route>
               <Route path="/show-code">
-                <ShowCode thisEvent={this.state.thisEvent} />
+                <ShowCode 
+                  currEventCode={this.state.currEventCode} 
+                  accessToken={this.state.accessToken} 
+                  addEvent={this.addEvent} 
+                  updateEventCode={this.updateEventCode} 
+                  hostId={this.state.hostId}
+                />
               </Route>
-              <Route path="/guest"> <GuestInterface songList={songList}/> </Route>
-              <Route path="/host"> <HostInterface songList={songList}/> </Route>
+              <Route path="/guest"> 
+                <GuestInterface 
+                  songData={this.state.songData} 
+                  currEventCode={this.state.currEventCode} 
+                  updateSongs={this.updateSongs} 
+                  userID={this.state.name} 
+                  logout={this.logout}
+                  name={this.state.name}
+                /> 
+              </Route>
+              <Route path="/host">
+                <HostInterface 
+                  accessToken={this.state.accessToken} 
+                  currEventCode={this.state.currEventCode} 
+                  updateSongs={this.updateSongs} 
+                  songData={this.state.songData} 
+                  endEvent={this.endEvent}
+                  hostId={this.state.hostId}
+                  /> 
+                </Route>
               <Route path="/invalid-code"> 
                 <JoinCodeError />
               </Route>
               <Route path="/choose-playlist-d"> <SelectPlist playList={playListd}/> </Route>
               <Route path="/choose-playlist"> <SelectPlist playList={playList}/> </Route>
+              <Route path="/end-event"><EndEvent endEvent={this.endEvent} /></Route>
             </Switch>
           </Background>
       </Router>

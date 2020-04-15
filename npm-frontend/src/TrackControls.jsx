@@ -4,7 +4,6 @@ import {PlayCircle} from '@styled-icons/boxicons-regular/PlayCircle';
 import {PauseCircle} from '@styled-icons/boxicons-regular/PauseCircle';
 import {SkipForward} from '@styled-icons/remix-fill/SkipForward';
 import {SkipBack} from '@styled-icons/remix-fill/SkipBack';
-import DefaultArt from './defaultart.png';
 
 const ControlsContainer = styled.div`
   height: 100px;
@@ -36,7 +35,7 @@ const AlbumArt = styled.img`
 
 const SongTitle = styled.div`
   color: white;
-  font-size: 25px;
+  font-size: 18px;
 `;
 
 const ArtistName = styled.div`
@@ -100,7 +99,11 @@ const PauseButton = styled.button`
   outline: none;
 `;
 
-
+const TrackInfo = styled.div`
+  display: flex;
+  width: 325px;
+  flex-direction: column;
+`;
 
 class TrackControls extends Component {
   constructor() {
@@ -112,29 +115,84 @@ class TrackControls extends Component {
 
   playMusic = () => {
     this.setState({ paused: false });
+    fetch('https://api.spotify.com/v1/me/player/play', {
+      method: 'PUT',
+			headers: {
+			  'Authorization': `Bearer ${this.props.accessToken}`
+      },
+      query: {
+        'client_id': `${this.props.accessToken}`
+      }
+		})
   }
 
   pauseMusic = () => {
     this.setState({ paused: true });
+    fetch('https://api.spotify.com/v1/me/player/pause', {
+      method: 'PUT',
+			headers: {
+			  'Authorization': `Bearer ${this.props.accessToken}`
+      },
+      query: {
+        'client_id': `${this.props.accessToken}`
+      }
+		})
+  }
+
+  skipForward = () => {
+    fetch('https://api.spotify.com/v1/me/player/next', {
+      method: 'POST',
+			headers: {
+			  'Authorization': `Bearer ${this.props.accessToken}`
+      },
+      query: {
+        'client_id': `${this.props.accessToken}`
+      }
+    })
+
+    fetch(`http://localhost:8080/api/cycle?eventCode=${this.props.currEventCode}&hostId=${this.props.hostId}&accessToken=${this.props.accessToken}`);
+
+    fetch(`http://localhost:8080/api/event?eventCode=${this.props.currEventCode}`)
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      this.props.updateSongs(data);
+      this.setState({ loading: false });
+    });
+
+    this.setState({ paused: false });
+  }
+
+  skipBack = () => {
+    fetch('https://api.spotify.com/v1/me/player/previous', {
+      method: 'POST',
+			headers: {
+			  'Authorization': `Bearer ${this.props.accessToken}`
+      },
+      query: {
+        'client_id': `${this.props.accessToken}`
+      }
+    })
+    this.setState({ paused: false });
   }
 
   render() {
     return (
       <ControlsContainer>
         <CurrSongInfoContainer>
-          <AlbumArt src={DefaultArt}/>
-          <div>
-            <SongTitle>Song Name</SongTitle>
-            <ArtistName>Artist Name</ArtistName>
-          </div>
+          <AlbumArt src={this.props.song.albumImages[1]}/>
+          <TrackInfo>
+            <SongTitle>{this.props.song.name}</SongTitle>
+            <ArtistName>{this.props.song.artistNames[0]}</ArtistName>
+          </TrackInfo>
         </CurrSongInfoContainer>
         <ButtonsContainer>
-          <BackButton><Back /></BackButton>
+          <BackButton onClick={this.skipBack}><Back /></BackButton>
           {
             // this displays the play button if the music paused and the pause button if music is playing
             this.state.paused ? <PlayButton onClick={this.playMusic}><Play /></PlayButton> : <PauseButton onClick={this.pauseMusic}><Pause /></PauseButton>
           }
-          <ForwardButton><Forward /></ForwardButton>
+          <ForwardButton onClick={this.skipForward}><Forward /></ForwardButton>
         </ButtonsContainer>
       </ControlsContainer>
     )
